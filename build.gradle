@@ -41,6 +41,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	// 편의성 설정(p6spy, swagger)
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 

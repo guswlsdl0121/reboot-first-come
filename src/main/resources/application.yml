@@ -22,6 +22,10 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  devtools:
+    restart:
+      enabled: true
+
 #Swagger 세팅
 springdoc:
   api-docs:
