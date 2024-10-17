@@ -1,0 +1,71 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/firstcome_system
+      SPRING_DATASOURCE_USERNAME: docker
+      SPRING_DATASOURCE_PASSWORD: docker1234
+      SPRING_REDIS_HOST: cache
+      SPRING_REDIS_PORT: 6379
+    # mysql 및 redis가 준비될 때까지 대기
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_started
+
+    networks:
+      - app-network
+
+  # Mysql 세팅
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_DATABASE: firstcome_system
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker1234
+      MYSQL_ROOT_PASSWORD: mysql1234
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+      - '--bind-address=0.0.0.0'
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # redis 세팅
+  cache:
+    image: redis:7.0-alpine
+    container_name: cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - app-network
+
+# 네트워크 세팅, 외부 컨테이너의 연결을 허용해주어야 함.
+networks:
+  app-network:
+    external: true
+    name: app-network
+    driver: bridge
+
+volumes:
+  mysql-data:
+  redis-data:
