@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @SuperBuilder
@@ -34,4 +36,7 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
+    private LocalDateTime lastPasswordUpdated;
 }
