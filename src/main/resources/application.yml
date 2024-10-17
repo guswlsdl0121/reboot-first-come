@@ -15,8 +15,13 @@ spring:
   # jpa 세팅
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
 
   # Json 매핑을 스네이크 케이스로 전역 설정
   jackson:
