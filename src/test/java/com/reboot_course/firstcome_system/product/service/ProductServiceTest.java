@@ -4,7 +4,6 @@ import com.reboot_course.firstcome_system.factory.TestProductFactory;
 import com.reboot_course.firstcome_system.product.dto.response.ProductDetailResponse;
 import com.reboot_course.firstcome_system.product.dto.response.ProductListResponse;
 import com.reboot_course.firstcome_system.product.entity.Product;
-import com.reboot_course.firstcome_system.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -3,9 +3,9 @@ package com.reboot_course.firstcome_system.product.service;
 import com.reboot_course.firstcome_system.product.dto.response.ProductDTO;
 import com.reboot_course.firstcome_system.product.dto.response.ProductDetailResponse;
 import com.reboot_course.firstcome_system.product.dto.response.ProductListResponse;
-import com.reboot_course.firstcome_system.product.utils.ProductMapper;
 import com.reboot_course.firstcome_system.product.entity.Product;
 import com.reboot_course.firstcome_system.product.repository.ProductRepository;
+import com.reboot_course.firstcome_system.product.utils.ProductMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,27 +19,6 @@ public class ProductService {
     private static final int INITIAL_CURSOR = Integer.MAX_VALUE;
 
     private final ProductRepository productRepository;
-
-    @Transactional(readOnly = true)
-    public ProductListResponse getProductList(String cursor, int size) {
-        int cursorValue = determineCursor(cursor);
-
-        List<ProductDTO> products = productRepository.getProducts(size, cursorValue);
-
-        String nextCursor = getNextCursor(size, products);
-        return ProductListResponse.builder()
-                .products(products)
-                .nextCursor(nextCursor)
-                .build();
-    }
-
-    @Transactional(readOnly = true)
-    public ProductDetailResponse getProductDetail(int productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다."));
-
-        return ProductMapper.toProductDetailResponse(product);
-    }
 
     /*
      * 첫번째 페이지에선 Integer.MAX_VALUE를 넘겨주어
@@ -62,5 +41,26 @@ public class ProductService {
         }
 
         return String.valueOf(products.getLast().id());
+    }
+
+    @Transactional(readOnly = true)
+    public ProductListResponse getProductList(String cursor, int size) {
+        int cursorValue = determineCursor(cursor);
+
+        List<ProductDTO> products = productRepository.getProducts(size, cursorValue);
+
+        String nextCursor = getNextCursor(size, products);
+        return ProductListResponse.builder()
+                .products(products)
+                .nextCursor(nextCursor)
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ProductDetailResponse getProductDetail(int productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다."));
+
+        return ProductMapper.toProductDetailResponse(product);
     }
 }
