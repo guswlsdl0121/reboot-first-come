@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/product")
-public class ProductController {
+public class ProductWebController implements ProductWebAPI {
     private final ProductService productService;
 
     @GetMapping
