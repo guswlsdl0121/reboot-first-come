@@ -1,5 +1,6 @@
 package com.reboot_course.firstcome_system.member.entity;
 
+import com.reboot_course.firstcome_system.auth.encrypt.AESConverter;
 import com.reboot_course.firstcome_system.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,18 +23,22 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Integer id;
 
+    @Convert(converter = AESConverter.class)
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
     private String password;
 
+    @Convert(converter = AESConverter.class)
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Convert(converter = AESConverter.class)
     @Column(nullable = false)
     private String phone;
 
+    @Convert(converter = AESConverter.class)
     @Column(nullable = false)
     private String address;
 

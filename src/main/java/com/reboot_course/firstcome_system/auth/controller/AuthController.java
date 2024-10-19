@@ -1,5 +1,6 @@
 package com.reboot_course.firstcome_system.auth.controller;
 
+import com.reboot_course.firstcome_system.auth.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.auth.service.AuthService;
 import com.reboot_course.firstcome_system.common.CommonResponse;
 import jakarta.validation.Valid;

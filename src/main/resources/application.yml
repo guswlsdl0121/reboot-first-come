@@ -43,3 +43,19 @@ springdoc:
     path: /swagger
     disable-swagger-default-url: true
     doc-expansion: list
+
+#키
+encryption:
+  key: "0123456789abcdef"
+  salt: "0123456789abcdef"
+
+#Security 세팅
+security:
+  public-urls:
+    - "/swagger-ui/**"
+    - "/api-docs/**"
+    - "/swagger-resources/**"
+    - "/api/health"
+    - "/api/product/**"
+    - "/api/auth/signup"
+    - "/api/auth/login"
