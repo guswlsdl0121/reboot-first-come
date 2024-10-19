@@ -20,7 +20,7 @@ public class EncryptionConfig {
      * 비밀번호 저장을 위한 단방향 해시
      */
     @Bean
-    public PasswordEncoder oneWayHashEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

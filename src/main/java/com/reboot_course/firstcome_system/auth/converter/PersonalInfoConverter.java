@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.encrypt;
+package com.reboot_course.firstcome_system.auth.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Converter
 @Component
 @RequiredArgsConstructor
-public class AESConverter implements AttributeConverter<String, String> {
+public class PersonalInfoConverter implements AttributeConverter<String, String> {
 
     private final TextEncryptor textEncryptor;
 
