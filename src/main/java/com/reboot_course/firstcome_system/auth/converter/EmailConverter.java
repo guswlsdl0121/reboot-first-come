@@ -1,8 +1,9 @@
 package com.reboot_course.firstcome_system.auth.converter;
 
+import com.reboot_course.firstcome_system.auth.config.encryption.EncryptionProperties;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -17,7 +18,9 @@ public class EmailConverter implements AttributeConverter<String, String> {
     private static final String ALGORITHM = "AES/ECB/PKCS5Padding";
     private final SecretKeySpec secretKey;
 
-    public EmailConverter(@Value("${encryption.key}") String emailKey) {
+    @Autowired
+    public EmailConverter(EncryptionProperties encryptionProperties) {
+        String emailKey = encryptionProperties.getKey();
         this.secretKey = new SecretKeySpec(emailKey.getBytes(StandardCharsets.UTF_8), "AES");
     }
 

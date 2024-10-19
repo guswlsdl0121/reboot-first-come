@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Getter(AccessLevel.PACKAGE)
+@Getter
 @Setter(AccessLevel.PACKAGE)
 @Component
 @ConfigurationProperties(prefix = "encryption")

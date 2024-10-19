@@ -57,6 +57,13 @@ dependencies {
 
     // 스프링 시큐리티 설정 추가
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // 세션 관련 설정
+    implementation 'org.springframework.session:spring-session-core'
+
+
+    // Redis 세션 저장소용 (나중에 사용)
+    // implementation 'org.springframework.session:spring-session-data-redis'
 }
 
 tasks.named('test') {
