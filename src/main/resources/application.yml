@@ -1,4 +1,7 @@
 spring:
+  session:
+    timeout: 3600
+
   # mysql 세팅
   datasource:
     url: jdbc:mysql://db:3306/firstcome_system

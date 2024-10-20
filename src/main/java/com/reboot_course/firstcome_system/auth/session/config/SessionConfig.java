@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.session;
+package com.reboot_course.firstcome_system.auth.session.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +21,10 @@ public class SessionConfig {
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("JSESSIONID"); // 세션 쿠키 이름 설정
-        serializer.setCookiePath("/"); // 모든 경로에서 쿠키 사용 가능
-        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$"); // 서브도메인 포함
+        serializer.setCookieName("JSESSIONID");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        serializer.setUseSecureCookie(true);
+        serializer.setSameSite("Strict");
         return serializer;
     }
 }

@@ -33,12 +33,12 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .components(new Components())
-                .addSecurityItem(new SecurityRequirement().addList("cookieAuth"))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components()
-                        .addSecuritySchemes("cookieAuth", new SecurityScheme()
+                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
                                 .type(SecurityScheme.Type.APIKEY)
-                                .in(SecurityScheme.In.COOKIE)
-                                .name("JSESSIONID")));
+                                .in(SecurityScheme.In.HEADER)
+                                .name("X-Auth-Token")));
     }
 
     @Bean
