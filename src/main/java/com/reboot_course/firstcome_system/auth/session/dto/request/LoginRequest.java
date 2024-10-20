@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.dto.request;
+package com.reboot_course.firstcome_system.auth.session.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

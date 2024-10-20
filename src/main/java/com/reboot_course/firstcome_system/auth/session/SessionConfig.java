@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.config.session;
+package com.reboot_course.firstcome_system.auth.session;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.converter;
+package com.reboot_course.firstcome_system.auth.encryption.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

@@ -1,6 +1,6 @@
-package com.reboot_course.firstcome_system.auth.converter;
+package com.reboot_course.firstcome_system.auth.encryption.converter;
 
-import com.reboot_course.firstcome_system.auth.config.encryption.EncryptionProperties;
+import com.reboot_course.firstcome_system.auth.encryption.config.EncryptionProperties;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import org.springframework.beans.factory.annotation.Autowired;

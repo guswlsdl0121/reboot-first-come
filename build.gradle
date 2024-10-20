@@ -56,7 +56,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
 
     // 스프링 시큐리티 설정 추가
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-crypto'
 
     // 세션 관련 설정
     implementation 'org.springframework.session:spring-session-core'
