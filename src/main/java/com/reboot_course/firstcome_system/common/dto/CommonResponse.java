@@ -16,8 +16,8 @@ public class CommonResponse<T> {
      * 성공 응답을 생성합니다.
      *
      * @param message 응답 메시지
-     * @param data 응답 데이터
-     * @param <T> 응답 데이터의 타입
+     * @param data    응답 데이터
+     * @param <T>     응답 데이터의 타입
      * @return 생성된 CommonResponse 객체
      */
     public static <T> CommonResponse<T> success(String message, T data) {

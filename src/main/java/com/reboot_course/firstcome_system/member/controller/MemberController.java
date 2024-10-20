@@ -1,7 +1,7 @@
 package com.reboot_course.firstcome_system.member.controller;
 
-import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
+import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

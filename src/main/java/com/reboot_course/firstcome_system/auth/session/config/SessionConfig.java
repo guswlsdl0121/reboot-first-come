@@ -28,9 +28,10 @@ public class SessionConfig {
     @Bean
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieName("JSESSIONID"); // 세션 쿠키 이름 설정
-        serializer.setCookiePath("/"); // 모든 경로에서 쿠키 사용 가능
-        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$"); // 서브도메인 포함
+        serializer.setCookieName("JSESSIONID");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        serializer.setUseSecureCookie(true);
+        serializer.setSameSite("Strict");
         return serializer;
     }
 }
