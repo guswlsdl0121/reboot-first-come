@@ -22,14 +22,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<CommonResponse<String>> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
-        String sessionId = authService.login(loginRequest, request);
+        String sessionId = authService.login(loginRequest, request.getSession(true));
         response.setHeader("X-Auth-Token", sessionId);
         return ResponseEntity.ok(CommonResponse.success("로그인에 성공했습니다."));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
-        authService.logout(request);
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        authService.logout(request.getSession(false));
         return ResponseEntity.ok().build();
     }
 }

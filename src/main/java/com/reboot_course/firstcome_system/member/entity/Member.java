@@ -45,4 +45,8 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime lastPasswordUpdated;
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
