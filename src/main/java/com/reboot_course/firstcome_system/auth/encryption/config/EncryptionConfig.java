@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.config.encryption;
+package com.reboot_course.firstcome_system.auth.encryption.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

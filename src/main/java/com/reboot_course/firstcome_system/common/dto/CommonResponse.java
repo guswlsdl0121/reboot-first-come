@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.common;
+package com.reboot_course.firstcome_system.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,14 @@ public class CommonResponse<T> {
     private String message;
     private T data;
 
-    // 성공 응답 생성
+    /**
+     * 성공 응답을 생성합니다.
+     *
+     * @param message 응답 메시지
+     * @param data 응답 데이터
+     * @param <T> 응답 데이터의 타입
+     * @return 생성된 CommonResponse 객체
+     */
     public static <T> CommonResponse<T> success(String message, T data) {
         return new CommonResponse<>(true, message, data);
     }

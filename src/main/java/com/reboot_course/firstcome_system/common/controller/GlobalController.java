@@ -12,13 +12,4 @@ public class GlobalController {
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("health check good");
     }
-
-    @GetMapping("/api/session-check")
-    public ResponseEntity<String> sessionCheck(HttpSession session) {
-        Integer memberId = (Integer) session.getAttribute("MEMBER_ID");
-        if (memberId != null) {
-            return ResponseEntity.ok("User is logged in. User ID: " + memberId);
-        }
-        return ResponseEntity.ok("User is not logged in");
-    }
 }

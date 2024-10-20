@@ -1,6 +1,6 @@
-package com.reboot_course.firstcome_system.auth.config.security;
+package com.reboot_course.firstcome_system.auth.security.config;
 
-import com.reboot_course.firstcome_system.auth.security.CustomAuthenticationProvider;
+import com.reboot_course.firstcome_system.auth.security.provider.AuthenticationproviderImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CustomAuthenticationProvider customAuthenticationProvider;
+    private final AuthenticationproviderImpl authenticationproviderImpl;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                ).authenticationProvider(customAuthenticationProvider)
+                ).authenticationProvider(authenticationproviderImpl)
         ;
         return http.build();
     }
