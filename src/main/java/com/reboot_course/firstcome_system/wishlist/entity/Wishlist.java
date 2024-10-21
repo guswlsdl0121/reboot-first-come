@@ -22,6 +22,9 @@ public class Wishlist extends BaseEntity {
     @Column(name = "wishlist_id")
     private Integer id;
 
+    @Column(nullable = false)
+    private Integer quantity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
