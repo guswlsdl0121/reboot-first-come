@@ -14,7 +14,7 @@ public class WishlistAppender {
     private final WishListRepository wishListRepository;
 
     public Wishlist validateUniqueAndSave(Member member, Product product) {
-        if(wishListRepository.existsByMemberAndProduct(member, product)) {
+        if (wishListRepository.existsByMemberAndProduct(member, product)) {
             throw new DuplicatedException("해당 상품이 이미 위시리스트에 있습니다.");
         }
 

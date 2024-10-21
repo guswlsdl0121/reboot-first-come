@@ -1,9 +1,9 @@
 package com.reboot_course.firstcome_system.product.usecase;
 
+import com.reboot_course.firstcome_system.common.utils.CursorUtils;
 import com.reboot_course.firstcome_system.product.dto.response.ProductItemDTO;
 import com.reboot_course.firstcome_system.product.dto.response.ProductMainResponse;
 import com.reboot_course.firstcome_system.product.repository.ProductRepository;
-import com.reboot_course.firstcome_system.common.utils.CursorUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

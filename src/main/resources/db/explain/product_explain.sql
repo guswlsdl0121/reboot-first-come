@@ -13,5 +13,4 @@ EXPLAIN
 SELECT p.product_id, p.name, p.price
 FROM product p
 WHERE p.product_id < 1000
-ORDER BY p.product_id DESC
-LIMIT 10;
+ORDER BY p.product_id DESC LIMIT 10;

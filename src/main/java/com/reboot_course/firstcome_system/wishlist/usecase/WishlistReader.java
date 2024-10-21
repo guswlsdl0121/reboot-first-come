@@ -1,8 +1,8 @@
 package com.reboot_course.firstcome_system.wishlist.usecase;
 
-import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResult;
 import com.reboot_course.firstcome_system.common.utils.CursorUtils;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistItemDTO;
+import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResult;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;
 import com.reboot_course.firstcome_system.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;

@@ -65,7 +65,7 @@ class ProductRepositoryTest {
     @DisplayName("ID로 상품 조회: 존재하는 상품")
     void testFindById() {
         // Given
-        Product testProduct = testProducts.get(0);
+        Product testProduct = testProducts.getFirst();
 
         // When
         Optional<Product> found = productRepository.findById(testProduct.getId());
