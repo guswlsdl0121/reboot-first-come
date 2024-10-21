@@ -29,7 +29,6 @@ public class MemberService {
         return member.getId();
     }
 
-    @Transactional
     public void changePassword(String email, ChangePasswordRequest request) {
         Member member = memberFinder.fetchByEmail(email);
 

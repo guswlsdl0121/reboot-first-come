@@ -1,5 +1,6 @@
 package com.reboot_course.firstcome_system.common.exception.handler;
 
+import com.reboot_course.firstcome_system.auth.core.exception.AuthenticationFailedException;
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.common.exception.exception.DuplicatedException;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +17,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CommonResponse<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
         CommonResponse<Void> response = CommonResponse.fail(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // 401. 로그인이나 인증이 실패했을 때
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<CommonResponse<Void>> handleAuthenticationFailedException(AuthenticationFailedException ex) {
+        CommonResponse<Void> response = CommonResponse.fail(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     //404 : 무언가를 찾을 수 없을 때 (Entitiy)
