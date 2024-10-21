@@ -4,6 +4,9 @@ import com.reboot_course.firstcome_system.product.dto.response.ProductDetailResp
 import com.reboot_course.firstcome_system.product.entity.Product;
 
 public class ProductMapper {
+    private ProductMapper() {
+    }
+
     public static ProductDetailResponse toProductDetailResponse(Product product) {
         return ProductDetailResponse.builder()
                 .id(product.getId().longValue())
@@ -13,5 +16,4 @@ public class ProductMapper {
                 .quantity(product.getQuantity())
                 .build();
     }
-    private ProductMapper() {}
 }

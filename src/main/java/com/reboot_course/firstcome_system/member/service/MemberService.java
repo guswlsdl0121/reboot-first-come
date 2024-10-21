@@ -10,7 +10,6 @@ import com.reboot_course.firstcome_system.member.usecase.MemberUpdater;
 import com.reboot_course.firstcome_system.member.usecase.MemberValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
