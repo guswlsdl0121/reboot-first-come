@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.wishlist.controller;
+package com.reboot_course.firstcome_system.wishlist.dto;
 
 import lombok.Getter;
 

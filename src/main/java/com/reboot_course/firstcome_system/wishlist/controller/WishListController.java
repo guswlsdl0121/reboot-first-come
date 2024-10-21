@@ -1,8 +1,8 @@
-package com.reboot_course.firstcome_system.wishlist.dto.response;
+package com.reboot_course.firstcome_system.wishlist.controller;
 
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
-import com.reboot_course.firstcome_system.wishlist.controller.ProductWishlistResponse;
-import com.reboot_course.firstcome_system.wishlist.controller.WishlistUpdateType;
+import com.reboot_course.firstcome_system.wishlist.dto.WishlistUpdateType;
+import com.reboot_course.firstcome_system.wishlist.dto.response.ProductWishlistResponse;
 import com.reboot_course.firstcome_system.wishlist.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
