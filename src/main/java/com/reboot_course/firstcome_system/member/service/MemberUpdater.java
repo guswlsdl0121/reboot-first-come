@@ -12,7 +12,7 @@ public class MemberUpdater {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void updatePassword(Member member, String newPassword){
+    public void updatePassword(Member member, String newPassword) {
         String newEncodedPassword = passwordEncoder.encode(newPassword);
         member.changePassword(newEncodedPassword);
 

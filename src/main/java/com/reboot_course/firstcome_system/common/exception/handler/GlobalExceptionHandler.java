@@ -17,7 +17,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         CommonResponse<Void> response = CommonResponse.fail(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    
+
     //404 : 무언가를 찾을 수 없을 때 (Entitiy)
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<CommonResponse<Void>> handleEntityNotFoundException(EntityNotFoundException ex) {
