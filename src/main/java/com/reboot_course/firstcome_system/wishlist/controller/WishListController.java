@@ -1,8 +1,8 @@
 package com.reboot_course.firstcome_system.wishlist.controller;
 
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
-import com.reboot_course.firstcome_system.wishlist.dto.WishlistUpdateType;
-import com.reboot_course.firstcome_system.wishlist.dto.response.ProductWishlistResponse;
+import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
+import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResponse;
 import com.reboot_course.firstcome_system.wishlist.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,11 @@ public class WishListController {
     }
 
     @GetMapping
-    public ResponseEntity<ProductWishlistResponse> getWishList(@AuthenticationPrincipal UserDetails userDetails) {
-        ProductWishlistResponse response =  wishListService.getWishList(userDetails.getUsername());
+    public ResponseEntity<WishlistResponse> getWishList(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(required = false) String cursor,
+            @RequestParam(defaultValue = "10") int size) {
+        WishlistResponse response = wishListService.getWishList(userDetails.getUsername(), cursor, size);
         return ResponseEntity.ok(response);
     }
 

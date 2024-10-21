@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @SuperBuilder
@@ -32,4 +34,28 @@ public class Wishlist extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Product product;
+
+    public Integer getProductId() {
+        return product.getId();
+    }
+
+    public String getProductName() {
+        return product.getName();
+    }
+
+    public BigDecimal getProductPrice() {
+        return product.getPrice();
+    }
+
+    public void increaseQuantity() {
+        this.quantity++;
+    }
+
+    public void decreaseQuantity() {
+        if (this.quantity > 1) {
+            this.quantity--;
+        } else {
+            throw new IllegalStateException("수량은 1 미만으로 감소할 수 없습니다.");
+        }
+    }
 }
