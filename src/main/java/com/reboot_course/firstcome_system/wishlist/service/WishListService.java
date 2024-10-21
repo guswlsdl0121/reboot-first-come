@@ -47,13 +47,11 @@ public class WishListService {
                 .build();
     }
 
-    public Integer deleteWishlist(String email, Integer wishlistId) {
-        Member member = memberFinder.fetchByEmail(email);
-        return wishlistModifier.removeWishlist(member.getId(), wishlistId);
+    public Integer deleteWishlist(Integer wishlistId) {
+        return wishlistModifier.removeWishlist(wishlistId);
     }
 
-    public void updateWishlistQuantity(String email, Integer wishlistId, WishlistUpdateType updateType) {
-        Member member = memberFinder.fetchByEmail(email);
-        wishlistModifier.updateQuantity(member.getId(), wishlistId, updateType);
+    public void updateWishlistQuantity(Integer wishlistId, WishlistUpdateType updateType) {
+        wishlistModifier.updateQuantity(wishlistId, updateType);
     }
 }

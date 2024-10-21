@@ -1,6 +1,5 @@
 package com.reboot_course.firstcome_system.wishlist.usecase;
 
-import com.reboot_course.firstcome_system.member.usecase.MemberFinder;
 import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;
 import com.reboot_course.firstcome_system.wishlist.repository.WishListRepository;
@@ -15,16 +14,15 @@ public class WishlistModifier {
     private final WishlistFinder wishlistFinder;
 
     @Transactional
-    public Integer removeWishlist(int wishlistId, int memberId) {
-        Wishlist wishlist = wishlistFinder.fetchWishlistByIdAndMemberId(wishlistId, memberId);
+    public Integer removeWishlist(int wishlistId) {
+        Wishlist wishlist = wishlistFinder.fetchById(wishlistId);
         wishListRepository.delete(wishlist);
-
         return wishlistId;
     }
 
     @Transactional
-    public void updateQuantity(int wishlistId, int memberId, WishlistUpdateType updateType) {
-        Wishlist wishlist = wishlistFinder.fetchWishlistByIdAndMemberId(wishlistId, memberId);
+    public void updateQuantity(int wishlistId, WishlistUpdateType updateType) {
+        Wishlist wishlist = wishlistFinder.fetchById(wishlistId);
 
         switch (updateType) {
             case INCREASE:

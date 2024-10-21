@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class WishlistFinder {
     private final WishListRepository wishListRepository;
 
-    public Wishlist fetchWishlistByIdAndMemberId(int wishlistId, int memberId) {
-        return wishListRepository.findByIdAndMemberId(wishlistId, memberId)
+    public Wishlist fetchById(int wishlistId) {
+        return wishListRepository.findById(wishlistId)
                 .orElseThrow(() -> new EntityNotFoundException("위시리스트를 찾을 수 없습니다."));
     }
 }

@@ -33,18 +33,16 @@ public class WishListController {
     }
 
     @DeleteMapping("/{wishlistId}")
-    public CommonResponse<Integer> deleteWishlist(@AuthenticationPrincipal UserDetails userDetails,
-                                                  @PathVariable Integer wishlistId) {
-        Integer id = wishListService.deleteWishlist(userDetails.getUsername(), wishlistId);
+    public CommonResponse<Integer> deleteWishlist(@PathVariable Integer wishlistId) {
+        Integer id = wishListService.deleteWishlist(wishlistId);
         return CommonResponse.success("장바구니에서 상품을 삭제했습니다.", id);
     }
 
     @PatchMapping("/{wishlistId}")
-    public CommonResponse<String> updateQuantity(@AuthenticationPrincipal UserDetails userDetails,
-                                                 @PathVariable Integer wishlistId,
+    public CommonResponse<String> updateQuantity(@PathVariable Integer wishlistId,
                                                  @RequestParam String update) {
         WishlistUpdateType updateType = WishlistUpdateType.fromString(update);
-        wishListService.updateWishlistQuantity(userDetails.getUsername(), wishlistId, updateType);
+        wishListService.updateWishlistQuantity(wishlistId, updateType);
         return CommonResponse.success("장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.");
     }
 }

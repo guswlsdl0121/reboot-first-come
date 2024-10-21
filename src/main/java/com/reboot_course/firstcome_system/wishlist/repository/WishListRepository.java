@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface WishListRepository extends JpaRepository<Wishlist, Integer> {
@@ -33,6 +32,4 @@ public interface WishListRepository extends JpaRepository<Wishlist, Integer> {
             WHERE w.id IN :ids
             """)
     List<Wishlist> findByIdsWithProduct(@Param("ids") List<Integer> ids);
-
-    Optional<Wishlist> findByIdAndMemberId(Integer wishlistId, Integer memberId);
 }
