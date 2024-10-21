@@ -1,4 +1,7 @@
 spring:
+  session:
+    timeout: 3600
+
   # mysql 세팅
   datasource:
     url: jdbc:mysql://db:3306/firstcome_system
@@ -43,3 +46,8 @@ springdoc:
     path: /swagger
     disable-swagger-default-url: true
     doc-expansion: list
+
+#키
+encryption:
+  key: "0123456789abcdef"
+  salt: "0123456789abcdef"
