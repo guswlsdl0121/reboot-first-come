@@ -5,6 +5,7 @@ import com.reboot_course.firstcome_system.product.repository.ProductRepository;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -22,6 +23,7 @@ public class TestProductFactory {
                 .name(String.format("Product name %d", seq))
                 .price(new BigDecimal(10000))
                 .quantity(1000)
+                .createdAt(LocalDateTime.now())
                 .description(String.format("Product description %d", seq))
                 .build();
         return productRepository.save(product);

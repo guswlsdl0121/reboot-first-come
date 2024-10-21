@@ -1,5 +1,6 @@
 package com.reboot_course.firstcome_system.product.service;
 
+import com.reboot_course.firstcome_system.product.config.ProductTestConfig;
 import com.reboot_course.firstcome_system.factory.TestProductFactory;
 import com.reboot_course.firstcome_system.product.dto.response.ProductDetailResponse;
 import com.reboot_course.firstcome_system.product.dto.response.ProductMainResponse;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@Import({ProductService.class, TestProductFactory.class})
+@Import({ProductService.class, TestProductFactory.class, ProductTestConfig.class})
 @DisplayName("Product Service 통합 테스트")
 class ProductServiceIntegrationTest {
     @Autowired
@@ -45,9 +46,9 @@ class ProductServiceIntegrationTest {
 
         // Then
         assertThat(response.products()).hasSize(3);
-        assertThat(response.products().get(0).id()).isEqualTo(testProducts.get(4).getId());
-        assertThat(response.products().get(1).id()).isEqualTo(testProducts.get(3).getId());
-        assertThat(response.products().get(2).id()).isEqualTo(testProducts.get(2).getId());
+        assertThat(response.products().get(0).getId()).isEqualTo(testProducts.get(4).getId());
+        assertThat(response.products().get(1).getId()).isEqualTo(testProducts.get(3).getId());
+        assertThat(response.products().get(2).getId()).isEqualTo(testProducts.get(2).getId());
         assertThat(response.nextCursor()).isEqualTo(testProducts.get(2).getId().toString());
     }
 
@@ -59,8 +60,8 @@ class ProductServiceIntegrationTest {
 
         // Then
         assertThat(response.products()).hasSize(2);
-        assertThat(response.products().get(0).id()).isEqualTo(testProducts.get(2).getId());
-        assertThat(response.products().get(1).id()).isEqualTo(testProducts.get(1).getId());
+        assertThat(response.products().get(0).getId()).isEqualTo(testProducts.get(2).getId());
+        assertThat(response.products().get(1).getId()).isEqualTo(testProducts.get(1).getId());
         assertThat(response.nextCursor()).isEqualTo(testProducts.get(1).getId().toString());
     }
 
@@ -72,7 +73,7 @@ class ProductServiceIntegrationTest {
 
         // Then
         assertThat(response.products()).hasSize(1);
-        assertThat(response.products().get(0).id()).isEqualTo(testProducts.get(0).getId());
+        assertThat(response.products().getFirst().getId()).isEqualTo(testProducts.get(0).getId());
         assertThat(response.nextCursor()).isNull();
     }
 
@@ -80,7 +81,7 @@ class ProductServiceIntegrationTest {
     @DisplayName("상품 상세 조회: 존재하는 상품")
     void testGetProductDetail() {
         // Given
-        Product testProduct = testProducts.get(0);
+        Product testProduct = testProducts.getFirst();
 
         // When
         ProductDetailResponse response = productService.getProductDetail(testProduct.getId());
@@ -95,6 +96,6 @@ class ProductServiceIntegrationTest {
         // When & Then
         assertThatThrownBy(() -> productService.getProductDetail(999))
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessage("상품을 찾을 수 없습니다.");
+                .hasMessage("해당 상품을 찾을 수 없습니다. (id : 999)");
     }
 }

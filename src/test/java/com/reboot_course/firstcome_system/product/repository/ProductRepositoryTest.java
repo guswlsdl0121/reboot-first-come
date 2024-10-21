@@ -1,7 +1,8 @@
 package com.reboot_course.firstcome_system.product.repository;
 
 import com.reboot_course.firstcome_system.factory.TestProductFactory;
-import com.reboot_course.firstcome_system.product.dto.response.ProductMain;
+import com.reboot_course.firstcome_system.product.config.ProductTestConfig;
+import com.reboot_course.firstcome_system.product.dto.response.ProductItemDTO;
 import com.reboot_course.firstcome_system.product.entity.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +19,9 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@Import(TestProductFactory.class)
+@Import({ProductTestConfig.class, TestProductFactory.class})
 @DisplayName("Product Repository 테스트")
 class ProductRepositoryTest {
-
     @Autowired
     private ProductRepository productRepository;
 
@@ -40,25 +40,25 @@ class ProductRepositoryTest {
     @DisplayName("상품 목록 조회: 커서 없음")
     void testGetProducts() {
         // When
-        List<ProductMain> result = productRepository.getProducts(3, Integer.MAX_VALUE);
+        List<ProductItemDTO> result = productRepository.getProducts(3, Integer.MAX_VALUE);
 
         // Then (마지막에 넣었던 것 부터, 최신순 정렬로 나와야 함)
         assertThat(result).hasSize(3);
-        assertThat(result.get(0).id()).isEqualTo(testProducts.get(4).getId());
-        assertThat(result.get(1).id()).isEqualTo(testProducts.get(3).getId());
-        assertThat(result.get(2).id()).isEqualTo(testProducts.get(2).getId());
+        assertThat(result.get(0).getId()).isEqualTo(testProducts.get(4).getId());
+        assertThat(result.get(1).getId()).isEqualTo(testProducts.get(3).getId());
+        assertThat(result.get(2).getId()).isEqualTo(testProducts.get(2).getId());
     }
 
     @Test
     @DisplayName("상품 목록 조회: 커서 사용")
     void testGetProductsWithCursor() {
         // When
-        List<ProductMain> result = productRepository.getProducts(2, testProducts.get(3).getId());
+        List<ProductItemDTO> result = productRepository.getProducts(2, testProducts.get(3).getId());
 
         // Then
         assertThat(result).hasSize(2);
-        assertThat(result.get(0).id()).isEqualTo(testProducts.get(2).getId());
-        assertThat(result.get(1).id()).isEqualTo(testProducts.get(1).getId());
+        assertThat(result.get(0).getId()).isEqualTo(testProducts.get(2).getId());
+        assertThat(result.get(1).getId()).isEqualTo(testProducts.get(1).getId());
     }
 
     @Test
