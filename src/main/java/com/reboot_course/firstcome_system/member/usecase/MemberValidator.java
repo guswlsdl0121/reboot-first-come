@@ -18,13 +18,8 @@ public class MemberValidator {
         }
     }
 
-    /*
-     * @param memberPassword 데이터베이스에 저장된 회원의 암호화된 비밀번호
-     * @param currentPassword 사용자가 입력한 현재 비밀번호
-     * @throws IllegalArgumentException 비밀번호가 일치하지 않을 경우
-     */
-    public void matchPassword(String memberPassword, String currentPassword) {
-        if (!passwordEncoder.matches(currentPassword, memberPassword)) {
+    public void matchPassword(String rawPassword, String encodedPassword) {
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }

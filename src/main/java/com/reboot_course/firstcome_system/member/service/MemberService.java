@@ -31,7 +31,7 @@ public class MemberService {
     public void changePassword(String email, ChangePasswordRequest request) {
         Member member = memberFinder.fetchByEmail(email);
 
-        memberValidator.matchPassword(member.getPassword(), request.currentPassword());
+        memberValidator.matchPassword(request.currentPassword(), member.getPassword());
         memberUpdater.updatePassword(member, request.newPassword());
 
         authService.logoutAllSessions(email);

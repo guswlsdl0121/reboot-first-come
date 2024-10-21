@@ -5,7 +5,6 @@ import com.reboot_course.firstcome_system.product.dto.response.ProductMainRespon
 import com.reboot_course.firstcome_system.product.entity.Product;
 import com.reboot_course.firstcome_system.product.usecase.ProductFinder;
 import com.reboot_course.firstcome_system.product.usecase.ProductReader;
-import com.reboot_course.firstcome_system.product.utils.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,13 @@ public class ProductService {
 
     public ProductDetailResponse getProductDetail(int productId) {
         Product product = productFinder.fetchById(productId);
-        return ProductMapper.toProductDetailResponse(product);
+
+        return ProductDetailResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
+                .build();
     }
 }
