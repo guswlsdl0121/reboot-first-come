@@ -6,7 +6,6 @@ import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,7 +52,6 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        // 모든 세션에서 로그아웃
         authService.logoutAllSessions(email);
     }
 }
