@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +21,8 @@ public class MemberController {
 
     @GetMapping("/me")
     public CommonResponse<String> showPrincipal(@AuthenticationPrincipal UserDetails userDetails) {
-        log.info("{}", SecurityContextHolder.getContext().getAuthentication());
         return CommonResponse.success("로그인에 성공했습니다!", userDetails.getUsername());
     }
-
 
     @PostMapping("/signup")
     public ResponseEntity<CommonResponse<Integer>> signup(@RequestBody @Valid SignupRequest request) {
@@ -35,8 +32,7 @@ public class MemberController {
 
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ChangePasswordRequest request) {
-        String email = userDetails.getUsername();
-        memberService.changePassword(email, request);
-        return ResponseEntity.ok("Password changed successfully. You have been logged out from all sessions.");
+        memberService.changePassword(userDetails.getUsername(), request);
+        return ResponseEntity.ok("비밀번호가 성공적으로 변경됐습니다.");
     }
 }

@@ -5,7 +5,6 @@ import com.reboot_course.firstcome_system.product.entity.Product;
 
 public class ProductMapper {
     private ProductMapper() {
-        throw new AssertionError("인스턴스 생성 방지");
     }
 
     public static ProductDetailResponse toProductDetailResponse(Product product) {

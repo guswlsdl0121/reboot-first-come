@@ -1,7 +1,7 @@
 package com.reboot_course.firstcome_system.product.controller;
 
 import com.reboot_course.firstcome_system.product.dto.response.ProductDetailResponse;
-import com.reboot_course.firstcome_system.product.dto.response.ProductListResponse;
+import com.reboot_course.firstcome_system.product.dto.response.ProductMainResponse;
 import com.reboot_course.firstcome_system.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/product")
-public class ProductWebController implements ProductWebAPI {
+public class ProductController implements ProductWebAPI {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<ProductListResponse> getProductList(
+    public ResponseEntity<ProductMainResponse> getProductList(
             @RequestParam(required = false) String cursor,
             @RequestParam int size
     ) {
-        ProductListResponse response = productService.getProductList(cursor, size);
+        ProductMainResponse response = productService.getProductList(cursor, size);
         return ResponseEntity.ok(response);
     }
 

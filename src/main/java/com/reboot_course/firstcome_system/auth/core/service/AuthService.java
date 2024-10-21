@@ -1,13 +1,13 @@
 package com.reboot_course.firstcome_system.auth.core.service;
 
 import com.reboot_course.firstcome_system.auth.core.dto.request.LoginRequest;
+import com.reboot_course.firstcome_system.auth.core.exception.AuthenticationFailedException;
 import com.reboot_course.firstcome_system.auth.session.repository.CustomSessionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -45,8 +45,8 @@ public class AuthService {
 
             // 4. 세션 ID 반환
             return session.getId();
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Authentication failed", e);
+        } catch (Exception e) {
+            throw new AuthenticationFailedException(e.getMessage());
         }
     }
 

@@ -1,7 +1,7 @@
 package com.reboot_course.firstcome_system.product.controller;
 
 import com.reboot_course.firstcome_system.product.dto.response.ProductDetailResponse;
-import com.reboot_course.firstcome_system.product.dto.response.ProductListResponse;
+import com.reboot_course.firstcome_system.product.dto.response.ProductMainResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,11 +19,11 @@ public interface ProductWebAPI {
     @Operation(summary = "상품 목록 조회", description = "커서 기반 페이지네이션을 사용하여 상품 목록을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 상품 목록을 조회함",
-                    content = @Content(schema = @Schema(implementation = ProductListResponse.class))),
+                    content = @Content(schema = @Schema(implementation = ProductMainResponse.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
             @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
     })
-    ResponseEntity<ProductListResponse> getProductList(
+    ResponseEntity<ProductMainResponse> getProductList(
             @Parameter(description = "다음 페이지 조회를 위한 커서. 첫 페이지 조회 시 null")
             @RequestParam(required = false) String cursor,
             @Parameter(description = "한 페이지에 조회할 상품 수", example = "10")
