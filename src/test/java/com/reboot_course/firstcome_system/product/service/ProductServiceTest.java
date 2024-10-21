@@ -2,7 +2,7 @@ package com.reboot_course.firstcome_system.product.service;
 
 import com.reboot_course.firstcome_system.factory.TestProductFactory;
 import com.reboot_course.firstcome_system.product.dto.response.ProductDetailResponse;
-import com.reboot_course.firstcome_system.product.dto.response.ProductListResponse;
+import com.reboot_course.firstcome_system.product.dto.response.ProductMainResponse;
 import com.reboot_course.firstcome_system.product.entity.Product;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ class ProductServiceIntegrationTest {
     @DisplayName("상품 목록 조회: 초기 커서")
     void testGetProductListWithInitialCursor() {
         // When
-        ProductListResponse response = productService.getProductList(null, 3);
+        ProductMainResponse response = productService.getProductList(null, 3);
 
         // Then
         assertThat(response.products()).hasSize(3);
@@ -55,7 +55,7 @@ class ProductServiceIntegrationTest {
     @DisplayName("상품 목록 조회: 중간 커서")
     void testGetProductListWithMiddleCursor() {
         // When
-        ProductListResponse response = productService.getProductList(testProducts.get(3).getId().toString(), 2);
+        ProductMainResponse response = productService.getProductList(testProducts.get(3).getId().toString(), 2);
 
         // Then
         assertThat(response.products()).hasSize(2);
@@ -68,7 +68,7 @@ class ProductServiceIntegrationTest {
     @DisplayName("상품 목록 조회: 마지막 페이지")
     void testGetProductListLastPage() {
         // When
-        ProductListResponse response = productService.getProductList(testProducts.get(1).getId().toString(), 2);
+        ProductMainResponse response = productService.getProductList(testProducts.get(1).getId().toString(), 2);
 
         // Then
         assertThat(response.products()).hasSize(1);

@@ -5,6 +5,8 @@ import com.reboot_course.firstcome_system.member.dto.request.ChangePasswordReque
 import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.member.usecase.MemberAppender;
+import com.reboot_course.firstcome_system.member.usecase.MemberFinder;
+import com.reboot_course.firstcome_system.member.usecase.MemberUpdater;
 import com.reboot_course.firstcome_system.member.usecase.MemberValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

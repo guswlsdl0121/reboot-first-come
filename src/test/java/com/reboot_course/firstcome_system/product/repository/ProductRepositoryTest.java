@@ -1,7 +1,7 @@
 package com.reboot_course.firstcome_system.product.repository;
 
 import com.reboot_course.firstcome_system.factory.TestProductFactory;
-import com.reboot_course.firstcome_system.product.dto.response.ProductDTO;
+import com.reboot_course.firstcome_system.product.dto.response.ProductMain;
 import com.reboot_course.firstcome_system.product.entity.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,7 @@ class ProductRepositoryTest {
     @DisplayName("상품 목록 조회: 커서 없음")
     void testGetProducts() {
         // When
-        List<ProductDTO> result = productRepository.getProducts(3, Integer.MAX_VALUE);
+        List<ProductMain> result = productRepository.getProducts(3, Integer.MAX_VALUE);
 
         // Then (마지막에 넣었던 것 부터, 최신순 정렬로 나와야 함)
         assertThat(result).hasSize(3);
@@ -53,7 +53,7 @@ class ProductRepositoryTest {
     @DisplayName("상품 목록 조회: 커서 사용")
     void testGetProductsWithCursor() {
         // When
-        List<ProductDTO> result = productRepository.getProducts(2, testProducts.get(3).getId());
+        List<ProductMain> result = productRepository.getProducts(2, testProducts.get(3).getId());
 
         // Then
         assertThat(result).hasSize(2);

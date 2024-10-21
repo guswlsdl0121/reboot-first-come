@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.member.service;
+package com.reboot_course.firstcome_system.member.usecase;
 
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.member.repository.MemberRepository;

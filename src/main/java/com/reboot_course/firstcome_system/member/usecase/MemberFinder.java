@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.member.service;
+package com.reboot_course.firstcome_system.member.usecase;
 
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.member.repository.MemberRepository;
@@ -13,7 +13,7 @@ public class MemberFinder {
 
     public Member fetchByEmail(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("해당 사용자를 찾을 수 없습니다. (%s)", email)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("해당 사용자를 찾을 수 없습니다. (emaili : %s)", email)));
 
     }
 }
