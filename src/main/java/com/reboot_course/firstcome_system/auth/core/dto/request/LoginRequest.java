@@ -8,11 +8,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Schema(description = "로그인 요청 DTO",
         example = """
-               {
-                 "email": "hong@gmail.com",
-                 "password": "password123!"
-               }
-               """)
+                {
+                  "email": "hong@gmail.com",
+                  "password": "password123!"
+                }
+                """)
 public class LoginRequest {
     @Schema(description = "이메일", example = "hong@gmail.com")
     private String email;

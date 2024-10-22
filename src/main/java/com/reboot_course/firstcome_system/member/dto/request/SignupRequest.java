@@ -10,14 +10,14 @@ import lombok.Getter;
 @AllArgsConstructor
 @Schema(description = "회원가입 요청 DTO",
         example = """
-               {
-                 "name": "홍길동",
-                 "password": "password123!",
-                 "email": "hong@gmail.com",
-                 "phone": "010-1234-5678",
-                 "address": "서울시 강남구 테헤란로 123"
-               }
-               """)
+                {
+                  "name": "홍길동",
+                  "password": "password123!",
+                  "email": "hong@gmail.com",
+                  "phone": "010-1234-5678",
+                  "address": "서울시 강남구 테헤란로 123"
+                }
+                """)
 public class SignupRequest {
     @NotBlank
     @Schema(description = "이름", example = "홍길동")

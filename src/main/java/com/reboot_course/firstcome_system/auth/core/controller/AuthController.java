@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-public class AuthController implements AuthWebAPI{
+public class AuthController implements AuthWebAPI {
     private final AuthService authService;
 
     @Override

@@ -12,6 +12,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "security")
 public class SecurityProperties {
     private List<String> publicUrls;
+
     public String[] getPublicUrls() {
         return publicUrls.toArray(new String[0]);
     }
