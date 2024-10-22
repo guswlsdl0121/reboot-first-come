@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class OrderController {
+@RequestMapping("/api/order")
+public class OrderController implements OrderWebAPI {
     private final OrderService orderService;
 
+    @Override
     @GetMapping
     public ResponseEntity<OrderMainResponse> getOrders(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -33,6 +35,7 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDetailResponse> getOrderDetail(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -46,6 +49,7 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<CommonResponse<Integer>> createOrder(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -58,6 +62,7 @@ public class OrderController {
                 .body(CommonResponse.success("주문이 성공적으로 생성되었습니다.", orderId));
     }
 
+    @Override
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<CommonResponse<Integer>> cancelOrder(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -69,6 +74,7 @@ public class OrderController {
                 .ok(CommonResponse.success("주문이 성공적으로 취소되었습니다.", orderId));
     }
 
+    @Override
     @PostMapping("/{orderId}/return")
     public ResponseEntity<CommonResponse<Integer>> returnOrder(
             @AuthenticationPrincipal UserDetails userDetails,
