@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.order.usecase;
+package com.reboot_course.firstcome_system.order.usecase.order;
 
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.order.entity.Order;

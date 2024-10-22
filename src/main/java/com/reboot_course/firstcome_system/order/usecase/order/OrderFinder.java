@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.order.service;
+package com.reboot_course.firstcome_system.order.usecase.order;
 
 import com.reboot_course.firstcome_system.order.entity.Order;
 import com.reboot_course.firstcome_system.order.repository.OrderRepository;

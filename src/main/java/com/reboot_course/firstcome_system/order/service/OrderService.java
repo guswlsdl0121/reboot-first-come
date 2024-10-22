@@ -11,10 +11,9 @@ import com.reboot_course.firstcome_system.order.dto.response.read.OrderMainRespo
 import com.reboot_course.firstcome_system.order.entity.Order;
 import com.reboot_course.firstcome_system.order.entity.OrderProduct;
 import com.reboot_course.firstcome_system.order.mapper.OrderMapper;
-import com.reboot_course.firstcome_system.order.usecase.OrderAppender;
-import com.reboot_course.firstcome_system.order.usecase.OrderProductAppender;
-import com.reboot_course.firstcome_system.order.usecase.OrderProductReader;
-import com.reboot_course.firstcome_system.order.usecase.OrderReader;
+import com.reboot_course.firstcome_system.order.usecase.order.*;
+import com.reboot_course.firstcome_system.order.usecase.orderproduct.OrderProductAppender;
+import com.reboot_course.firstcome_system.order.usecase.orderproduct.OrderProductReader;
 import com.reboot_course.firstcome_system.order.vo.OrderProductMap;
 import com.reboot_course.firstcome_system.product.usecase.ProductReader;
 import jakarta.validation.Valid;
@@ -28,11 +27,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final MemberFinder memberFinder;
-    private final OrderFinder orderFinder;
-    private final OrderReader orderReader;
     private final ProductReader productReader;
-    private final OrderProductReader orderProductReader;
+
+    private final OrderReader orderReader;
+    private final OrderFinder orderFinder;
     private final OrderAppender orderAppender;
+    private final OrderValidator orderValidator;
+    private final OrderModifier orderModifier;
+
+    private final OrderProductReader orderProductReader;
     private final OrderProductAppender orderProductAppender;
 
 
@@ -93,8 +96,14 @@ public class OrderService {
     }
 
     public void cancelOrder(String email, Integer orderId) {
+        Order order = orderFinder.fetchById(orderId);
+        orderValidator.validateForCancel(order, email);
+        orderModifier.cancel(order);
     }
 
     public void returnOrder(String email, Integer orderId) {
+        Order order = orderFinder.fetchById(orderId);
+        orderValidator.validateForReturn(order, email);
+        orderModifier.returnOrder(order);
     }
 }
