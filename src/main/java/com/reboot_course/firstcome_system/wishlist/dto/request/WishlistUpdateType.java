@@ -12,13 +12,4 @@ public enum WishlistUpdateType {
     WishlistUpdateType(String value) {
         this.value = value;
     }
-
-    public static WishlistUpdateType fromString(String value) {
-        for (WishlistUpdateType type : WishlistUpdateType.values()) {
-            if (type.value.equalsIgnoreCase(value)) {
-                return type;
-            }
-        }
-        throw new IllegalArgumentException("타입이 맞지 않습니다. increase 또는 decrease를 선택해야 합니다.");
-    }
 }

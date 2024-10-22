@@ -15,23 +15,27 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
-public class MemberController {
+@RequestMapping("/api/member")
+public class MemberController implements MemberWebAPI {
     private final MemberService memberService;
 
+    @Override
     @GetMapping("/me")
     public CommonResponse<String> showPrincipal(@AuthenticationPrincipal UserDetails userDetails) {
         return CommonResponse.success("로그인에 성공했습니다!", userDetails.getUsername());
     }
 
+    @Override
     @PostMapping("/signup")
     public ResponseEntity<CommonResponse<Integer>> signup(@RequestBody @Valid SignupRequest request) {
         int memberId = memberService.signUp(request);
         return ResponseEntity.ok(CommonResponse.success("회원가입이 성공적으로 이루어졌습니다.", memberId));
     }
 
+    @Override
     @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ChangePasswordRequest request) {
+    public ResponseEntity<String> changePassword(@AuthenticationPrincipal UserDetails userDetails,
+                                                 @RequestBody @Valid ChangePasswordRequest request) {
         memberService.changePassword(userDetails.getUsername(), request);
         return ResponseEntity.ok("비밀번호가 성공적으로 변경됐습니다.");
     }

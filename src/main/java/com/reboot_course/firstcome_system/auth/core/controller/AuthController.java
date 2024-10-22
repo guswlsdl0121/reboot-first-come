@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthController implements AuthWebAPI{
     private final AuthService authService;
 
+    @Override
     @PostMapping("/login")
     public ResponseEntity<CommonResponse<String>> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         String sessionId = authService.login(loginRequest);
@@ -24,6 +25,7 @@ public class AuthController {
         return ResponseEntity.ok(CommonResponse.success("로그인에 성공했습니다."));
     }
 
+    @Override
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestHeader(SessionHeaders.X_AUTH_TOKEN) String sessionId) {
         authService.logout(sessionId);
