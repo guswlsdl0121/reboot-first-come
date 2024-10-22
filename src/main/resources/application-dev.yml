@@ -27,9 +27,12 @@ spring:
     enabled: true
     baseline-on-migrate: true
     clean-on-validation-error: true
-    # 주의: 프로덕션에서는 true로 설정해야 함
     clean-disabled: false
     locations: classpath:db/migration
+
+  sql:
+    init:
+      mode: always
 
   # Json 매핑을 위한 전역 설정
   jackson:
