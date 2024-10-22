@@ -17,4 +17,12 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Inte
             WHERE op.order.id IN :orderIds
             """)
     List<OrderProduct> findByOrderIdsWithProduct(@Param("orderIds") List<Integer> orderIds);
+
+    @Query("""
+            SELECT op
+            FROM OrderProduct op
+            JOIN FETCH op.product
+            WHERE op.order.id = :orderId
+            """)
+    List<OrderProduct> findByOrderId(@Param("orderId") Integer orderId);
 }

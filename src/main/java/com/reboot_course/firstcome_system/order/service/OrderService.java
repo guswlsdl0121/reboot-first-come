@@ -9,6 +9,7 @@ import com.reboot_course.firstcome_system.order.dto.response.read.OrderDetailRes
 import com.reboot_course.firstcome_system.order.dto.response.read.OrderMainItem;
 import com.reboot_course.firstcome_system.order.dto.response.read.OrderMainResponse;
 import com.reboot_course.firstcome_system.order.entity.Order;
+import com.reboot_course.firstcome_system.order.entity.OrderProduct;
 import com.reboot_course.firstcome_system.order.mapper.OrderMapper;
 import com.reboot_course.firstcome_system.order.usecase.OrderProductReader;
 import com.reboot_course.firstcome_system.order.usecase.OrderReader;
@@ -22,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final MemberFinder memberFinder;
+    private final OrderFinder orderFinder;
     private final OrderReader orderReader;
     private final OrderProductReader orderProductReader;
 
@@ -31,13 +33,13 @@ public class OrderService {
         Member member = memberFinder.fetchByEmail(email);
 
         // 2. 사용자의 주문 목록 id 및 주문 정보 찾기 (pagination으로)
-        OrderResult result = orderReader.getIdsForPagination(member.getId(), cursor, size);
+        OrderResult result = orderReader.getByIdsForPagination(member.getId(), cursor, size);
         List<Order> orders = orderReader.getByIds(result.ids());
 
         // 3. 주문 id를 통해 주문 상품 정보와 카운트 맵 조회
-        OrderProductResult orderProductResult = orderProductReader.getOrderProductAndCount(result.ids());
+        OrderProductResult orderProductResult = orderProductReader.getByIdsWithProductCount(result.ids());
 
-        // 반환
+        // 4. 반환
         List<OrderMainItem> orderItems = OrderMapper.toOrderMainItems(orders, orderProductResult);
         return OrderMainResponse.builder()
                 .items(orderItems)
@@ -46,8 +48,15 @@ public class OrderService {
                 .build();
     }
 
-    public OrderDetailResponse getOrderDetail(String email, Integer orderId) {
-        return null;
+    public OrderDetailResponse getOrderDetail(Integer orderId) {
+        // 1. orderId로 주문 찾기
+        Order order = orderFinder.fetchById(orderId);
+
+        // 2. orderId로 주문상품 목록 찾기
+        List<OrderProduct> orderProducts = orderProductReader.getById(order.getId());
+
+        // 3. 반환
+        return OrderMapper.toOrderDetailResponse(order, orderProducts);
     }
 
     public Integer createOrder(String email, @Valid OrderCreateRequest request) {

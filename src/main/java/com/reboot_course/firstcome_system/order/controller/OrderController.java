@@ -37,15 +37,8 @@ public class OrderController implements OrderWebAPI {
 
     @Override
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDetailResponse> getOrderDetail(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Integer orderId) {
-
-        OrderDetailResponse response = orderService.getOrderDetail(
-                userDetails.getUsername(),
-                orderId
-        );
-
+    public ResponseEntity<OrderDetailResponse> getOrderDetail(@PathVariable Integer orderId) {
+        OrderDetailResponse response = orderService.getOrderDetail(orderId);
         return ResponseEntity.ok(response);
     }
 

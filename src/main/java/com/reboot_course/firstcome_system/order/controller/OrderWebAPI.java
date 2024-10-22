@@ -40,7 +40,6 @@ public interface OrderWebAPI {
                     content = @Content(schema = @Schema(implementation = OrderDetailResponse.class)))
     })
     ResponseEntity<OrderDetailResponse> getOrderDetail(
-            @Parameter(hidden = true) UserDetails userDetails,
             @Parameter(description = "조회할 주문 ID", example = "12345")
             @PathVariable Integer orderId
     );

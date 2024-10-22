@@ -17,7 +17,7 @@ public class OrderReader {
     private final OrderRepository orderRepository;
 
     @Transactional(readOnly = true)
-    public OrderResult getIdsForPagination(Integer memberId, String cursor, int size) {
+    public OrderResult getByIdsForPagination(Integer memberId, String cursor, int size) {
         int cursorValue = CursorUtils.determineCursor(cursor);
         List<Integer> orderIds = orderRepository.getOrderIds(memberId, cursorValue, size);
         String nextCursor = CursorUtils.getNextCursor(size, orderIds, id -> id);

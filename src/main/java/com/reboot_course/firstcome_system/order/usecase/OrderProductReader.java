@@ -18,7 +18,7 @@ public class OrderProductReader {
     private final OrderProductRepository orderProductRepository;
 
     @Transactional(readOnly = true)
-    public OrderProductResult getOrderProductAndCount(List<Integer> orderIds) {
+    public OrderProductResult getByIdsWithProductCount(List<Integer> orderIds) {
         if (orderIds.isEmpty()) {
             return new OrderProductResult(
                     Collections.emptyList(),
@@ -37,5 +37,10 @@ public class OrderProductReader {
                 ));
 
         return new OrderProductResult(orderProducts, orderProductCountMap);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderProduct> getById(Integer id) {
+        return orderProductRepository.findByOrderId(id);
     }
 }
