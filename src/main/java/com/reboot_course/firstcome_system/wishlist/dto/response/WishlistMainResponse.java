@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class WishlistResponse {
+public class WishlistMainResponse {
     private List<WishlistItemDTO> items;
     private String nextCursor;
 }

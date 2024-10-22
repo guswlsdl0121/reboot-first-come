@@ -6,8 +6,9 @@ import com.reboot_course.firstcome_system.product.entity.Product;
 import com.reboot_course.firstcome_system.product.usecase.ProductFinder;
 import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistItemDTO;
-import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResponse;
+import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistMainResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResult;
+import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistUpdateResponse;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;
 import com.reboot_course.firstcome_system.wishlist.usecase.WishlistAppender;
 import com.reboot_course.firstcome_system.wishlist.usecase.WishlistModifier;
@@ -35,13 +36,13 @@ public class WishListService {
         return newWishList.getId();
     }
 
-    public WishlistResponse getWishList(String email, String cursor, int size) {
+    public WishlistMainResponse getWishList(String email, String cursor, int size) {
         Member member = memberFinder.fetchByEmail(email);
 
         WishlistResult result = wishlistReader.getIdsForPagination(member.getId(), cursor, size);
         List<WishlistItemDTO> wishlistItems = wishlistReader.getItemByIds(result.ids());
 
-        return WishlistResponse.builder()
+        return WishlistMainResponse.builder()
                 .items(wishlistItems)
                 .nextCursor(result.nextCursor())
                 .build();
@@ -51,7 +52,8 @@ public class WishListService {
         return wishlistModifier.removeWishlist(wishlistId);
     }
 
-    public void updateWishlistQuantity(Integer wishlistId, WishlistUpdateType updateType) {
-        wishlistModifier.updateQuantity(wishlistId, updateType);
+    public WishlistUpdateResponse updateWishlistQuantity(Integer wishlistId, WishlistUpdateType updateType) {
+        Wishlist updatedWishlist = wishlistModifier.updateQuantity(wishlistId, updateType);
+        return WishlistUpdateResponse.from(updatedWishlist);
     }
 }

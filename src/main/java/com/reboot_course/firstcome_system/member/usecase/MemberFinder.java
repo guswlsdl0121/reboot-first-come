@@ -15,7 +15,7 @@ public class MemberFinder {
     @Transactional
     public Member fetchByEmail(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("해당 사용자를 찾을 수 없습니다. (emaili : %s)", email)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("해당 사용자를 찾을 수 없습니다. (email : %s)", email)));
 
     }
 }

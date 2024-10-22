@@ -2,7 +2,8 @@ package com.reboot_course.firstcome_system.wishlist.controller;
 
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
-import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResponse;
+import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistMainResponse;
+import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistUpdateResponse;
 import com.reboot_course.firstcome_system.wishlist.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,11 @@ public class WishListController implements WishlistWebAPI {
 
     @Override
     @GetMapping
-    public ResponseEntity<WishlistResponse> getWishList(
+    public ResponseEntity<WishlistMainResponse> getWishList(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false) String cursor,
             @RequestParam(defaultValue = "10") int size) {
-        WishlistResponse response = wishListService.getWishList(userDetails.getUsername(), cursor, size);
+        WishlistMainResponse response = wishListService.getWishList(userDetails.getUsername(), cursor, size);
         return ResponseEntity.ok(response);
     }
 
@@ -43,9 +44,10 @@ public class WishListController implements WishlistWebAPI {
 
     @Override
     @PatchMapping("/{wishlistId}")
-    public CommonResponse<String> updateQuantity(@PathVariable Integer wishlistId,
-                                                 @RequestParam WishlistUpdateType update) {
-        wishListService.updateWishlistQuantity(wishlistId, update);
-        return CommonResponse.success("장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.");
+    public CommonResponse<WishlistUpdateResponse> updateQuantity(
+            @PathVariable Integer wishlistId,
+            @RequestParam WishlistUpdateType update) {
+        WishlistUpdateResponse response = wishListService.updateWishlistQuantity(wishlistId, update);
+        return CommonResponse.success("장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.", response);
     }
 }

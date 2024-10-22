@@ -1,4 +1,5 @@
 spring:
+  # session 세팅
   session:
     timeout: 3600
 
@@ -21,15 +22,23 @@ spring:
       ddl-auto: validate
     open-in-view: false
 
+  # flyway 세팅
   flyway:
     enabled: true
-    locations: classpath:db/migration
     baseline-on-migrate: true
+    clean-on-validation-error: true
+    clean-disabled: false
+    locations: classpath:db/migration
 
-  # Json 매핑을 스네이크 케이스로 전역 설정
+  sql:
+    init:
+      mode: always
+
+  # Json 매핑을 위한 전역 설정
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  # detools 전역 세팅
   devtools:
     restart:
       enabled: true
@@ -38,20 +47,21 @@ spring:
 springdoc:
   api-docs:
     path: /api-docs
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
   swagger-ui:
     operations-sorter: method
     tags-sorter: alpha
     path: /swagger
     disable-swagger-default-url: true
     doc-expansion: list
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
 
-#키
+#암/복호화를 위한 키
 encryption:
   key: "0123456789abcdef"
   salt: "0123456789abcdef"
 
+# 시큐리티 설정
 security:
   public-urls:
     # 스웨거를 사용하기 위한 public url

@@ -8,8 +8,8 @@ import lombok.Builder;
 @Schema(description = "비밀번호 변경 요청 DTO",
         example = """
                 {
-                  "currentPassword": "password123!",
-                  "newPassword": "changepassword123!"
+                  "current_password": "password123!",
+                  "new_password": "changepassword123!"
                 }
                 """)
 public record ChangePasswordRequest(
