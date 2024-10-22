@@ -1,7 +1,7 @@
 package com.reboot_course.firstcome_system.order.usecase;
 
 import com.reboot_course.firstcome_system.common.utils.CursorUtils;
-import com.reboot_course.firstcome_system.order.dto.internal.OrderResult;
+import com.reboot_course.firstcome_system.order.dto.internal.OrderPaging;
 import com.reboot_course.firstcome_system.order.entity.Order;
 import com.reboot_course.firstcome_system.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ public class OrderReader {
     private final OrderRepository orderRepository;
 
     @Transactional(readOnly = true)
-    public OrderResult getByIdsForPagination(Integer memberId, String cursor, int size) {
+    public OrderPaging getByIdsForPagination(Integer memberId, String cursor, int size) {
         int cursorValue = CursorUtils.determineCursor(cursor);
         List<Integer> orderIds = orderRepository.getOrderIds(memberId, cursorValue, size);
         String nextCursor = CursorUtils.getNextCursor(size, orderIds, id -> id);
 
-        return new OrderResult(orderIds, nextCursor);
+        return new OrderPaging(orderIds, nextCursor);
     }
 
     @Transactional(readOnly = true)

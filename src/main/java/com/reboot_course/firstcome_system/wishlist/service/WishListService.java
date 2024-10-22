@@ -7,7 +7,7 @@ import com.reboot_course.firstcome_system.product.usecase.ProductFinder;
 import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistItemDTO;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistMainResponse;
-import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResult;
+import com.reboot_course.firstcome_system.wishlist.dto.internal.WishlistPaging;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistUpdateResponse;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;
 import com.reboot_course.firstcome_system.wishlist.usecase.WishlistAppender;
@@ -39,7 +39,7 @@ public class WishListService {
     public WishlistMainResponse getWishList(String email, String cursor, int size) {
         Member member = memberFinder.fetchByEmail(email);
 
-        WishlistResult result = wishlistReader.getIdsForPagination(member.getId(), cursor, size);
+        WishlistPaging result = wishlistReader.getIdsForPagination(member.getId(), cursor, size);
         List<WishlistItemDTO> wishlistItems = wishlistReader.getItemByIds(result.ids());
 
         return WishlistMainResponse.builder()

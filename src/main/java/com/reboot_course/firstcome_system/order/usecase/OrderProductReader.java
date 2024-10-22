@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.order.usecase;
 
-import com.reboot_course.firstcome_system.order.dto.internal.OrderProductResult;
+import com.reboot_course.firstcome_system.order.dto.internal.OrderProductInfo;
 import com.reboot_course.firstcome_system.order.entity.OrderProduct;
 import com.reboot_course.firstcome_system.order.repository.OrderProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,9 @@ public class OrderProductReader {
     private final OrderProductRepository orderProductRepository;
 
     @Transactional(readOnly = true)
-    public OrderProductResult getByIdsWithProductCount(List<Integer> orderIds) {
+    public OrderProductInfo getByIdsWithProductCount(List<Integer> orderIds) {
         if (orderIds.isEmpty()) {
-            return new OrderProductResult(
+            return new OrderProductInfo(
                     Collections.emptyList(),
                     Collections.emptyMap()
             );
@@ -36,7 +36,7 @@ public class OrderProductReader {
                         )
                 ));
 
-        return new OrderProductResult(orderProducts, orderProductCountMap);
+        return new OrderProductInfo(orderProducts, orderProductCountMap);
     }
 
     @Transactional(readOnly = true)
