@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Builder
 public class OrderMainResponse {
-    private List<OrderMainItem> orders;
+    private List<OrderMainItem> items;
+    private String nextCursor;
     private long totalCount;
 }

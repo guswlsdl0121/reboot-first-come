@@ -14,5 +14,5 @@ public class OrderMainItem {
     private OrderStatus status;
     private BigDecimal totalAmount;
     private LocalDateTime orderDate;
-    private int totalProductCount;
+    private int totalQuantity;
 }
