@@ -5,7 +5,7 @@ import com.reboot_course.firstcome_system.order.entity.OrderProduct;
 import java.util.List;
 import java.util.Map;
 
-public record OrderProductResult(
+public record OrderProductInfo(
         List<OrderProduct> orderProducts,
         Map<Integer, Integer> productCountMap
 ) {

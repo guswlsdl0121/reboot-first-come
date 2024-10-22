@@ -6,5 +6,5 @@ import java.util.List;
 
 
 @Builder
-public record OrderResult(List<Integer> ids, String nextCursor) {
+public record OrderPaging(List<Integer> ids, String nextCursor) {
 }
