@@ -12,7 +12,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-    client.test("토큰 추출", function() {
+    client.test("토큰 추출", function () {
         // 상태 코드 검증
         client.assert(response.status === 200, "요청이 성공적이지 않습니다.");
 
@@ -30,7 +30,7 @@ POST {{host}}/api/auth/logout
 X-Auth-Token: {{authToken}}
 
 > {%
-    client.test("로그아웃 검증", function() {
+    client.test("로그아웃 검증", function () {
         // 상태 코드 검증
         client.assert(response.status === 200, "로그아웃 요청이 실패했습니다.");
         client.log("로그아웃 완료");
@@ -42,7 +42,7 @@ GET {{host}}/api/member/me
 X-Auth-Token: {{authToken}}
 
 > {%
-    client.test("토큰 무효화 검증", function() {
+    client.test("토큰 무효화 검증", function () {
         // 상태 코드가 403이어야 함
         client.assert(response.status === 403, "토큰이 아직 유효합니다. 상태 코드: " + response.status);
         client.log("토큰 무효화 확인 완료 - 정상적으로 접근이 거부되었습니다.");
