@@ -1,0 +1,53 @@
+### 1. 로그인 (위시리스트 접근을 위한 토큰 획득)
+# @name login
+POST {{host}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "hong@gmail.com",
+    "password": "password123!"
+}
+
+> {%
+    client.test("토큰 추출", function() {
+        client.assert(response.status === 200, "요청이 성공적이지 않습니다.");
+        let authToken = response.headers.valueOf("X-Auth-Token");
+        client.global.set("authToken", authToken);
+    });
+%}
+
+### 2. 위시리스트 조회 (첫 페이지)
+GET {{host}}/api/wishlist?size=5
+X-Auth-Token: {{authToken}}
+
+### 3. 위시리스트 조회 (다음 페이지)
+GET {{host}}/api/wishlist?cursor=5&size=5
+X-Auth-Token: {{authToken}}
+
+### 4. 새 상품 위시리스트에 추가 (Apple Studio Display - product_id: 43)
+POST {{host}}/api/wishlist/43
+X-Auth-Token: {{authToken}}
+
+### 5. 위시리스트 수량 증가 (MacBook의 위시리스트 아이템)
+PATCH {{host}}/api/wishlist/1?update=INCREMENT
+X-Auth-Token: {{authToken}}
+
+### 6. 위시리스트 수량 감소 (MacBook의 위시리스트 아이템)
+PATCH {{host}}/api/wishlist/1?update=DECREMENT
+X-Auth-Token: {{authToken}}
+
+### 7. 위시리스트에서 상품 제거 (iPad Air의 위시리스트 아이템)
+DELETE {{host}}/api/wishlist/2
+X-Auth-Token: {{authToken}}
+
+### 8. 위시리스트 전체 조회 (큰 사이즈)
+GET {{host}}/api/wishlist?size=20
+X-Auth-Token: {{authToken}}
+
+### 9. 존재하지 않는 상품 위시리스트에 추가 시도
+POST {{host}}/api/wishlist/999
+X-Auth-Token: {{authToken}}
+
+### 10. 이미 위시리스트에 있는 상품 추가 시도 (MacBook - product_id: 1)
+POST {{host}}/api/wishlist/1
+X-Auth-Token: {{authToken}}
