@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final SecurityProperties securityProperties;
     private final AuthenticationproviderImpl authenticationproviderImpl;
 
     @Bean
@@ -23,9 +24,12 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                ).authenticationProvider(authenticationproviderImpl)
-        ;
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .authorizeHttpRequests(
+                        authz -> authz
+                                .requestMatchers(securityProperties.getPublicUrls()).permitAll()
+                                .anyRequest().authenticated())
+                .authenticationProvider(authenticationproviderImpl);
         return http.build();
     }
 
