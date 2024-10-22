@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record ProductMainResponse(List<ProductItemDTO> products, String nextCursor) {
+public record ProductMainResponse(List<ProductItemDTO> items, String nextCursor) {
 }

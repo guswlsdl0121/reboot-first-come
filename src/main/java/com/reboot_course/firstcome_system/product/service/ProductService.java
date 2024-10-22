@@ -22,7 +22,7 @@ public class ProductService {
         Product product = productFinder.fetchById(productId);
 
         return ProductDetailResponse.builder()
-                .id(product.getId())
+                .productId(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())

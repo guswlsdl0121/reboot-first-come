@@ -22,7 +22,7 @@ public class ProductReader {
         String nextCursor = CursorUtils.getNextCursor(size, products, ProductItemDTO::getId);
 
         return ProductMainResponse.builder()
-                .products(products)
+                .items(products)
                 .nextCursor(nextCursor)
                 .build();
     }

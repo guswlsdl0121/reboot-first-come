@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/wishlist")
-public class WishListController {
+public class WishListController implements WishlistWebAPI {
     private final WishListService wishListService;
 
+    @Override
     @PostMapping("/{productId}")
     public CommonResponse<Integer> addProductToWishlist(@AuthenticationPrincipal UserDetails userDetails,
                                                         @PathVariable Integer productId) {
@@ -23,6 +24,7 @@ public class WishListController {
         return CommonResponse.success("장바구니에 상품을 성공적으로 추가했습니다.", id);
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<WishlistResponse> getWishList(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -32,17 +34,18 @@ public class WishListController {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @DeleteMapping("/{wishlistId}")
     public CommonResponse<Integer> deleteWishlist(@PathVariable Integer wishlistId) {
         Integer id = wishListService.deleteWishlist(wishlistId);
         return CommonResponse.success("장바구니에서 상품을 삭제했습니다.", id);
     }
 
+    @Override
     @PatchMapping("/{wishlistId}")
     public CommonResponse<String> updateQuantity(@PathVariable Integer wishlistId,
-                                                 @RequestParam String update) {
-        WishlistUpdateType updateType = WishlistUpdateType.fromString(update);
-        wishListService.updateWishlistQuantity(wishlistId, updateType);
+                                                 @RequestParam WishlistUpdateType update) {
+        wishListService.updateWishlistQuantity(wishlistId, update);
         return CommonResponse.success("장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.");
     }
 }

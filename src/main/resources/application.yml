@@ -51,3 +51,15 @@ springdoc:
 encryption:
   key: "0123456789abcdef"
   salt: "0123456789abcdef"
+
+security:
+  public-urls:
+    # 스웨거를 사용하기 위한 public url
+    - "/swagger-ui/**"
+    - "/api-docs/**"
+    - "/swagger-resources/**"
+    - "/api/health/**"
+    # 상품 조회 및 회원 가입, 로그인은 열려야 된다.
+    - "/api/product/**"
+    - "/api/member/signup"
+    - "/api/auth/login"

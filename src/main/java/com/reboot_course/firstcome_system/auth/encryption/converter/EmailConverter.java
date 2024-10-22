@@ -31,7 +31,7 @@ public class EmailConverter implements AttributeConverter<String, String> {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             return Base64.getEncoder().encodeToString(cipher.doFinal(attribute.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
-            throw new RuntimeException("Error encrypting email", e);
+            throw new RuntimeException("이메일 암호화 과정에서 오류가 발생했습니다.", e);
         }
     }
 
@@ -42,7 +42,7 @@ public class EmailConverter implements AttributeConverter<String, String> {
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             return new String(cipher.doFinal(Base64.getDecoder().decode(dbData)), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new RuntimeException("Error decrypting email", e);
+            throw new RuntimeException("이메일 복호화 과정에서 오류가 발생했습니다.", e);
         }
     }
 }
