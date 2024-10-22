@@ -21,7 +21,7 @@ public class WishlistModifier {
     }
 
     @Transactional
-    public void updateQuantity(int wishlistId, WishlistUpdateType updateType) {
+    public Wishlist updateQuantity(int wishlistId, WishlistUpdateType updateType) {
         Wishlist wishlist = wishlistFinder.fetchById(wishlistId);
 
         switch (updateType) {
@@ -32,6 +32,6 @@ public class WishlistModifier {
                 wishlist.decreaseQuantity();
                 break;
         }
-        wishListRepository.save(wishlist);
+        return wishListRepository.save(wishlist);
     }
 }
