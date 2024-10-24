@@ -34,4 +34,12 @@ public class Order extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
+
+    public void cancel() {
+        this.status = OrderStatus.CANCELLED;
+    }
+
+    public void returned() {
+        this.status = OrderStatus.RETURNED;
+    }
 }

@@ -1,7 +1,11 @@
 spring:
+  # session 세팅
+  session:
+    timeout: 3600
+
   # mysql 세팅
   datasource:
-    url: jdbc:mysql://localhost:3307/firstcome_system
+    url: jdbc:mysql://db:3306/firstcome_system
     username: docker
     password: docker1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -9,7 +13,7 @@ spring:
   # redis 세팅
   data:
     redis:
-      host: localhost
+      host: cache
       port: 6379
 
   # jpa 세팅
@@ -26,13 +30,14 @@ spring:
     clean-disabled: false
     locations: classpath:db/migration
 
-  # session 세팅
-  session:
-    timeout: 3600
-
   # Json 매핑을 위한 전역 설정
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+  # detools 전역 세팅
+  devtools:
+    restart:
+      enabled: true
 
 #Swagger 세팅
 springdoc:

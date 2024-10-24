@@ -1,8 +1,8 @@
 package com.reboot_course.firstcome_system.wishlist.usecase;
 
 import com.reboot_course.firstcome_system.common.utils.CursorUtils;
+import com.reboot_course.firstcome_system.wishlist.dto.internal.WishlistPaging;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistItemDTO;
-import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistResult;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;
 import com.reboot_course.firstcome_system.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +19,12 @@ public class WishlistReader {
     private final WishListRepository wishListRepository;
 
     @Transactional(readOnly = true)
-    public WishlistResult getIdsForPagination(Integer memberId, String cursor, int size) {
+    public WishlistPaging getIdsForPagination(Integer memberId, String cursor, int size) {
         int cursorValue = CursorUtils.determineCursor(cursor);
         List<Integer> wishlistIds = wishListRepository.getWishlistIds(memberId, cursorValue, size);
         String nextCursor = CursorUtils.getNextCursor(size, wishlistIds, id -> id);
 
-        return new WishlistResult(wishlistIds, nextCursor);
+        return new WishlistPaging(wishlistIds, nextCursor);
     }
 
     @Transactional(readOnly = true)

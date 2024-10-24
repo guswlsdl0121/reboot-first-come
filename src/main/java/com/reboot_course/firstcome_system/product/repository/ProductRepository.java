@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             LIMIT :size
             """)
     List<ProductItemDTO> getProducts(@Param("size") Integer size, @Param("cursor") Integer cursor);
+
+    List<Product> findAllByIdIn(List<Integer> productIds);
 }

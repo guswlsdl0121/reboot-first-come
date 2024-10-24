@@ -1,8 +1,11 @@
 package com.reboot_course.firstcome_system.product.usecase;
 
 import com.reboot_course.firstcome_system.common.utils.CursorUtils;
+import com.reboot_course.firstcome_system.order.dto.request.create.OrderCreateItem;
+import com.reboot_course.firstcome_system.order.vo.OrderProductMap;
 import com.reboot_course.firstcome_system.product.dto.response.ProductItemDTO;
 import com.reboot_course.firstcome_system.product.dto.response.ProductMainResponse;
+import com.reboot_course.firstcome_system.product.entity.Product;
 import com.reboot_course.firstcome_system.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,5 +28,20 @@ public class ProductReader {
                 .items(products)
                 .nextCursor(nextCursor)
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderProductMap getOrderProduct(List<OrderCreateItem> orderItems) {
+        // 1. 상품 정보 조회
+        List<Product> products = productRepository.findAllByIdIn(
+                orderItems.stream()
+                        .map(OrderCreateItem::getProductId)
+                        .toList()
+        );
+
+        OrderProductMap orderProductMap = OrderProductMap.from(products);
+        orderProductMap.validateProductsExist(orderItems);
+
+        return orderProductMap;
     }
 }
