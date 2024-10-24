@@ -46,6 +46,10 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime lastPasswordUpdated;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.ROLE_UNVERIFIED;
+
     public void changePassword(String password) {
         this.password = password;
     }
