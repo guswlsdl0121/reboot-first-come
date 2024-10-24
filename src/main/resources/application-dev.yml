@@ -1,4 +1,9 @@
 spring:
+  # 메일 세팅 Import
+  profiles:
+    include:
+      - mail
+
   # mysql 세팅
   datasource:
     url: jdbc:mysql://localhost:3307/firstcome_system

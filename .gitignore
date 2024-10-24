@@ -1,3 +1,5 @@
+**/application-mail.yml
+
 HELP.md
 .gradle
 build/

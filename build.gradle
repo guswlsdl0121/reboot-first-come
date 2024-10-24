@@ -63,6 +63,9 @@ dependencies {
 
     // Redis 세션 저장소용 (나중에 사용)
     // implementation 'org.springframework.session:spring-session-data-redis'
+
+    // 이메일 인증
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
