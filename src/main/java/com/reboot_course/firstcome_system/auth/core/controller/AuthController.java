@@ -1,17 +1,13 @@
 package com.reboot_course.firstcome_system.auth.core.controller;
 
-import com.reboot_course.firstcome_system.auth.core.dto.request.EmailVerifyRequest;
 import com.reboot_course.firstcome_system.auth.core.dto.request.LoginRequest;
 import com.reboot_course.firstcome_system.auth.core.service.AuthService;
 import com.reboot_course.firstcome_system.auth.session.constants.SessionHeaders;
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -34,14 +30,5 @@ public class AuthController implements AuthWebAPI {
     public ResponseEntity<Void> logout(@RequestHeader(SessionHeaders.X_AUTH_TOKEN) String sessionId) {
         authService.logout(sessionId);
         return ResponseEntity.ok().build();
-    }
-
-    @Override
-    @PostMapping("/verify-email")
-    public ResponseEntity<CommonResponse<String>> verifyEmail(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody EmailVerifyRequest request) {
-        authService.verifyEmail(userDetails.getUsername(), request);
-        return ResponseEntity.ok(CommonResponse.success("이메일 인증이 완료되었습니다."));
     }
 }
