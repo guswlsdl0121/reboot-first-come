@@ -1,8 +1,10 @@
 package com.reboot_course.firstcome_system.auth.core.service;
 
+import com.reboot_course.firstcome_system.auth.core.dto.request.EmailVerifyRequest;
 import com.reboot_course.firstcome_system.auth.core.dto.request.LoginRequest;
 import com.reboot_course.firstcome_system.auth.core.exception.AuthenticationFailedException;
 import com.reboot_course.firstcome_system.auth.session.repository.CustomSessionRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -58,5 +60,9 @@ public class AuthService {
     public void logoutAllSessions(String email) {
         sessionRepository.deleteAllByIndex(email);
         SecurityContextHolder.clearContext();
+    }
+
+    public void verifyEmail(String email, @Valid EmailVerifyRequest request) {
+        return;
     }
 }
