@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.core.dto.request;
+package com.reboot_course.firstcome_system.email.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
