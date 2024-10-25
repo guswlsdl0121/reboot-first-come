@@ -27,8 +27,8 @@ public class WishListService {
     private final WishlistReader wishlistReader;
     private final WishlistModifier wishlistModifier;
 
-    public Integer createWishList(String email, Integer productId) {
-        Member member = memberFinder.fetchByEmail(email);
+    public Integer createWishList(Integer memberId, Integer productId) {
+        Member member = memberFinder.fetchById(memberId);
         Product product = productFinder.fetchById(productId);
 
         Wishlist newWishList = wishlistAppender.validateUniqueAndSave(member, product);
@@ -36,8 +36,8 @@ public class WishListService {
         return newWishList.getId();
     }
 
-    public WishlistMainResponse getWishList(String email, String cursor, int size) {
-        Member member = memberFinder.fetchByEmail(email);
+    public WishlistMainResponse getWishList(Integer memberId, String cursor, int size) {
+        Member member = memberFinder.fetchById(memberId);
 
         WishlistPaging result = wishlistReader.getIdsForPagination(member.getId(), cursor, size);
         List<WishlistItemDTO> wishlistItems = wishlistReader.getItemByIds(result.ids());

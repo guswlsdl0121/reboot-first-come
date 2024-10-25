@@ -31,7 +31,7 @@ public class SessionManager {
         sessionRepository.deleteById(sessionId);
     }
 
-    public void removeAllUserSessions(String email) {
-        sessionRepository.deleteAllByIndex(email);
+    public void removeAllUserSessions(Integer memberId) {
+        sessionRepository.deleteAllByIndex(memberId.toString());
     }
 }

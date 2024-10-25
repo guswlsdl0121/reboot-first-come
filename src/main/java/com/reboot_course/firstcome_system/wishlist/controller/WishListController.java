@@ -21,8 +21,9 @@ public class WishListController implements WishlistWebAPI {
     @PostMapping("/{productId}")
     public CommonResponse<Integer> addProductToWishlist(@AuthenticationPrincipal UserDetails userDetails,
                                                         @PathVariable Integer productId) {
-        Integer id = wishListService.createWishList(userDetails.getUsername(), productId);
-        return CommonResponse.success("장바구니에 상품을 성공적으로 추가했습니다.", id);
+        Integer memberId = Integer.parseInt(userDetails.getUsername());
+        Integer wishlistId = wishListService.createWishList(memberId, productId);
+        return CommonResponse.success("장바구니에 상품을 성공적으로 추가했습니다.", wishlistId);
     }
 
     @Override
@@ -31,7 +32,8 @@ public class WishListController implements WishlistWebAPI {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false) String cursor,
             @RequestParam(defaultValue = "10") int size) {
-        WishlistMainResponse response = wishListService.getWishList(userDetails.getUsername(), cursor, size);
+        Integer memberId = Integer.parseInt(userDetails.getUsername());
+        WishlistMainResponse response = wishListService.getWishList(memberId, cursor, size);
         return ResponseEntity.ok(response);
     }
 

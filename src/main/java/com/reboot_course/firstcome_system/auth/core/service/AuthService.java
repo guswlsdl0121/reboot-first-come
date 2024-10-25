@@ -29,8 +29,8 @@ public class AuthService {
         securityManager.clearContext();
     }
 
-    public void logoutAllSessions(String email) {
-        sessionManager.removeAllUserSessions(email);
+    public void logoutAllSessions(Integer memberId) {
+        sessionManager.removeAllUserSessions(memberId);
         securityManager.clearContext();
     }
 }

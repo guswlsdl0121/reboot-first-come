@@ -35,7 +35,7 @@ X-Auth-Token: {{authToken}}
 
         // 응답 데이터 검증
         client.assert(response.body.success === true, "응답이 실패 상태입니다.");
-        client.assert(response.body.data === "hong@gmail.com", "이메일 정보가 일치하지 않습니다.");
+        client.assert(response.body.data === "1", "사용자ID가 일치하지 않습니다.");
 
         // 응답 내용 로깅
         client.log("응답 데이터:", response.body);

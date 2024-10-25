@@ -39,9 +39,9 @@ public class OrderService {
     private final OrderProductAppender orderProductAppender;
 
 
-    public OrderMainResponse getOrders(String email, String cursor, int size) {
+    public OrderMainResponse getOrders(Integer memberId, String cursor, int size) {
         // 1. 사용자 찾기
-        Member member = memberFinder.fetchByEmail(email);
+        Member member = memberFinder.fetchById(memberId);
 
         // 2. 사용자의 주문 목록 id 및 주문 정보 찾기 (pagination으로)
         OrderPaging result = orderReader.getByIdsForPagination(member.getId(), cursor, size);
@@ -71,9 +71,9 @@ public class OrderService {
     }
 
     @Transactional
-    public Integer createOrder(String email, @Valid OrderCreateRequest request) {
+    public Integer createOrder(Integer memberId, @Valid OrderCreateRequest request) {
         // 1. 주문자 정보 조회
-        Member member = memberFinder.fetchByEmail(email);
+        Member member = memberFinder.fetchById(memberId);
 
         // 2. 주문 상품 정보 조회 및 검증
         OrderProductMap orderProductMap = productReader.getOrderProduct(request.getProducts());

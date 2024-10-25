@@ -27,7 +27,7 @@ public class OrderController implements OrderWebAPI {
             @RequestParam(defaultValue = "10") int size) {
 
         OrderMainResponse response = orderService.getOrders(
-                userDetails.getUsername(),
+                Integer.parseInt(userDetails.getUsername()),
                 cursor,
                 size
         );
@@ -47,9 +47,8 @@ public class OrderController implements OrderWebAPI {
     public ResponseEntity<CommonResponse<Integer>> createOrder(
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody OrderCreateRequest request) {
-
-        Integer orderId = orderService.createOrder(userDetails.getUsername(), request);
-
+        Integer memberId = Integer.parseInt(userDetails.getUsername());
+        Integer orderId = orderService.createOrder(memberId, request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(CommonResponse.success("주문이 성공적으로 생성되었습니다.", orderId));
