@@ -1,7 +1,7 @@
 package com.reboot_course.firstcome_system.authmail.core.controller;
 
-import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.authmail.core.dto.request.EmailVerifyRequest;
+import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
