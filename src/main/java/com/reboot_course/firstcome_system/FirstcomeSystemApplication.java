@@ -10,5 +10,4 @@ public class FirstcomeSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(FirstcomeSystemApplication.class, args);
     }
-
 }

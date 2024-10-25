@@ -46,7 +46,18 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime lastPasswordUpdated;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.ROLE_UNVERIFIED;
+
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void verifyEmail() {
+        if (this.role != Role.ROLE_UNVERIFIED) {
+            throw new IllegalStateException("이미 인증된 사용자입니다.");
+        }
+        this.role = Role.ROLE_USER;
     }
 }

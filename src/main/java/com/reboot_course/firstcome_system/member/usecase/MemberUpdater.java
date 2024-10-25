@@ -21,4 +21,9 @@ public class MemberUpdater {
         memberRepository.save(member);
     }
 
+    public void verifyEmail(Member member) {
+        member.verifyEmail();
+        memberRepository.save(member);
+    }
+
 }

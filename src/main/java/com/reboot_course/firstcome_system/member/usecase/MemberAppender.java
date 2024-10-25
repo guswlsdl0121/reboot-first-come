@@ -2,6 +2,7 @@ package com.reboot_course.firstcome_system.member.usecase;
 
 import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.member.entity.Member;
+import com.reboot_course.firstcome_system.member.entity.Role;
 import com.reboot_course.firstcome_system.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ public class MemberAppender {
                 .phone(request.getPhone())
                 .address(request.getAddress())
                 .lastPasswordUpdated(LocalDateTime.now())
+                .role(Role.ROLE_UNVERIFIED)
                 .build();
 
         return memberRepository.save(newMember);

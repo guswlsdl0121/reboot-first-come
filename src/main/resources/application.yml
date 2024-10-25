@@ -1,28 +1,20 @@
 spring:
-  # session 세팅
-  session:
-    timeout: 3600
-
-  # mysql 세팅
   datasource:
     url: jdbc:mysql://db:3306/firstcome_system
     username: docker
     password: docker1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # redis 세팅
   data:
     redis:
       host: cache
       port: 6379
 
-  # jpa 세팅
   jpa:
     hibernate:
       ddl-auto: validate
     open-in-view: false
 
-  # flyway 세팅
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -30,16 +22,47 @@ spring:
     clean-disabled: false
     locations: classpath:db/migration
 
-  # Json 매핑을 위한 전역 설정
   jackson:
     property-naming-strategy: SNAKE_CASE
 
-  # detools 전역 세팅
+  session:
+    timeout: 3600
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "dummy@gmail.com"
+    password: "dummypassword123"
+    auth-code-expiration-millis: 1800000
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
   devtools:
     restart:
-      enabled: true
+      enabled: false
 
-#Swagger 세팅
+security:
+  public-urls:
+    - "/swagger-ui/**"
+    - "/api-docs/**"
+    - "/swagger-resources/**"
+    - "/api/health/**"
+    - "/api/product/**"
+    - "/api/member/signup"
+    - "/api/auth/login"
+
+encryption:
+  key: "0123456789abcdef"
+  salt: "0123456789abcdef"
+
 springdoc:
   api-docs:
     path: /api-docs
@@ -51,21 +74,3 @@ springdoc:
     doc-expansion: list
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
-
-#암/복호화를 위한 키
-encryption:
-  key: "0123456789abcdef"
-  salt: "0123456789abcdef"
-
-# 시큐리티 설정
-security:
-  public-urls:
-    # 스웨거를 사용하기 위한 public url
-    - "/swagger-ui/**"
-    - "/api-docs/**"
-    - "/swagger-resources/**"
-    - "/api/health/**"
-    # 상품 조회 및 회원 가입, 로그인은 열려야 된다.
-    - "/api/product/**"
-    - "/api/member/signup"
-    - "/api/auth/login"

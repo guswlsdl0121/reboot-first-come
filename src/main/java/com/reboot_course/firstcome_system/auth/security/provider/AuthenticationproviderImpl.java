@@ -31,8 +31,15 @@ public class AuthenticationproviderImpl implements AuthenticationProvider {
         Member member = memberFinder.fetchByEmail(email);
         memberValidator.matchPassword(password, member.getPassword());
 
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-        UserDetails userDetails = new User(member.getEmail(), member.getPassword(), authorities);
+        List<GrantedAuthority> authorities = Collections.singletonList(
+                new SimpleGrantedAuthority(member.getRole().name())
+        );
+
+        UserDetails userDetails = User.builder()
+                .username(member.getId().toString())
+                .password(password)
+                .authorities(authorities)
+                .build();
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
     }

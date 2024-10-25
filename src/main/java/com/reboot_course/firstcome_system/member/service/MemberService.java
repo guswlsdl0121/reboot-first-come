@@ -28,12 +28,12 @@ public class MemberService {
         return member.getId();
     }
 
-    public void changePassword(String email, ChangePasswordRequest request) {
-        Member member = memberFinder.fetchByEmail(email);
+    public void changePassword(Integer memberId, ChangePasswordRequest request) {
+        Member member = memberFinder.fetchById(memberId);
 
         memberValidator.matchPassword(request.currentPassword(), member.getPassword());
         memberUpdater.updatePassword(member, request.newPassword());
 
-        authService.logoutAllSessions(email);
+        authService.logoutAllSessions(memberId);
     }
 }
