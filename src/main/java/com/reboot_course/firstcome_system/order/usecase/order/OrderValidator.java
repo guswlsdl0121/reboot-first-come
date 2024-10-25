@@ -11,19 +11,19 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OrderValidator {
 
-    public void validateForCancel(Order order, String email) {
-        validateOwnership(order, email);
+    public void validateForCancel(Order order, Integer memberId) {
+        validateOwnership(order, memberId);
         validateCancellableStatus(order);
     }
 
-    public void validateForReturn(Order order, String email) {
-        validateOwnership(order, email);
+    public void validateForReturn(Order order, Integer memberId) {
+        validateOwnership(order, memberId);
         validateReturnableStatus(order);
         validateReturnPeriod(order);
     }
 
-    private void validateOwnership(Order order, String email) {
-        if (!order.getMember().getEmail().equals(email)) {
+    private void validateOwnership(Order order, Integer memberId) {
+        if (!order.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("주문자만 주문을 변경할 수 있습니다.");
         }
     }
