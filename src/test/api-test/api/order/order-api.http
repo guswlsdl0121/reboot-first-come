@@ -1,0 +1,134 @@
+### 1. 로그인 (테스트에 필요한 토큰 획득)
+# @name login
+POST {{host}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "hong@gmail.com",
+    "password": "password123!"
+}
+
+> {%
+    client.test("로그인 검증", function () {
+        client.assert(response.status === 200, "로그인 실패");
+        let authToken = response.headers.valueOf("X-Auth-Token");
+        client.global.set("authToken", authToken);
+    });
+%}
+
+### 2. 주문 목록 조회 (첫 페이지, 최근 10개)
+GET {{host}}/api/order?size=10
+X-Auth-Token: {{authToken}}
+
+> {%
+    client.test("주문 목록 조회 검증", function () {
+        client.assert(response.status === 200, "주문 목록 조회 실패");
+        client.assert(Array.isArray(response.body.items), "items는 배열이어야 합니다");
+        client.assert(response.body.items.length <= 10, "페이지 크기가 10을 초과합니다");
+
+        if (response.body.items.length > 0) {
+            let firstItem = response.body.items[0];
+            client.assert(firstItem.order_id != null, "orderId 필드가 없습니다");
+            client.assert(firstItem.status != null, "status 필드가 없습니다");
+            client.assert(firstItem.total_amount != null, "totalAmount 필드가 없습니다");
+            client.assert(firstItem.order_date != null, "orderDate 필드가 없습니다");
+            client.assert(firstItem.total_quantity != null, "totalQuantity 필드가 없습니다");
+        }
+    });
+%}
+
+### 3. 주문 목록 조회 (다음 페이지)
+GET {{host}}/api/order?cursor=20&size=10
+X-Auth-Token: {{authToken}}
+
+> {%
+    client.test("다음 페이지 조회 검증", function () {
+        client.assert(response.status === 200, "다음 페이지 조회 실패");
+    });
+%}
+
+### 4. 주문 상세 조회 (PENDING 상태의 주문)
+GET {{host}}/api/order/1
+X-Auth-Token: {{authToken}}
+
+> {%
+    client.test("주문 상세 조회 검증", function () {
+        client.assert(response.status === 200, "주문 상세 조회 실패");
+        client.assert(response.body.order_id === 1, "잘못된 주문 ID");
+        client.assert(Array.isArray(response.body.items), "items는 배열이어야 합니다");
+
+        if (response.body.items.length > 0) {
+            let firstItem = response.body.items[0];
+            client.assert(firstItem.order_product_id != null, "orderProductId 필드가 없습니다");
+            client.assert(firstItem.product_id != null, "productId 필드가 없습니다");
+            client.assert(firstItem.product_name != null, "productName 필드가 없습니다");
+            client.assert(firstItem.quantity != null, "quantity 필드가 없습니다");
+            client.assert(firstItem.price != null, "price 필드가 없습니다");
+        }
+    });
+%}
+
+### 5. 새 주문 생성
+# @name createOrder
+POST {{host}}/api/order
+Content-Type: {{contentType}}
+X-Auth-Token: {{authToken}}
+
+{
+    "products": [
+        {
+            "product_id": 2,
+            "quantity": 1
+        },
+        {
+            "product_id": 3,
+            "quantity": 2
+        }
+    ]
+}
+
+> {%
+    client.test("주문 생성 검증", function () {
+        client.assert(response.status === 201, "주문 생성 실패");
+        client.assert(response.body.success === true, "응답이 실패 상태입니다");
+        client.assert(response.body.data != null, "생성된 주문 ID가 없습니다");
+
+        if (response.status === 201) {
+            client.global.set("newOrderId", response.body.data);
+        }
+    });
+%}
+
+### 6. 주문 취소
+POST {{host}}/api/order/{{newOrderId}}/cancel
+X-Auth-Token: {{authToken}}
+
+> {%
+    client.test("주문 취소 검증", function () {
+        client.assert(response.status === 200, "주문 취소 실패");
+        client.assert(response.body.success === true, "응답이 실패 상태입니다");
+        client.assert(response.body.data != null, "반환된 주문 ID가 없습니다");
+    });
+%}
+
+### 7. 주문 반품 (DELIVERED 상태의 주문 - ID: 7)
+POST {{host}}/api/order/7/return
+X-Auth-Token: {{authToken}}
+
+> {%
+    client.test("주문 반품 검증", function () {
+        client.assert(response.status === 200, "주문 반품 실패");
+        client.assert(response.body.success === true, "응답이 실패 상태입니다");
+        client.assert(response.body.data != null, "반환된 주문 ID가 없습니다");
+    });
+%}
+
+### 8. 존재하지 않는 주문 조회
+GET {{host}}/api/order/999
+X-Auth-Token: {{authToken}}
+
+> {%
+    client.test("존재하지 않는 주문 조회 검증", function () {
+        client.assert(response.status === 404, "잘못된 에러 상태 코드");
+    });
+%}

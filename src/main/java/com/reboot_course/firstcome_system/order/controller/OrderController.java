@@ -60,7 +60,8 @@ public class OrderController implements OrderWebAPI {
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Integer orderId) {
 
-        orderService.cancelOrder(userDetails.getUsername(), orderId);
+        Integer memberId = Integer.parseInt(userDetails.getUsername());
+        orderService.cancelOrder(memberId, orderId);
 
         return ResponseEntity
                 .ok(CommonResponse.success("주문이 성공적으로 취소되었습니다.", orderId));
@@ -72,10 +73,10 @@ public class OrderController implements OrderWebAPI {
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Integer orderId) {
 
-        orderService.returnOrder(userDetails.getUsername(), orderId);
+        Integer memberId = Integer.parseInt(userDetails.getUsername());
+        orderService.returnOrder(memberId, orderId);
 
         return ResponseEntity
                 .ok(CommonResponse.success("반품 신청이 성공적으로 처리되었습니다.", orderId));
     }
-
 }

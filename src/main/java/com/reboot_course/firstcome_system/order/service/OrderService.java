@@ -95,15 +95,15 @@ public class OrderService {
         return order.getId();
     }
 
-    public void cancelOrder(String email, Integer orderId) {
+    public void cancelOrder(Integer memberId, Integer orderId) {
         Order order = orderFinder.fetchById(orderId);
-        orderValidator.validateForCancel(order, email);
+        orderValidator.validateForCancel(order, memberId);
         orderModifier.cancel(order);
     }
 
-    public void returnOrder(String email, Integer orderId) {
+    public void returnOrder(Integer memberId, Integer orderId) {
         Order order = orderFinder.fetchById(orderId);
-        orderValidator.validateForReturn(order, email);
+        orderValidator.validateForReturn(order, memberId);
         orderModifier.returnOrder(order);
     }
 }
