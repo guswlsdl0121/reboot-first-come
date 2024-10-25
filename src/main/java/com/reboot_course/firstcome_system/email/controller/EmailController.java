@@ -1,8 +1,8 @@
 package com.reboot_course.firstcome_system.email.controller;
 
+import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.email.dto.request.EmailVerifyRequest;
 import com.reboot_course.firstcome_system.email.service.EmailService;
-import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/email")
-public class EmailController implements EmailWebAPI{
+public class EmailController implements EmailWebAPI {
     private final EmailService emailService;
 
     @Override
