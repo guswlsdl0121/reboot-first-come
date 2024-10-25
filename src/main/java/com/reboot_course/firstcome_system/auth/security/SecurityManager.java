@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.auth.security;
 
-import com.reboot_course.firstcome_system.auth.core.exception.AuthenticationFailedException;
+import com.reboot_course.firstcome_system.auth.security.exception.AuthenticationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

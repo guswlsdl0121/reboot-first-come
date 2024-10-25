@@ -1,8 +1,8 @@
-package com.reboot_course.firstcome_system.email.controller;
+package com.reboot_course.firstcome_system.authmail.core.controller;
 
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
-import com.reboot_course.firstcome_system.email.dto.request.EmailVerifyRequest;
-import com.reboot_course.firstcome_system.email.service.EmailService;
+import com.reboot_course.firstcome_system.authmail.core.dto.request.EmailVerifyRequest;
+import com.reboot_course.firstcome_system.authmail.core.service.EmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,8 @@ public class EmailController implements EmailWebAPI {
     @Override
     @PostMapping("/send-verification")
     public ResponseEntity<CommonResponse<String>> sendEmailVerification(@AuthenticationPrincipal UserDetails userDetails) {
-        emailService.sendCode(userDetails.getUsername());
+        Integer memberId = Integer.parseInt(userDetails.getUsername());
+        emailService.sendCode(memberId);
         return ResponseEntity.ok(CommonResponse.success("인증 코드가 이메일로 전송되었습니다."));
     }
 
@@ -31,7 +32,8 @@ public class EmailController implements EmailWebAPI {
     public ResponseEntity<CommonResponse<String>> verifyEmail(
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody EmailVerifyRequest request) {
-        emailService.verifyCode(userDetails.getUsername(), request.getCode());
+        Integer memberId = Integer.parseInt(userDetails.getUsername());
+        emailService.verifyCode(memberId, request.getCode());
         return ResponseEntity.ok(CommonResponse.success("이메일 인증이 완료되었습니다."));
     }
 }

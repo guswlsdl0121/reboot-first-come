@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.common.exception.handler;
 
-import com.reboot_course.firstcome_system.auth.core.exception.AuthenticationFailedException;
+import com.reboot_course.firstcome_system.auth.security.exception.AuthenticationFailedException;
 import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.common.exception.exception.DuplicatedException;
 import jakarta.persistence.EntityNotFoundException;
@@ -38,6 +38,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CommonResponse<Void>> handleDuplicatedException(DuplicatedException ex) {
         CommonResponse<Void> response = CommonResponse.fail(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    //422 : 요청 자체는 올바르지만, 로직 흐름 상 올바르지 않음.
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<CommonResponse<Void>> handleIllegalStateException(IllegalStateException ex) {
+        CommonResponse<Void> response = CommonResponse.fail(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     //500 : 그외에 잡히지 않는 서버 에러

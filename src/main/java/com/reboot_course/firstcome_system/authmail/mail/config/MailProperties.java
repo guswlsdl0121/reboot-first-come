@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.email.config;
+package com.reboot_course.firstcome_system.authmail.mail.config;
 
 import lombok.Getter;
 import lombok.Setter;

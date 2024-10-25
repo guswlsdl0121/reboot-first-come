@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.auth.core.exception;
+package com.reboot_course.firstcome_system.auth.security.exception;
 
 public class AuthenticationFailedException extends RuntimeException {
     public AuthenticationFailedException(String message) {
