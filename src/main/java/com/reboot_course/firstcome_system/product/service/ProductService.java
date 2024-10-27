@@ -26,7 +26,7 @@ public class ProductService {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .quantity(product.getQuantity())
+                .quantity(product.getStock())
                 .build();
     }
 }

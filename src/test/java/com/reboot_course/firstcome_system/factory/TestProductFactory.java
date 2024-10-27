@@ -22,7 +22,7 @@ public class TestProductFactory {
         Product product = Product.builder()
                 .name(String.format("Product name %d", seq))
                 .price(new BigDecimal(10000))
-                .quantity(1000)
+                .stock(1000)
                 .createdAt(LocalDateTime.now())
                 .description(String.format("Product description %d", seq))
                 .build();
