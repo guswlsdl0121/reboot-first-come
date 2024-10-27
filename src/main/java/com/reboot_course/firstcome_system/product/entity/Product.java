@@ -30,5 +30,5 @@ public class Product extends BaseEntity {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private Integer quantity;
+    private Integer stock;
 }
