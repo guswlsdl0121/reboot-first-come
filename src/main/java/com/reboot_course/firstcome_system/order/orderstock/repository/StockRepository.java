@@ -4,12 +4,14 @@ public interface StockRepository {
     /**
      * 상품의 현재 재고 조회
      * Cache-Aside 패턴으로 구현
+     *
      * @throws IllegalArgumentException 상품이 존재하지 않는 경우
      */
     int getStock(Integer productId);
 
     /**
      * 재고 감소 시도
+     *
      * @return 재고 감소 성공 여부
      */
     boolean decrease(Integer productId, int quantity);

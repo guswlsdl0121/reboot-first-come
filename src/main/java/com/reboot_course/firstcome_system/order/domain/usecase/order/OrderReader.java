@@ -1,9 +1,9 @@
 package com.reboot_course.firstcome_system.order.domain.usecase.order;
 
 import com.reboot_course.firstcome_system.common.utils.CursorUtils;
-import com.reboot_course.firstcome_system.order.order.dto.internal.OrderPaging;
 import com.reboot_course.firstcome_system.order.domain.entity.Order;
 import com.reboot_course.firstcome_system.order.domain.repository.OrderRepository;
+import com.reboot_course.firstcome_system.order.order.dto.internal.OrderPaging;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
