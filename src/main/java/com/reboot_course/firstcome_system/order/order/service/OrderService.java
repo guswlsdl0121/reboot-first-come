@@ -102,9 +102,9 @@ public class OrderService {
         orderModifier.cancel(order);
     }
 
-    public void returnOrder(Integer memberId, Integer orderId) {
+    public void applyReturnOrder(Integer memberId, Integer orderId) {
         Order order = orderFinder.fetchById(orderId);
         orderValidator.validateForReturn(order, memberId);
-        orderModifier.returnOrder(order);
+        orderModifier.returnRequest(order);
     }
 }

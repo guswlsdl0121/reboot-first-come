@@ -1,6 +1,8 @@
 package com.reboot_course.firstcome_system.order.orderstock.service;
 
 import com.reboot_course.firstcome_system.order.domain.entity.OrderProduct;
+import com.reboot_course.firstcome_system.order.domain.repository.OrderProductRepository;
+import com.reboot_course.firstcome_system.order.domain.usecase.orderproduct.OrderProductReader;
 import com.reboot_course.firstcome_system.order.order.dto.request.create.OrderCreateItem;
 import com.reboot_course.firstcome_system.order.orderstock.exception.OutOfStockException;
 import com.reboot_course.firstcome_system.order.orderstock.repository.StockRepository;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderStockService {
     private final StockRepository stockRepository;
+    private final OrderProductReader orderProductReader;
 
     @Transactional
     public void decreaseStock(List<OrderCreateItem> orderItems) {
@@ -37,5 +40,17 @@ public class OrderStockService {
                     orderProduct.getQuantity()
             );
         }
+    }
+
+    @Transactional
+    public void increaseStockForReturn(Integer orderId) {
+        var orderProducts = orderProductReader.getById(orderId);
+        for (OrderProduct orderProduct : orderProducts) {
+            stockRepository.increase(
+                    orderProduct.getProduct().getId(),
+                    orderProduct.getQuantity()
+            );
+        }
+        log.info("반품 상품 재고 증가 완료 - orderId: {}", orderId);
     }
 }

@@ -74,7 +74,7 @@ public class OrderController implements OrderWebAPI {
             @PathVariable Integer orderId) {
 
         Integer memberId = Integer.parseInt(userDetails.getUsername());
-        orderService.returnOrder(memberId, orderId);
+        orderService.applyReturnOrder(memberId, orderId);
 
         return ResponseEntity
                 .ok(CommonResponse.success("반품 신청이 성공적으로 처리되었습니다.", orderId));

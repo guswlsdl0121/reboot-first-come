@@ -34,15 +34,21 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Modifying
     @Query("""
-        UPDATE Order o
-        SET o.status = :newStatus,
-            o.updatedAt = CURRENT_TIMESTAMP
-        WHERE o.status = :currentStatus
-        AND o.createdAt <= :targetTime
-        """)
+            UPDATE Order o
+            SET o.status = :newStatus,
+                o.updatedAt = CURRENT_TIMESTAMP
+            WHERE o.status = :currentStatus
+            AND o.createdAt <= :targetTime
+            """)
     int updateOrderStatus(
             @Param("currentStatus") OrderStatus currentStatus,
             @Param("newStatus") OrderStatus newStatus,
             @Param("targetTime") LocalDateTime targetTime
+    );
+
+    @Query("SELECT o FROM Order o WHERE o.status = :status AND o.updatedAt <= :beforeTime")
+    List<Order> findByStatusAndUpdatedAtBefore(
+            @Param("status") OrderStatus status,
+            @Param("beforeTime") LocalDateTime beforeTime
     );
 }

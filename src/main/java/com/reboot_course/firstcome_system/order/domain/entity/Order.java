@@ -39,7 +39,11 @@ public class Order extends BaseEntity {
         this.status = OrderStatus.CANCELLED;
     }
 
-    public void returned() {
+    public void returnRequest() {
+        this.status = OrderStatus.RETURN_REQUESTED;
+    }
+
+    public void returnComplete() {
         this.status = OrderStatus.RETURN_COMPLETED;
     }
 }

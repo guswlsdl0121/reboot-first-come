@@ -18,8 +18,8 @@ public class OrderModifier {
     }
 
     @Transactional
-    public void returnOrder(Order order) {
-        order.returned();
+    public void returnRequest(Order order) {
+        order.returnRequest();
         orderRepository.save(order);
     }
 }
