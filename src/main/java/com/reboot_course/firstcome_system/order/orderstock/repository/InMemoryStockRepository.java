@@ -14,8 +14,8 @@ import java.util.concurrent.locks.ReentrantLock;
 @RequiredArgsConstructor
 public class InMemoryStockRepository implements StockRepository {
     private final ProductRepository productRepository;
-    private final ConcurrentHashMap<Integer, Integer> stockMap = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
+    private final ConcurrentHashMap<Integer, Integer> stockMap = new ConcurrentHashMap<>();
 
     @Override
     public int getStock(Integer productId) {
@@ -72,20 +72,11 @@ public class InMemoryStockRepository implements StockRepository {
     @Override
     @Transactional
     public void increase(Integer productId, int quantity) {
-        lock.lock();
-        try {
-            int currentStock = getStock(productId);
-            productRepository.increaseStock(productId, quantity);
-            stockMap.put(productId, currentStock + quantity);
-            log.debug("재고 증가 성공 - productId: {}, 새로운 재고: {}",
-                    productId, currentStock + quantity);
-
-        } catch (Exception e) {
-            log.error("재고 증가 중 예외 발생 - productId: {}, quantity: {}", productId, quantity, e);
-            throw e;
-        } finally {
-            lock.unlock();
-        }
+        // 기본적으로 재고 증가는 음수가 될 일도 없고, 경합 상황도 적음
+        // 따라서 별도의 락을 얻어서 하진 않고, concurrentHashmap으로도 처리가 가능하다고 판단
+        int currentStock = getStock(productId);
+        productRepository.increaseStock(productId, quantity);
+        stockMap.put(productId, currentStock + quantity);
     }
 
     @Override

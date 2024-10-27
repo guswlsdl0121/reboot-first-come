@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.order.orderstock;
+package com.reboot_course.firstcome_system.order.orderstock.service;
 
 import com.reboot_course.firstcome_system.order.domain.entity.OrderProduct;
 import com.reboot_course.firstcome_system.order.order.dto.request.create.OrderCreateItem;
@@ -26,6 +26,16 @@ public class OrderStockService {
                         "상품(id: %d)의 재고가 부족합니다.", item.getProductId()
                 ));
             }
+        }
+    }
+
+    @Transactional
+    public void increaseStockForCancel(List<OrderProduct> orderProducts) {
+        for (OrderProduct orderProduct : orderProducts) {
+            stockRepository.increase(
+                    orderProduct.getProduct().getId(),
+                    orderProduct.getQuantity()
+            );
         }
     }
 }

@@ -15,7 +15,7 @@ import com.reboot_course.firstcome_system.order.order.mapper.OrderMapper;
 import com.reboot_course.firstcome_system.order.domain.usecase.orderproduct.OrderProductAppender;
 import com.reboot_course.firstcome_system.order.domain.usecase.orderproduct.OrderProductReader;
 import com.reboot_course.firstcome_system.order.order.vo.OrderProductMap;
-import com.reboot_course.firstcome_system.order.orderstock.OrderStockService;
+import com.reboot_course.firstcome_system.order.orderstock.service.OrderStockService;
 import com.reboot_course.firstcome_system.product.usecase.ProductReader;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +95,10 @@ public class OrderService {
     public void cancelOrder(Integer memberId, Integer orderId) {
         Order order = orderFinder.fetchById(orderId);
         orderValidator.validateForCancel(order, memberId);
+
+        List<OrderProduct> orderProducts = orderProductReader.getById(order.getId());
+        orderStockService.increaseStockForCancel(orderProducts);
+
         orderModifier.cancel(order);
     }
 
