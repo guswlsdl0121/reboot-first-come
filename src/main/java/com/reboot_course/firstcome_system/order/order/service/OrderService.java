@@ -15,6 +15,7 @@ import com.reboot_course.firstcome_system.order.order.mapper.OrderMapper;
 import com.reboot_course.firstcome_system.order.domain.usecase.orderproduct.OrderProductAppender;
 import com.reboot_course.firstcome_system.order.domain.usecase.orderproduct.OrderProductReader;
 import com.reboot_course.firstcome_system.order.order.vo.OrderProductMap;
+import com.reboot_course.firstcome_system.order.orderstock.OrderStockService;
 import com.reboot_course.firstcome_system.product.usecase.ProductReader;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class OrderService {
 
     private final OrderProductReader orderProductReader;
     private final OrderProductAppender orderProductAppender;
+    private final OrderStockService orderStockService;
 
 
     public OrderMainResponse getOrders(Integer memberId, String cursor, int size) {
@@ -78,13 +80,8 @@ public class OrderService {
         // 2. 주문 상품 정보 조회 및 검증
         OrderProductMap orderProductMap = productReader.getOrderProduct(request.getProducts());
 
-        // TODO: [재고 관리]
-        // 1. Redis를 통해 재고 감소 처리
-        // 2. 재고 부족시 실패 처리
-        // 3. 고려사항:
-        //    - Redis key 생명주기 관리
-        //    - 트랜잭션 실패시 재고 복구 방안
-        //    - 동시성 제어 방식
+        // 3. 주문 상품의 재고를 순차적으로 업데이트
+        orderStockService.decreaseStock(request.getProducts());
 
         // 3. 주문 생성
         Order order = orderAppender.create(member, orderProductMap.calculateTotalAmount(request.getProducts()));
