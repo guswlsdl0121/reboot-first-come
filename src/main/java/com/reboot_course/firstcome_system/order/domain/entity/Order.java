@@ -40,6 +40,6 @@ public class Order extends BaseEntity {
     }
 
     public void returned() {
-        this.status = OrderStatus.RETURNED;
+        this.status = OrderStatus.RETURN_COMPLETED;
     }
 }

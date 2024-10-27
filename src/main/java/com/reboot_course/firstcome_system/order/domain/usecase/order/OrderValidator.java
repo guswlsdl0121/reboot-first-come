@@ -33,7 +33,8 @@ public class OrderValidator {
         if (status == OrderStatus.SHIPPED ||
                 status == OrderStatus.DELIVERED ||
                 status == OrderStatus.CANCELLED ||
-                status == OrderStatus.RETURNED) {
+                status == OrderStatus.RETURN_REQUESTED ||
+                status == OrderStatus.RETURN_COMPLETED) {
             throw new IllegalStateException(
                     "취소할 수 없는 주문 상태입니다. (현재 상태: " + status.getDescription() + ")"
             );
