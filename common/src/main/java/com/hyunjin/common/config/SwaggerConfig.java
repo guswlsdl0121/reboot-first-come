@@ -1,8 +1,7 @@
-package com.reboot_course.firstcome_system.common.config;
+package com.hyunjin.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.reboot_course.firstcome_system.auth.session.constants.SessionHeaders;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -39,7 +38,7 @@ public class SwaggerConfig {
                         .addSecuritySchemes("bearerAuth", new SecurityScheme()
                                 .type(SecurityScheme.Type.APIKEY)
                                 .in(SecurityScheme.In.HEADER)
-                                .name(SessionHeaders.X_AUTH_TOKEN)));
+                                .name("X-Auth-Token")));
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.common.config;
+package com.hyunjin.common.config;
 
 import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.P6SpyOptions;

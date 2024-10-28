@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.wishlist.controller;
 
-import com.reboot_course.firstcome_system.common.dto.CommonResponse;
+import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistMainResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistUpdateResponse;

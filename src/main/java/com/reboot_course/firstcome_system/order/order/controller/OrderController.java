@@ -1,6 +1,7 @@
 package com.reboot_course.firstcome_system.order.order.controller;
 
-import com.reboot_course.firstcome_system.common.dto.CommonResponse;
+
+import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.order.order.dto.request.create.OrderCreateRequest;
 import com.reboot_course.firstcome_system.order.order.dto.response.read.OrderDetailResponse;
 import com.reboot_course.firstcome_system.order.order.dto.response.read.OrderMainResponse;

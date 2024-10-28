@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.common.dto;
+package com.hyunjin.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

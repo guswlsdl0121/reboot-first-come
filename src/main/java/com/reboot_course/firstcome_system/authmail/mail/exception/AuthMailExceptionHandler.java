@@ -1,9 +1,9 @@
 package com.reboot_course.firstcome_system.authmail.mail.exception;
 
+import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.authmail.mail.exception.exception.AuthCodeException;
 import com.reboot_course.firstcome_system.authmail.mail.exception.exception.CodeExpiredException;
 import com.reboot_course.firstcome_system.authmail.mail.exception.exception.CodeNotFoundException;
-import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.product.usecase;
 
-import com.reboot_course.firstcome_system.common.utils.CursorUtils;
+import com.hyunjin.common.utils.CursorUtils;
 import com.reboot_course.firstcome_system.order.order.dto.request.create.OrderCreateItem;
 import com.reboot_course.firstcome_system.order.order.vo.OrderProductMap;
 import com.reboot_course.firstcome_system.product.dto.response.ProductItemDTO;

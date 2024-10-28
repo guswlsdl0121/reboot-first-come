@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.common.utils;
+package com.hyunjin.common.utils;
 
 import java.util.List;
 import java.util.function.ToIntFunction;

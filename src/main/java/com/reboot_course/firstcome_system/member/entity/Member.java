@@ -1,8 +1,9 @@
 package com.reboot_course.firstcome_system.member.entity;
 
+import com.hyunjin.common.entity.BaseEntity;
 import com.reboot_course.firstcome_system.auth.encryption.converter.EmailConverter;
 import com.reboot_course.firstcome_system.auth.encryption.converter.PersonalInfoConverter;
-import com.reboot_course.firstcome_system.common.entity.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

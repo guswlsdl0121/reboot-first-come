@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.wishlist.usecase;
 
-import com.reboot_course.firstcome_system.common.exception.exception.DuplicatedException;
+import com.hyunjin.common.exception.exception.DuplicatedException;
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.product.entity.Product;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;

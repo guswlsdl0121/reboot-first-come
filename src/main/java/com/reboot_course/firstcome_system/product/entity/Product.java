@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.product.entity;
 
-import com.reboot_course.firstcome_system.common.entity.BaseEntity;
+import com.hyunjin.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

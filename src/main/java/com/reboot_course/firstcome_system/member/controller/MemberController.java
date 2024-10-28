@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.member.controller;
 
-import com.reboot_course.firstcome_system.common.dto.CommonResponse;
+import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.member.dto.request.ChangePasswordRequest;
 import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.member.service.MemberService;

@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.common.entity;
+package com.hyunjin.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.wishlist.entity;
 
-import com.reboot_course.firstcome_system.common.entity.BaseEntity;
+import com.hyunjin.common.entity.BaseEntity;
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.product.entity.Product;
 import jakarta.persistence.*;

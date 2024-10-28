@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.wishlist.usecase;
 
-import com.reboot_course.firstcome_system.common.utils.CursorUtils;
+import com.hyunjin.common.utils.CursorUtils;
 import com.reboot_course.firstcome_system.wishlist.dto.internal.WishlistPaging;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistItemDTO;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;

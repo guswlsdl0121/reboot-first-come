@@ -1,9 +1,9 @@
 package com.reboot_course.firstcome_system.auth.core.controller;
 
+import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.auth.core.dto.request.LoginRequest;
 import com.reboot_course.firstcome_system.auth.core.service.AuthService;
 import com.reboot_course.firstcome_system.auth.session.constants.SessionHeaders;
-import com.reboot_course.firstcome_system.common.dto.CommonResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

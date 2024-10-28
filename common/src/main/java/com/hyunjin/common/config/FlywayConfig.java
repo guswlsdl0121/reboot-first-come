@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.common.config;
+package com.hyunjin.common.config;
 
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;

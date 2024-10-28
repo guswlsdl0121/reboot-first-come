@@ -1,4 +1,4 @@
-package com.reboot_course.firstcome_system.common.controller;
+package com.hyunjin.common.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
