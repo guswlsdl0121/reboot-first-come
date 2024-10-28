@@ -1,9 +1,9 @@
 package com.reboot_course.firstcome_system.member.controller;
 
-import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.member.dto.request.ChangePasswordRequest;
 import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
 import com.reboot_course.firstcome_system.member.service.MemberService;
+import com.reboot_course.firstcome_system.member.utils.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

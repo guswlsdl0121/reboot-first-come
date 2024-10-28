@@ -1,4 +1,4 @@
-package com.hyunjin.common.dto;
+package com.reboot_course.firstcome_system.authmail.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

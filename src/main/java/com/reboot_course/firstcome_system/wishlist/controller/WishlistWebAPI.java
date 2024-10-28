@@ -1,9 +1,9 @@
 package com.reboot_course.firstcome_system.wishlist.controller;
 
-import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistMainResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistUpdateResponse;
+import com.reboot_course.firstcome_system.wishlist.utils.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

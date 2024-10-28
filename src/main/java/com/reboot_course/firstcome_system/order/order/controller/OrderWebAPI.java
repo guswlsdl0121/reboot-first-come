@@ -1,10 +1,10 @@
 package com.reboot_course.firstcome_system.order.order.controller;
 
 
-import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.order.order.dto.request.create.OrderCreateRequest;
 import com.reboot_course.firstcome_system.order.order.dto.response.read.OrderDetailResponse;
 import com.reboot_course.firstcome_system.order.order.dto.response.read.OrderMainResponse;
+import com.reboot_course.firstcome_system.order.utils.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

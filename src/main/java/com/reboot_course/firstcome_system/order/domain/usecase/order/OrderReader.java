@@ -1,10 +1,10 @@
 package com.reboot_course.firstcome_system.order.domain.usecase.order;
 
 
-import com.hyunjin.common.utils.CursorUtils;
 import com.reboot_course.firstcome_system.order.domain.entity.Order;
 import com.reboot_course.firstcome_system.order.domain.repository.OrderRepository;
 import com.reboot_course.firstcome_system.order.order.dto.internal.OrderPaging;
+import com.reboot_course.firstcome_system.order.utils.CursorUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

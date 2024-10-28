@@ -1,8 +1,8 @@
 package com.reboot_course.firstcome_system.member.controller;
 
-import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.member.dto.request.ChangePasswordRequest;
 import com.reboot_course.firstcome_system.member.dto.request.SignupRequest;
+import com.reboot_course.firstcome_system.member.utils.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

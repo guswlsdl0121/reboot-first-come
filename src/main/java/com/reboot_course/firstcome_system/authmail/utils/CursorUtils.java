@@ -1,4 +1,4 @@
-package com.hyunjin.common.utils;
+package com.reboot_course.firstcome_system.authmail.utils;
 
 import java.util.List;
 import java.util.function.ToIntFunction;

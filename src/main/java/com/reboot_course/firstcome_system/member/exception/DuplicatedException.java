@@ -1,4 +1,4 @@
-package com.hyunjin.common.exception.exception;
+package com.reboot_course.firstcome_system.member.exception;
 
 public class DuplicatedException extends RuntimeException {
     public DuplicatedException(String message) {

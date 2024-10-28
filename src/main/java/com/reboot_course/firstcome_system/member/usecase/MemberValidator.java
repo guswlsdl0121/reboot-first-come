@@ -1,6 +1,6 @@
 package com.reboot_course.firstcome_system.member.usecase;
 
-import com.hyunjin.common.exception.exception.DuplicatedException;
+import com.reboot_course.firstcome_system.member.exception.DuplicatedException;
 import com.reboot_course.firstcome_system.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

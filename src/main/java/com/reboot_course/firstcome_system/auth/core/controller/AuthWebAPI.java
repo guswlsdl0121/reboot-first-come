@@ -1,8 +1,9 @@
 package com.reboot_course.firstcome_system.auth.core.controller;
 
-import com.hyunjin.common.dto.CommonResponse;
+
 import com.reboot_course.firstcome_system.auth.core.dto.request.LoginRequest;
 import com.reboot_course.firstcome_system.auth.session.constants.SessionHeaders;
+import com.reboot_course.firstcome_system.auth.utils.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;

@@ -1,11 +1,11 @@
 package com.reboot_course.firstcome_system.order.order.controller;
 
 
-import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.order.order.dto.request.create.OrderCreateRequest;
 import com.reboot_course.firstcome_system.order.order.dto.response.read.OrderDetailResponse;
 import com.reboot_course.firstcome_system.order.order.dto.response.read.OrderMainResponse;
 import com.reboot_course.firstcome_system.order.order.service.OrderService;
+import com.reboot_course.firstcome_system.order.utils.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

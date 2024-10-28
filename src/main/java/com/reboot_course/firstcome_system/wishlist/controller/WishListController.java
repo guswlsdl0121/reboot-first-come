@@ -1,10 +1,10 @@
 package com.reboot_course.firstcome_system.wishlist.controller;
 
-import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.request.WishlistUpdateType;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistMainResponse;
 import com.reboot_course.firstcome_system.wishlist.dto.response.WishlistUpdateResponse;
 import com.reboot_course.firstcome_system.wishlist.service.WishListService;
+import com.reboot_course.firstcome_system.wishlist.utils.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -1,9 +1,9 @@
 package com.reboot_course.firstcome_system.wishlist.usecase;
 
-import com.hyunjin.common.exception.exception.DuplicatedException;
 import com.reboot_course.firstcome_system.member.entity.Member;
 import com.reboot_course.firstcome_system.product.entity.Product;
 import com.reboot_course.firstcome_system.wishlist.entity.Wishlist;
+import com.reboot_course.firstcome_system.wishlist.exception.DuplicatedException;
 import com.reboot_course.firstcome_system.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

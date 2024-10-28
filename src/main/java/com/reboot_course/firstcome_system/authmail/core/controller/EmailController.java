@@ -1,8 +1,8 @@
 package com.reboot_course.firstcome_system.authmail.core.controller;
 
-import com.hyunjin.common.dto.CommonResponse;
 import com.reboot_course.firstcome_system.authmail.core.dto.request.EmailVerifyRequest;
 import com.reboot_course.firstcome_system.authmail.core.service.EmailService;
+import com.reboot_course.firstcome_system.authmail.utils.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
