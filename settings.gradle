@@ -1,3 +1,8 @@
 rootProject.name = 'firstcome_system'
 
-include 'product', 'member-auth', 'order'
+include(
+        ':product-service',
+        ':member-auth-service',
+        ':order-service',
+        ':common'
+)
