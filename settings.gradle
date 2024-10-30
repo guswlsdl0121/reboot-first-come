@@ -1,7 +1,6 @@
 rootProject.name = 'firstcome_system'
 
 include(
-        ':product-service',
         ':member-auth-service',
         ':order-service',
 )
