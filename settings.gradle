@@ -4,5 +4,4 @@ include(
         ':product-service',
         ':member-auth-service',
         ':order-service',
-        ':common'
 )
