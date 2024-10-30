@@ -1,4 +1,4 @@
-package com.hyunjin.member;
+package com.hyunjin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
