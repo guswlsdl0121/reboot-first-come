@@ -1,0 +1,46 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: member-auth-service
+  datasource:
+    url: jdbc:mysql://member-auth-db:3306/firstcome_system
+    username: docker
+    password: docker1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  session:
+    timeout: 3600
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "dummy@gmail.com"
+    password: "dummypassword123"
+    auth-code-expiration-millis: 1800000
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+security:
+  public-urls:
+    - "/api/member/signup"
+    - "/api/auth/login"
+
+encryption:
+  key: "0123456789abcdef"
+  salt: "0123456789abcdef"
