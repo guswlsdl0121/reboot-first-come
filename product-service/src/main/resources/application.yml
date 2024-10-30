@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: product-service
+
+  datasource:
+    url: jdbc:mysql://db:3306/firstcome_system
+    username: docker
+    password: docker1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    redis:
+      host: cache
+      port: 6379
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    clean-on-validation-error: true
+    clean-disabled: false
+    locations: classpath:db/migration
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+server:
+  port: 8081
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    operations-sorter: method
+    tags-sorter: alpha
+    path: /swagger
+    disable-swagger-default-url: true
+    doc-expansion: list
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
