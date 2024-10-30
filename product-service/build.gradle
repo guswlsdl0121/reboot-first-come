@@ -24,9 +24,6 @@ repositories {
 }
 
 dependencies {
-    // 공통 모듈 의존성
-    implementation project(':common')
-
     // 스프링 부트 기본 의존성
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -41,6 +38,10 @@ dependencies {
     // 롬복
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // 스키마 버전 관리를 위한 flyway
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
 
     // 개발 도구
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

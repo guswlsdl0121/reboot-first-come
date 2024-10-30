@@ -25,9 +25,9 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-    clean-on-validation-error: true
-    clean-disabled: false
-    locations: classpath:db/migration
+    table: flyway_schema_history_product
+    locations: classpath:migration
+    default-schema: firstcome_system
 
   jackson:
     property-naming-strategy: SNAKE_CASE
