@@ -4,19 +4,24 @@ server:
 spring:
   application:
     name: member-auth-service
+
   datasource:
-    url: jdbc:mysql://member-auth-db:3306/firstcome_system
+    url: jdbc:mysql://db:3306/firstcome_system
     username: docker
     password: docker1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     open-in-view: false
+
   jackson:
     property-naming-strategy: SNAKE_CASE
+
   session:
     timeout: 3600
+
   mail:
     host: smtp.gmail.com
     port: 587

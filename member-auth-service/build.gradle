@@ -33,6 +33,14 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // 세션 관련 설정
+    implementation 'org.springframework.session:spring-session-core'
+
+    // Redis 세션 저장소용 (나중에 사용)
+    // implementation 'org.springframework.session:spring-session-data-redis'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }

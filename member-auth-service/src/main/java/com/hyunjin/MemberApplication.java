@@ -1,4 +1,4 @@
-package com.hyunjin.member;
+package com.hyunjin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
