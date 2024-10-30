@@ -23,6 +23,16 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('springCloudVersion', "2023.0.3")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 dependencies {
     // 스프링 부트 기본 의존성
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -43,6 +53,10 @@ dependencies {
     // 스키마 버전 관리를 위한 flyway
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
+
+    // 유레카 서버 및 내부 통신 설정
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     // 테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
