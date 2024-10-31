@@ -1,0 +1,38 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: product-service
+
+  datasource:
+    url: jdbc:mysql://db:3306/firstcome_system
+    username: docker
+    password: docker1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    redis:
+      host: cache
+      port: 6379
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    table: flyway_schema_history
+    locations: classpath:migration
+    default-schema: firstcome_system
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

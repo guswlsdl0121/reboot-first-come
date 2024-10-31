@@ -1,0 +1,60 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: member-auth-service
+
+  datasource:
+    url: jdbc:mysql://db:3306/firstcome_system
+    username: docker
+    password: docker1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  session:
+    timeout: 3600
+
+  flyway:
+    enabled: true
+    clean-disabled: false           # clean 명령 활성화
+    clean-on-validation-error: true # 검증 오류시 clean 실행
+    baseline-on-migrate: true
+    table: flyway_schema_history
+    locations: classpath:migration
+    default-schema: firstcome_system
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "dummy@gmail.com"
+    password: "dummypassword123"
+    auth-code-expiration-millis: 1800000
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+security:
+  public-urls:
+    - "/api/member/signup"
+    - "/api/auth/login"
+
+encryption:
+  key: "12345678901234567890123456789012"  # 32바이트
+  salt: "1234567890123456"                  # 16바이트
