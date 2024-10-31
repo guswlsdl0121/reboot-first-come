@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8082
 
 spring:
   application:
@@ -54,5 +54,5 @@ security:
     - "/api/auth/login"
 
 encryption:
-  key: "0123456789abcdef"
-  salt: "0123456789abcdef"
+  key: "12345678901234567890123456789012"  # 32바이트
+  salt: "1234567890123456"                  # 16바이트

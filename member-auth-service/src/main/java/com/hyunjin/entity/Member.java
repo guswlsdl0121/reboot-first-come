@@ -1,18 +1,19 @@
 package com.hyunjin.entity;
 
 
-import com.hyunjin.auth.encryption.converter.EmailConverter;
 import com.hyunjin.auth.encryption.converter.PersonalInfoConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
@@ -29,7 +30,6 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Convert(converter = EmailConverter.class)
     @Column(nullable = false, unique = true)
     private String email;
 
