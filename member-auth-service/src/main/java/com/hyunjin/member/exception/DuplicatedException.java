@@ -1,4 +1,4 @@
-package com.hyunjin.common.exception;
+package com.hyunjin.member.exception;
 
 public class DuplicatedException extends RuntimeException {
     public DuplicatedException(String message) {
