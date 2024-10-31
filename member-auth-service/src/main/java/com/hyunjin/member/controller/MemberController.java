@@ -1,10 +1,10 @@
 package com.hyunjin.member.controller;
 
 
+import com.hyunjin.common.dto.CommonResponse;
 import com.hyunjin.member.dto.request.ChangePasswordRequest;
 import com.hyunjin.member.dto.request.SignupRequest;
 import com.hyunjin.member.service.MemberService;
-import com.hyunjin.common.dto.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

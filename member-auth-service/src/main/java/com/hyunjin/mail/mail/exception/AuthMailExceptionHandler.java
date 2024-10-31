@@ -1,10 +1,10 @@
 package com.hyunjin.mail.mail.exception;
 
 
+import com.hyunjin.common.dto.CommonResponse;
 import com.hyunjin.mail.mail.exception.exception.AuthCodeException;
 import com.hyunjin.mail.mail.exception.exception.CodeExpiredException;
 import com.hyunjin.mail.mail.exception.exception.CodeNotFoundException;
-import com.hyunjin.common.dto.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

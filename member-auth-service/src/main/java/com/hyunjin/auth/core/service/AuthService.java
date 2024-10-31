@@ -1,7 +1,7 @@
 package com.hyunjin.auth.core.service;
 
-import com.hyunjin.auth.security.SecurityManager;
 import com.hyunjin.auth.core.dto.request.LoginRequest;
+import com.hyunjin.auth.security.SecurityManager;
 import com.hyunjin.auth.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

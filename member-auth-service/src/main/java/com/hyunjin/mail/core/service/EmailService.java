@@ -1,10 +1,10 @@
 package com.hyunjin.mail.core.service;
 
 
+import com.hyunjin.entity.Member;
 import com.hyunjin.mail.core.repository.MailCodeRepository;
 import com.hyunjin.mail.mail.AuthMailManager;
 import com.hyunjin.mail.mail.exception.exception.AuthCodeException;
-import com.hyunjin.entity.Member;
 import com.hyunjin.member.usecase.MemberFinder;
 import com.hyunjin.member.usecase.MemberUpdater;
 import lombok.RequiredArgsConstructor;

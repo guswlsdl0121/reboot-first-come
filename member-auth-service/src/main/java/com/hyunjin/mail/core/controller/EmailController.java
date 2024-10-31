@@ -1,9 +1,8 @@
 package com.hyunjin.mail.core.controller;
 
+import com.hyunjin.common.dto.CommonResponse;
 import com.hyunjin.mail.core.dto.request.EmailVerifyRequest;
 import com.hyunjin.mail.core.service.EmailService;
-
-import com.hyunjin.common.dto.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

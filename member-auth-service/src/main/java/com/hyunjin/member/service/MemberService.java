@@ -2,9 +2,9 @@ package com.hyunjin.member.service;
 
 
 import com.hyunjin.auth.core.service.AuthService;
+import com.hyunjin.entity.Member;
 import com.hyunjin.member.dto.request.ChangePasswordRequest;
 import com.hyunjin.member.dto.request.SignupRequest;
-import com.hyunjin.entity.Member;
 import com.hyunjin.member.usecase.MemberAppender;
 import com.hyunjin.member.usecase.MemberFinder;
 import com.hyunjin.member.usecase.MemberUpdater;

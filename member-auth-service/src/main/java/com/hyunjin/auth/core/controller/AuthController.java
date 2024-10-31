@@ -4,7 +4,6 @@ package com.hyunjin.auth.core.controller;
 import com.hyunjin.auth.core.dto.request.LoginRequest;
 import com.hyunjin.auth.core.service.AuthService;
 import com.hyunjin.auth.session.constants.SessionHeaders;
-
 import com.hyunjin.common.dto.CommonResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

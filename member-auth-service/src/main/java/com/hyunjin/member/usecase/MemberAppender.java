@@ -1,8 +1,8 @@
 package com.hyunjin.member.usecase;
 
-import com.hyunjin.member.dto.request.SignupRequest;
 import com.hyunjin.entity.Member;
 import com.hyunjin.entity.Role;
+import com.hyunjin.member.dto.request.SignupRequest;
 import com.hyunjin.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
