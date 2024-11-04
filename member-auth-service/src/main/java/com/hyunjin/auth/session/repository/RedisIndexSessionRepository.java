@@ -36,6 +36,22 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
         String sessionKey = getSessionKey(session.getId());
         String memberId = session.getAttribute(PRINCIPAL_NAME_INDEX_NAME);
 
+        if (memberId != null) {
+            // 동일 사용자의 기존 세션들을 모두 찾아서 삭제
+            String indexKey = getUserSessionsKey(memberId);
+            Set<Object> existingSessions = redisTemplate.opsForSet().members(indexKey);
+
+            if (existingSessions != null && !existingSessions.isEmpty()) {
+                for (Object existingSessionId : existingSessions) {
+                    if (!existingSessionId.equals(session.getId())) {  // 현재 세션은 제외
+                        redisTemplate.delete(getSessionKey((String) existingSessionId));
+                        redisTemplate.opsForSet().remove(indexKey, existingSessionId);
+                    }
+                }
+            }
+        }
+
+        // 새 세션 저장
         Map<String, Object> sessionMap = new HashMap<>();
         for (String attrName : session.getAttributeNames()) {
             sessionMap.put(attrName, session.getAttribute(attrName));
@@ -50,7 +66,6 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
             redisTemplate.expire(indexKey, defaultMaxInactiveInterval);
         }
     }
-
     @Override
     public MapSession findById(String id) {
         String sessionKey = getSessionKey(id);
