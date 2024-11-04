@@ -1,7 +1,4 @@
-### 1. 헬스 체크
-GET {{host}}/api/health
-
-### 2. 로그인 (해당 body의 계정이 있어야 함)
+### 1. 로그인 (해당 body의 계정이 있어야 함)
 # @name login
 POST {{host}}/api/auth/login
 Content-Type: {{contentType}}
@@ -24,7 +21,7 @@ Content-Type: {{contentType}}
     });
 %}
 
-### 3. 내 정보 조회
+### 2. 내 정보 조회
 GET {{host}}/api/member/me
 X-Auth-Token: {{authToken}}
 

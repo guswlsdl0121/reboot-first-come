@@ -53,8 +53,10 @@ dependencies {
 
     // 세션 관련 설정
     implementation 'org.springframework.session:spring-session-core'
-    // Redis 세션 저장소용 (나중에 사용)
-    // implementation 'org.springframework.session:spring-session-data-redis'
+
+    // redis, session 설정
+    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // 메일 발송
     implementation 'org.springframework.boot:spring-boot-starter-mail'

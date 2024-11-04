@@ -25,6 +25,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .securityContext((securityContext) -> securityContext
+                        .requireExplicitSave(false))
                 .authorizeHttpRequests(
                         authz -> authz
                                 .requestMatchers(securityProperties.getPublicUrls()).permitAll()
