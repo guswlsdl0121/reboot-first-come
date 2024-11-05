@@ -22,6 +22,7 @@ public class MemberController {
 
     @GetMapping("/me")
     public CommonResponse<String> showPrincipal(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("사용자 id : {}", userDetails.getUsername());
         return CommonResponse.success("로그인에 성공했습니다!", userDetails.getUsername());
     }
 

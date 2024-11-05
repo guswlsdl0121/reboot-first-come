@@ -20,7 +20,10 @@ spring:
     property-naming-strategy: SNAKE_CASE
 
   session:
-    timeout: 3600
+    redis:
+      namespace: "spring:session" # 세션 키의 prefix
+      flush-mode: on_save         # 세션 저장 모드
+      cleanup-cron: "0 * * * * *"
 
   flyway:
     enabled: true
@@ -47,6 +50,8 @@ spring:
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
 

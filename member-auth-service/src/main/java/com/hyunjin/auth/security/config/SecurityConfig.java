@@ -2,6 +2,7 @@ package com.hyunjin.auth.security.config;
 
 import com.hyunjin.auth.security.provider.AuthenticationproviderImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Arrays;
+
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -21,10 +25,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        String[] publicUrls = securityProperties.getPublicUrls();
+        log.info("Permitted URLs: {}", Arrays.toString(publicUrls));
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(true)
+                        .expiredUrl("/login?expired=true")
+                )
+
+                .securityContext((securityContext) -> securityContext
+                        .requireExplicitSave(false))
+
                 .authorizeHttpRequests(
                         authz -> authz
                                 .requestMatchers(securityProperties.getPublicUrls()).permitAll()
