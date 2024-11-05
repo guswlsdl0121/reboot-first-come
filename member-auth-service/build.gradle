@@ -61,8 +61,8 @@ dependencies {
     // 메일 발송
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-//    유레카 서버 설정
-//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    // 유레카 서버 설정
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     // 테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
