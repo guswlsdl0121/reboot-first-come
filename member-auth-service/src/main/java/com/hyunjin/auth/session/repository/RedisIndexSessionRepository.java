@@ -42,8 +42,21 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
     @Override
     public void save(MapSession session) {
         String sessionId = session.getId();
-        deleteById(sessionId);
+        Object memberId = session.getAttribute(PRINCIPAL_NAME_INDEX_NAME);
 
+        // 동일 사용자의 기존 세션 처리
+        if (memberId != null) {
+            Map<String, MapSession> existingSessions = findByIndexNameAndIndexValue(
+                    PRINCIPAL_NAME_INDEX_NAME,
+                    memberId.toString()
+            );
+
+            // 기존 세션들 삭제
+            existingSessions.keySet().forEach(this::deleteById);
+            log.debug("사용자 ID: {}의 기존 세션 {} 개 삭제됨", memberId, existingSessions.size());
+        }
+
+        // 새 세션 저장
         String sessionKey = getSessionKey(sessionId);
 
         Map<String, Object> sessionHash = new HashMap<>();
@@ -55,16 +68,14 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
         Duration remainingTime = session.getMaxInactiveInterval();
         String expiresKey = getExpiresKey(sessionId);
         redisTemplate.opsForValue().set(expiresKey, "", remainingTime);
-
         redisTemplate.expire(sessionKey, remainingTime);
 
-        Object memberId = session.getAttribute(PRINCIPAL_NAME_INDEX_NAME);
         if (memberId != null) {
             String principalIndexKey = getPrincipalIndexKey(memberId.toString());
             redisTemplate.opsForSet().add(principalIndexKey, sessionId);
             redisTemplate.expire(principalIndexKey, remainingTime);
 
-            log.debug("사용자 ID: {}의 세션 저장 완료. 세션 ID: {}", memberId, sessionId);
+            log.debug("사용자 ID: {}의 새 세션 저장 완료. 세션 ID: {}", memberId, sessionId);
         }
     }
 
