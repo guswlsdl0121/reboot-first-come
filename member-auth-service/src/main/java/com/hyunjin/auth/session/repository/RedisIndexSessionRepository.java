@@ -3,18 +3,26 @@ package com.hyunjin.auth.session.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.MapSession;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 @Slf4j
 @Primary
 @Component
 public class RedisIndexSessionRepository implements CustomSessionRepository {
-    private static final String SESSION_PREFIX = "spring:session:";
-    private static final String USER_SESSIONS_PREFIX = "spring:session:index:";
+    private static final String BASE_PREFIX = "spring:session:";
+    private static final String SESSIONS_PREFIX = BASE_PREFIX + "sessions:";
+    private static final String SESSION_KEY_PREFIX = SESSIONS_PREFIX + "session:";
+    private static final String EXPIRES_KEY_PREFIX = SESSIONS_PREFIX + "expires:";
+    private static final String INDEX_PREFIX = BASE_PREFIX + "index:";
+    private static final String PRINCIPAL_NAME_INDEX_PREFIX = INDEX_PREFIX + FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME + ":";
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final Duration defaultMaxInactiveInterval;
@@ -33,56 +41,93 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
 
     @Override
     public void save(MapSession session) {
-        String sessionKey = getSessionKey(session.getId());
-        String memberId = session.getAttribute(PRINCIPAL_NAME_INDEX_NAME);
+        String sessionId = session.getId();
+        deleteById(sessionId);
 
+        String sessionKey = getSessionKey(sessionId);
+
+        Map<String, Object> sessionHash = new HashMap<>();
+        session.getAttributeNames().forEach(attrName ->
+                sessionHash.put(attrName, session.getAttribute(attrName)));
+
+        redisTemplate.opsForHash().putAll(sessionKey, sessionHash);
+
+        Duration remainingTime = session.getMaxInactiveInterval();
+        String expiresKey = getExpiresKey(sessionId);
+        redisTemplate.opsForValue().set(expiresKey, "", remainingTime);
+
+        redisTemplate.expire(sessionKey, remainingTime);
+
+        Object memberId = session.getAttribute(PRINCIPAL_NAME_INDEX_NAME);
         if (memberId != null) {
-            // 동일 사용자의 기존 세션들을 모두 찾아서 삭제
-            String indexKey = getUserSessionsKey(memberId);
-            Set<Object> existingSessions = redisTemplate.opsForSet().members(indexKey);
+            String principalIndexKey = getPrincipalIndexKey(memberId.toString());
+            redisTemplate.opsForSet().add(principalIndexKey, sessionId);
+            redisTemplate.expire(principalIndexKey, remainingTime);
 
-            if (existingSessions != null && !existingSessions.isEmpty()) {
-                for (Object existingSessionId : existingSessions) {
-                    if (!existingSessionId.equals(session.getId())) {  // 현재 세션은 제외
-                        redisTemplate.delete(getSessionKey((String) existingSessionId));
-                        redisTemplate.opsForSet().remove(indexKey, existingSessionId);
-                    }
-                }
-            }
-        }
-
-        // 새 세션 저장
-        Map<String, Object> sessionMap = new HashMap<>();
-        for (String attrName : session.getAttributeNames()) {
-            sessionMap.put(attrName, session.getAttribute(attrName));
-        }
-
-        redisTemplate.opsForHash().putAll(sessionKey, sessionMap);
-        redisTemplate.expire(sessionKey, defaultMaxInactiveInterval);
-
-        if (memberId != null) {
-            String indexKey = getUserSessionsKey(memberId);
-            redisTemplate.opsForSet().add(indexKey, session.getId());
-            redisTemplate.expire(indexKey, defaultMaxInactiveInterval);
+            log.debug("사용자 ID: {}의 세션 저장 완료. 세션 ID: {}", memberId, sessionId);
         }
     }
+
     @Override
     public MapSession findById(String id) {
         String sessionKey = getSessionKey(id);
         Map<Object, Object> entries = redisTemplate.opsForHash().entries(sessionKey);
 
         if (entries.isEmpty()) {
+            log.debug("세션을 찾을 수 없습니다. 세션 ID: {}", id);
             return null;
         }
 
         MapSession session = new MapSession(id);
+
         entries.forEach((key, value) -> {
             if (key instanceof String) {
-                session.setAttribute(key.toString(), value);
+                session.setAttribute((String) key, value);
             }
         });
 
+        if (isSessionExpired(session)) {
+            deleteById(id);
+            return null;
+        }
+
+        log.debug("세션 조회 완료. 세션 ID: {}, 세션 속성: {}", id, session.getAttributeNames());
         return session;
+    }
+
+    @Override
+    public void deleteById(String id) {
+        log.debug("세션 삭제 시도. 세션 ID: {}", id);
+
+        var session = findById(id);
+        if (session != null) {
+            var memberId = session.getAttribute(PRINCIPAL_NAME_INDEX_NAME);
+
+            // 1. 세션 키 삭제
+            String sessionKey = getSessionKey(id);
+            redisTemplate.delete(sessionKey);
+
+            // 2. 만료 키 삭제
+            String expiresKey = getExpiresKey(id);
+            redisTemplate.delete(expiresKey);
+
+            // 3. 인덱스에서 세션 제거
+            if (memberId != null) {
+                String principalIndexKey = getPrincipalIndexKey(memberId.toString());
+                redisTemplate.opsForSet().remove(principalIndexKey, id);
+            }
+
+            // 4. 세션 관련된 모든 추가 키 삭제
+            String sessionPattern = SESSION_KEY_PREFIX + id + "*";
+            Set<String> sessionKeys = redisTemplate.keys(sessionPattern);
+
+            assert sessionKeys != null;
+            if (!sessionKeys.isEmpty()) {
+                redisTemplate.delete(sessionKeys);
+            }
+
+            log.info("세션 삭제 완료. 세션 ID: {}, 사용자 ID: {}", id, memberId);
+        }
     }
 
     @Override
@@ -91,57 +136,64 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
             return Collections.emptyMap();
         }
 
-        String indexKey = getUserSessionsKey(indexValue);
-        Set<Object> sessionIds = redisTemplate.opsForSet().members(indexKey);
+        String principalIndexKey = getPrincipalIndexKey(indexValue);
+        Set<Object> sessionIds = redisTemplate.opsForSet().members(principalIndexKey);
 
-        if (sessionIds == null) {
+        if (sessionIds == null || sessionIds.isEmpty()) {
             return Collections.emptyMap();
         }
 
-        Map<String, MapSession> sessions = new HashMap<>();
-        for (Object sessionId : sessionIds) {
-            MapSession session = findById((String) sessionId);
-            if (session != null) {
-                sessions.put((String) sessionId, session);
-            }
-        }
-
-        return sessions;
-    }
-
-    @Override
-    public void deleteById(String id) {
-        MapSession session = findById(id);
-        if (session != null) {
-            String memberId = session.getAttribute(PRINCIPAL_NAME_INDEX_NAME);
-            String sessionKey = getSessionKey(id);
-            String indexKey = getUserSessionsKey(memberId);
-
-            redisTemplate.delete(sessionKey);
-            if (memberId != null) {
-                redisTemplate.opsForSet().remove(indexKey, id);
-            }
-        }
+        return sessionIds.stream()
+                .map(String.class::cast)
+                .map(this::findById)
+                .filter(Objects::nonNull)
+                .filter(session -> !isSessionExpired(session))
+                .collect(Collectors.toMap(MapSession::getId, session -> session));
     }
 
     @Override
     public void deleteAllByIndex(String memberId) {
-        String indexKey = getUserSessionsKey(memberId);
-        Set<Object> sessionIds = redisTemplate.opsForSet().members(indexKey);
+        log.debug("사용자의 모든 세션 삭제 시도. 사용자 ID: {}", memberId);
+
+        String principalIndexKey = getPrincipalIndexKey(memberId);
+        Set<Object> sessionIds = redisTemplate.opsForSet().members(principalIndexKey);
 
         if (sessionIds != null && !sessionIds.isEmpty()) {
-            for (Object sessionId : sessionIds) {
-                redisTemplate.delete(getSessionKey((String) sessionId));
-            }
-            redisTemplate.delete(indexKey);
+            sessionIds.stream()
+                    .map(String.class::cast)
+                    .forEach(sessionId -> {
+                        String sessionKey = getSessionKey(sessionId);
+                        String expiresKey = getExpiresKey(sessionId);
+
+                        List<String> keysToDelete = Arrays.asList(sessionKey, expiresKey);
+                        redisTemplate.delete(keysToDelete);
+
+                        log.debug("세션 키 삭제 완료. 세션 ID: {}", sessionId);
+                    });
+
+            redisTemplate.delete(principalIndexKey);
+
+            log.info("사용자의 모든 세션 삭제 완료. 사용자 ID: {}, 삭제된 세션 수: {}",
+                    memberId, sessionIds.size());
+        } else {
+            log.debug("삭제할 세션이 없습니다. 사용자 ID: {}", memberId);
         }
     }
 
     private String getSessionKey(String sessionId) {
-        return SESSION_PREFIX + sessionId;
+        return SESSION_KEY_PREFIX + sessionId;
     }
 
-    private String getUserSessionsKey(String memberId) {
-        return USER_SESSIONS_PREFIX + PRINCIPAL_NAME_INDEX_NAME + ":" + memberId;
+    private String getExpiresKey(String sessionId) {
+        return EXPIRES_KEY_PREFIX + sessionId;
+    }
+
+    private String getPrincipalIndexKey(String principalName) {
+        return PRINCIPAL_NAME_INDEX_PREFIX + principalName;
+    }
+
+    private boolean isSessionExpired(MapSession session) {
+        Instant now = Instant.now();
+        return session.getLastAccessedTime().plus(session.getMaxInactiveInterval()).isBefore(now);
     }
 }
