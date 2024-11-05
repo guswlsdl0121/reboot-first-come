@@ -1,7 +1,9 @@
 package com.hyunjin.auth.encryption.config;
 
+import io.micrometer.common.util.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
@@ -28,7 +30,12 @@ public class EncryptionConfig {
      * 기타 개인 정보 저장을 위한 양방향 암호화
      */
     @Bean
+    @Primary
     public TextEncryptor twoWayAESEncryptor() {
+        if (StringUtils.isEmpty(encryptionProperties.getKey()) ||
+                StringUtils.isEmpty(encryptionProperties.getSalt())) {
+            throw new IllegalStateException("Encryption key and salt must be configured");
+        }
         return Encryptors.text(encryptionProperties.getKey(), encryptionProperties.getSalt());
     }
 }

@@ -5,6 +5,7 @@ import com.hyunjin.entity.Member;
 import com.hyunjin.member.usecase.MemberFinder;
 import com.hyunjin.member.usecase.MemberValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthenticationproviderImpl implements AuthenticationProvider {
@@ -26,23 +28,35 @@ public class AuthenticationproviderImpl implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String email = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        try {
+            String email = authentication.getName();
+            String password = authentication.getCredentials().toString();
 
-        Member member = memberFinder.fetchByEmail(email);
-        memberValidator.matchPassword(password, member.getPassword());
+            log.debug("Attempting to authenticate user: {}", email);
 
-        List<GrantedAuthority> authorities = Collections.singletonList(
-                new SimpleGrantedAuthority(member.getRole().name())
-        );
+            Member member = memberFinder.fetchByEmail(email);
+            log.debug("Found member with ID: {}", member.getId());
 
-        UserDetails userDetails = User.builder()
-                .username(member.getId().toString())
-                .password(password)
-                .authorities(authorities)
-                .build();
+            memberValidator.matchPassword(password, member.getPassword());
+            log.debug("Password validation successful");
 
-        return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+            List<GrantedAuthority> authorities = Collections.singletonList(
+                    new SimpleGrantedAuthority(member.getRole().name())
+            );
+
+            UserDetails userDetails = User.builder()
+                    .username(member.getId().toString())
+                    .password(password)
+                    .authorities(authorities)
+                    .build();
+
+            log.debug("Created UserDetails with authorities: {}", authorities);
+
+            return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+        } catch (Exception e) {
+            log.error("Authentication provider failed", e);
+            throw e;
+        }
     }
 
     @Override

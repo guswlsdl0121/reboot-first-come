@@ -49,6 +49,9 @@ spring:
             required: true
 
 eureka:
+  instance:
+    prefer-ip-address: true  # 추가
+    hostname: localhost
   client:
     register-with-eureka: true
     fetch-registry: true
