@@ -8,8 +8,11 @@ import com.hyunjin.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +24,20 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/me")
-    public CommonResponse<String> showPrincipal(@AuthenticationPrincipal UserDetails userDetails) {
-        log.info("사용자 id : {}", userDetails.getUsername());
-        return CommonResponse.success("로그인에 성공했습니다!", userDetails.getUsername());
+    public ResponseEntity<CommonResponse<String>> showPrincipal() {
+        log.error("=== /me endpoint called ===");  // error 레벨로 변경
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.error("Authentication: {}", auth);
+
+        if (auth != null) {
+            log.error("Principal: {}", auth.getPrincipal());
+            log.error("Authorities: {}", auth.getAuthorities());
+            return ResponseEntity.ok(CommonResponse.success(auth.getName()));
+        }
+
+        log.error("No authentication found");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.fail("인증 정보가 없습니다."));
     }
 
     @PostMapping("/signup")

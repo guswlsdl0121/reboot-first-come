@@ -17,10 +17,12 @@ public class RedisConfig {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
+        // Member Auth Service와 동일한 ObjectMapper 설정
         ObjectMapper objectMapper = new ObjectMapper();
         ClassLoader classLoader = this.getClass().getClassLoader();
         objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
 
+        // Member Auth Service와 동일한 Serializer 설정
         GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(objectMapper);
 
         template.setDefaultSerializer(serializer);
@@ -29,6 +31,15 @@ public class RedisConfig {
         template.setHashValueSerializer(serializer);
         template.setValueSerializer(serializer);
 
+        template.afterPropertiesSet();
         return template;
+    }
+
+    @Bean
+    public GenericJackson2JsonRedisSerializer springSessionDefaultRedisSerializer() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
+        return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
 }

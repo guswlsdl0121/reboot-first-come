@@ -1,6 +1,7 @@
 package com.hyunjin.auth.security.config;
 
 import com.hyunjin.auth.security.provider.AuthenticationproviderImpl;
+import com.hyunjin.auth.session.GatewayAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Arrays;
 
@@ -22,6 +24,7 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final SecurityProperties securityProperties;
     private final AuthenticationproviderImpl authenticationproviderImpl;
+    private final GatewayAuthenticationFilter gatewayAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -45,7 +48,9 @@ public class SecurityConfig {
                         authz -> authz
                                 .requestMatchers(securityProperties.getPublicUrls()).permitAll()
                                 .anyRequest().authenticated())
-                .authenticationProvider(authenticationproviderImpl);
+                .authenticationProvider(authenticationproviderImpl)
+                .addFilterBefore(gatewayAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
