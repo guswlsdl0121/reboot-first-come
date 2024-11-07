@@ -1,14 +1,14 @@
 package com.hyunjin.member.service;
 
 
-import com.hyunjin.auth.core.service.AuthService;
-import com.hyunjin.entity.Member;
-import com.hyunjin.member.dto.request.ChangePasswordRequest;
-import com.hyunjin.member.dto.request.SignupRequest;
-import com.hyunjin.member.usecase.MemberAppender;
-import com.hyunjin.member.usecase.MemberFinder;
-import com.hyunjin.member.usecase.MemberUpdater;
-import com.hyunjin.member.usecase.MemberValidator;
+import com.hyunjin.auth.service.AuthService;
+import com.hyunjin.member.api.dto.request.ChangePasswordRequest;
+import com.hyunjin.member.api.dto.request.SignupRequest;
+import com.hyunjin.member.entity.Member;
+import com.hyunjin.member.service.usecase.MemberAppender;
+import com.hyunjin.member.service.usecase.MemberFinder;
+import com.hyunjin.member.service.usecase.MemberUpdater;
+import com.hyunjin.member.service.usecase.MemberValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

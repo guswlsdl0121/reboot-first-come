@@ -143,9 +143,15 @@ public class SessionFilter implements GlobalFilter, Ordered {
     private void updateSessionLastAccessedTime(String sessionId) {
         try {
             String key = SESSION_PREFIX + sessionId;
-            redisTemplate.opsForHash().put(key, "lastAccessedTime", System.currentTimeMillis());
-            redisTemplate.expire(key, Duration.ofMinutes(30));
-            log.error("Updated session last accessed time for session: {}", sessionId);
+            Map<Object, Object> sessionData = redisTemplate.opsForHash().entries(key);
+
+            // 기존 데이터 유지하면서 lastAccessedTime만 업데이트
+            if (!sessionData.isEmpty()) {
+                sessionData.put("lastAccessedTime", System.currentTimeMillis());
+                redisTemplate.opsForHash().putAll(key, sessionData);
+                redisTemplate.expire(key, Duration.ofMinutes(30));
+                log.debug("Updated session last accessed time for session: {}", sessionId);
+            }
         } catch (Exception e) {
             log.error("Failed to update session last accessed time", e);
         }
