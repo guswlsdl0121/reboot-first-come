@@ -29,24 +29,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         String[] publicUrls = securityProperties.getPublicUrls();
-        log.info("Permitted URLs: {}", Arrays.toString(publicUrls));
+        log.info("인증 없이 접근 가능한 URL 목록: {}", Arrays.toString(publicUrls));
 
         http
+                // CSRF 보호 비활성화
                 .csrf(AbstractHttpConfigurer::disable)
 
+                // 세션 관리 설정
                 .sessionManagement(session -> session
+                        // 세션을 직접 생성하지 않고 Gateway에서 전달된 세션만 사용
                         .sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true)
-                        .expiredUrl("/login?expired=true")
                 )
 
+                // SecurityContext 설정
                 .securityContext((securityContext) -> securityContext
                         .requireExplicitSave(false))
 
+                // URL별 접근 권한 설정
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers(securityProperties.getPublicUrls()).permitAll()
+                                .requestMatchers(publicUrls).permitAll()
                                 .anyRequest().authenticated())
                 .authenticationProvider(authenticationproviderImpl)
                 .addFilterBefore(gatewayAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

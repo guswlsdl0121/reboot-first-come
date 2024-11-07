@@ -1,7 +1,7 @@
 package com.hyunjin.member.service.usecase;
 
 
-import com.hyunjin.common.exception.DuplicatedException;
+import com.hyunjin.common.exception.exception.DuplicatedException;
 import com.hyunjin.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

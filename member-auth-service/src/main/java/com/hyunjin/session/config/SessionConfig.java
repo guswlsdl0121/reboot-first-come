@@ -15,32 +15,35 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @Configuration
 @EnableRedisHttpSession
 public class SessionConfig {
+    // Redis 세션 저장소 설정
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
+        // SecurityContext 직렬화를 위한 ObjectMapper 설정
         ObjectMapper objectMapper = new ObjectMapper();
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
+        objectMapper.registerModules(SecurityJackson2Modules.getModules(this.getClass().getClassLoader()));
 
-        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+        // Redis 직렬화 설정
+        GenericJackson2JsonRedisSerializer jsonSerializer =
+                new GenericJackson2JsonRedisSerializer(objectMapper);
+        StringRedisSerializer stringSerializer = new StringRedisSerializer();
 
-        template.setDefaultSerializer(serializer);
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(serializer);
-        template.setValueSerializer(serializer);
+        template.setDefaultSerializer(jsonSerializer);
+        template.setKeySerializer(stringSerializer);
+        template.setHashKeySerializer(stringSerializer);
+        template.setHashValueSerializer(jsonSerializer);
+        template.setValueSerializer(jsonSerializer);
 
         return template;
     }
 
+    // Spring Session의 기본 직렬화 설정
     @Bean
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
         ObjectMapper objectMapper = new ObjectMapper();
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        objectMapper.registerModules(SecurityJackson2Modules.getModules(classLoader));
-
+        objectMapper.registerModules(SecurityJackson2Modules.getModules(this.getClass().getClassLoader()));
         return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
 }

@@ -55,7 +55,9 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
             // Step 3: 새로운 세션 데이터 구성
             Map<String, Object> sessionData = new HashMap<>();
             Object securityContext = session.getAttribute(RedisField.SECURITY_CONTEXT);
-            sessionData.put(RedisField.SECURITY_CONTEXT, securityContext);
+            if (securityContext != null) {
+                sessionData.put(RedisField.SECURITY_CONTEXT, securityContext);
+            }
             sessionData.put(RedisField.PRINCIPAL_NAME, memberId);
             sessionData.put(RedisField.LAST_ACCESSED_TIME, System.currentTimeMillis());
 

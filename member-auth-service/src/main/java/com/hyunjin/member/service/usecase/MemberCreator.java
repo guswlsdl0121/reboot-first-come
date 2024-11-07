@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class MemberAppender {
+public class MemberCreator {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 

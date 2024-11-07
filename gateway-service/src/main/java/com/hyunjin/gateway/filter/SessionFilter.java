@@ -1,5 +1,8 @@
 package com.hyunjin.gateway.filter;
 
+import com.hyunjin.gateway.constants.AuthConstants;
+import com.hyunjin.gateway.constants.RedisConstants;
+import com.hyunjin.gateway.exception.exception.SessionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -25,143 +28,103 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SessionFilter implements GlobalFilter, Ordered {
     private final RedisTemplate<String, Object> redisTemplate;
-    private static final String SESSION_PREFIX = "spring:session:sessions:";
-    private static final String SPRING_SECURITY_CONTEXT = "SPRING_SECURITY_CONTEXT";
-    private static final String X_AUTH_TOKEN = "X-Auth-Token";
-
-    private final List<String> publicPaths = List.of(
-            "/api/auth/login",
-            "/api/auth/logout",
-            "/api/member/signup",
-            "/api/email/verify-email"
-    );
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getPath().value();
 
-        log.error("=== Session Filter Start ===");
-        log.error("Request Path: {}", path);
-        log.error("Request Headers: {}", request.getHeaders());
+        log.debug("세션 필터 처리 시작 - 요청 경로: {}", path);
 
         if (isPublicPath(path)) {
-            log.error("Public path detected - skipping session validation");
+            log.debug("인증이 필요없는 공개 API 요청");
             return chain.filter(exchange);
         }
 
         String sessionId = getSessionId(request);
         if (sessionId == null) {
-            log.error("Session ID is missing in request");
-            return onError(exchange, "Missing session ID");
+            log.warn("세션 ID가 요청에 없음");
+            return Mono.error(new SessionException("세션 정보가 없습니다"));
         }
-        log.error("Session ID found: {}", sessionId);
 
         return validateSession(sessionId)
-                .doOnNext(sessionData -> log.error("Session Data: {}", sessionData))
                 .flatMap(sessionData -> {
                     if (sessionData == null) {
-                        log.error("No session data found in Redis");
-                        return onError(exchange, "Invalid session");
+                        log.warn("Redis에서 세션 정보를 찾을 수 없음: {}", sessionId);
+                        return Mono.error(new SessionException("유효하지 않은 세션"));
                     }
 
                     SecurityContext securityContext = extractSecurityContext(sessionData);
                     if (securityContext == null || securityContext.getAuthentication() == null) {
-                        log.error("Invalid security context in session");
-                        return onError(exchange, "Invalid security context");
+                        log.warn("세션의 인증 정보가 유효하지 않음: {}", sessionId);
+                        return Mono.error(new SessionException("유효하지 않은 인증 정보"));
                     }
 
                     Authentication auth = securityContext.getAuthentication();
-                    log.error("User authenticated - Name: {}, Authorities: {}",
+                    log.debug("인증된 사용자 정보 - ID: {}, 권한: {}",
                             auth.getName(), auth.getAuthorities());
 
                     ServerHttpRequest mutatedRequest = request.mutate()
-                            .header("X-User-Id", auth.getName())
-                            .header("X-User-Roles", String.join(",",
+                            .header(AuthConstants.X_USER_ID, auth.getName())
+                            .header(AuthConstants.X_USER_ROLES, String.join(",",
                                     auth.getAuthorities().stream()
                                             .map(Object::toString)
                                             .toList()))
                             .build();
 
-                    log.error("Request headers after mutation: {}", mutatedRequest.getHeaders());
-
                     updateSessionLastAccessedTime(sessionId);
                     return chain.filter(exchange.mutate().request(mutatedRequest).build());
-                })
-                .onErrorResume(e -> {
-                    log.error("Error during session validation", e);
-                    return onError(exchange, "Session validation failed");
                 });
     }
 
     private boolean isPublicPath(String path) {
-        return publicPaths.stream().anyMatch(path::startsWith);
+        return AuthConstants.PUBLIC_PATHS.stream().anyMatch(path::startsWith);
     }
 
     private String getSessionId(ServerHttpRequest request) {
-        List<String> authHeaders = request.getHeaders().get(X_AUTH_TOKEN);
-        String sessionId = authHeaders != null && !authHeaders.isEmpty() ? authHeaders.get(0) : null;
-        log.error("Extracted session ID from header: {}", sessionId);
-        return sessionId;
+        List<String> authHeaders = request.getHeaders().get(AuthConstants.X_AUTH_TOKEN);
+        return authHeaders != null && !authHeaders.isEmpty() ? authHeaders.getFirst() : null;
     }
 
     private Mono<Map<Object, Object>> validateSession(String sessionId) {
         try {
-            String sessionKey = SESSION_PREFIX + "session:" + sessionId;
+            String sessionKey = RedisConstants.SESSION_PREFIX + "session:" + sessionId;
             Map<Object, Object> sessionData = redisTemplate.opsForHash().entries(sessionKey);
 
-            log.error("Redis key being checked: {}", sessionKey);
-            log.error("Session data from Redis: {}", sessionData);
-
-            if (sessionData.isEmpty()) {
+            if (sessionData.isEmpty() || !sessionData.containsKey(RedisConstants.SECURITY_CONTEXT)) {
                 return Mono.empty();
             }
 
-            // SecurityContext가 있다면 세션이 유효한 것으로 처리
-            if (sessionData.containsKey(SPRING_SECURITY_CONTEXT)) {
-                return Mono.just(sessionData);
-            }
-
-            return Mono.empty();
+            return Mono.just(sessionData);
         } catch (Exception e) {
-            log.error("Error while validating session", e);
+            log.error("세션 검증 중 Redis 오류 발생", e);
             return Mono.error(e);
         }
     }
 
     private SecurityContext extractSecurityContext(Map<Object, Object> sessionData) {
         try {
-            Object contextData = sessionData.get(SPRING_SECURITY_CONTEXT);
-            log.error("Security context from session: {}", contextData);
-            return (SecurityContext) contextData;
+            return (SecurityContext) sessionData.get(RedisConstants.SECURITY_CONTEXT);
         } catch (Exception e) {
-            log.error("Error extracting security context", e);
+            log.error("Security Context 추출 중 오류 발생", e);
             return null;
         }
     }
 
     private void updateSessionLastAccessedTime(String sessionId) {
         try {
-            String key = SESSION_PREFIX + sessionId;
+            String key = RedisConstants.SESSION_PREFIX + sessionId;
             Map<Object, Object> sessionData = redisTemplate.opsForHash().entries(key);
 
-            // 기존 데이터 유지하면서 lastAccessedTime만 업데이트
             if (!sessionData.isEmpty()) {
-                sessionData.put("lastAccessedTime", System.currentTimeMillis());
+                sessionData.put(RedisConstants.LAST_ACCESSED_TIME, System.currentTimeMillis());
                 redisTemplate.opsForHash().putAll(key, sessionData);
                 redisTemplate.expire(key, Duration.ofMinutes(30));
-                log.debug("Updated session last accessed time for session: {}", sessionId);
+                log.debug("세션 접근 시간 업데이트 완료: {}", sessionId);
             }
         } catch (Exception e) {
-            log.error("Failed to update session last accessed time", e);
+            log.error("세션 접근 시간 업데이트 실패", e);
         }
-    }
-
-    private Mono<Void> onError(ServerWebExchange exchange, String message) {
-        ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        log.error("Authentication error: {}", message);
-        return response.setComplete();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.hyunjin.mail.exception.exception;
+package com.hyunjin.mail.exception;
 
 public class AuthCodeException extends RuntimeException {
     public AuthCodeException(String message) {

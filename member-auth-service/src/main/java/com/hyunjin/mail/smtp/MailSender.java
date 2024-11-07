@@ -1,6 +1,6 @@
 package com.hyunjin.mail.smtp;
 
-import com.hyunjin.mail.exception.exception.AuthCodeException;
+import com.hyunjin.mail.exception.AuthCodeException;
 import com.hyunjin.mail.smtp.config.MailProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;

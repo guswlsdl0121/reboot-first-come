@@ -28,39 +28,34 @@ public class AuthenticationproviderImpl implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        try {
-            String email = authentication.getName();
-            String password = authentication.getCredentials().toString();
+        // Step 1: 인증 정보 추출
+        String email = authentication.getName();
+        String password = authentication.getCredentials().toString();
 
-            log.debug("Attempting to authenticate user: {}", email);
+        // Step 2: 회원 정보 조회 및 비밀번호 검증
+        Member member = memberFinder.fetchByEmail(email);
+        memberValidator.matchPassword(password, member.getPassword());
 
-            Member member = memberFinder.fetchByEmail(email);
-            log.debug("Found member with ID: {}", member.getId());
+        // Step 3: 인증 토큰 생성
+        List<GrantedAuthority> authorities = Collections.singletonList(
+                new SimpleGrantedAuthority(member.getRole().name())
+        );
 
-            memberValidator.matchPassword(password, member.getPassword());
-            log.debug("Password validation successful");
+        UserDetails userDetails = User.builder()
+                .username(member.getId().toString())
+                .password(password)
+                .authorities(authorities)
+                .build();
 
-            List<GrantedAuthority> authorities = Collections.singletonList(
-                    new SimpleGrantedAuthority(member.getRole().name())
-            );
+        log.info("사용자 인증 성공. email: {}, role: {}", email, member.getRole());
 
-            UserDetails userDetails = User.builder()
-                    .username(member.getId().toString())
-                    .password(password)
-                    .authorities(authorities)
-                    .build();
-
-            log.debug("Created UserDetails with authorities: {}", authorities);
-
-            return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-        } catch (Exception e) {
-            log.error("Authentication provider failed", e);
-            throw e;
-        }
+        return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
     }
 
+    // 지원하는 인증 타입 확인
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
+
 }

@@ -1,6 +1,6 @@
 package com.hyunjin.mail.repository;
 
-import com.hyunjin.mail.exception.exception.CodeNotFoundException;
+import com.hyunjin.mail.exception.CodeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
