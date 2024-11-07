@@ -16,7 +16,7 @@ public class RedisKeys {
         return SESSIONS + sessionId;
     }
 
-    public static String getPrincipalIndexKey(String principalId) {
+    public static String getIndexKey(String principalId) {
         return INDICES + PRINCIPAL_NAME + ":" + principalId;
     }
 }

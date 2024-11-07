@@ -15,6 +15,5 @@ public class AuthConstants {
     );
 
     private AuthConstants() {
-        throw new IllegalStateException("상수 클래스는 인스턴스화할 수 없습니다");
     }
 }

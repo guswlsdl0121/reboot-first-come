@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,58 +25,82 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class GatewayAuthenticationFilter extends OncePerRequestFilter {
+    private static final String X_USER_ID = "X-User-Id";
+    private static final String X_USER_ROLES = "X-User-Roles";
     private final SecurityProperties securityProperties;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        if (!shouldNotFilter(request)) {
-            String userId = request.getHeader("X-User-Id");
-            String userRoles = request.getHeader("X-User-Roles");
+        // Step 1: 공개 URL인 경우 인증 절차 생략
+        if (shouldNotFilter(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            if (userId == null || userRoles == null) {
-                log.warn("인증 헤더 누락. uri: {}", request.getRequestURI());
-                sendUnauthorizedResponse(response, "인증 정보가 누락되었습니다.");
+        // Step 2: 게이트웨이 인증 헤더 검증
+        String userId = request.getHeader(X_USER_ID);
+        String userRoles = request.getHeader(X_USER_ROLES);
+
+        if (!isValidAuthHeaders(userId, userRoles)) {
+            log.warn("[인증 실패] 요청 URI: {}, 인증 헤더 누락 - userId: {}, roles: {}",
+                    request.getRequestURI(), userId, userRoles);
+            sendUnauthorizedResponse(response, "인증 정보가 누락되었습니다.");
+            return;
+        }
+
+        try {
+            // Step 3: 기존 인증 확인 및 재사용
+            Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+            if (isValidAuthentication(existingAuth)) {
+                log.debug("[인증 성공] 기존 인증 정보 재사용 - userId: {}", existingAuth.getName());
+                filterChain.doFilter(request, response);
                 return;
             }
 
-            try {
-                Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+            // Step 4: 권한 정보 변환 및 인증 객체 생성
+            List<SimpleGrantedAuthority> authorities = convertToAuthorities(userRoles);
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userId, null, authorities);
 
-                if (existingAuth != null && existingAuth.isAuthenticated()) {
-                    filterChain.doFilter(request, response);
-                    return;
-                }
+            // Step 5: Security Context 설정
+            SecurityContext context = SecurityContextHolder.getContext();
+            context.setAuthentication(authentication);
 
-                List<SimpleGrantedAuthority> authorities = Arrays.stream(userRoles.split(","))
-                        .map(String::trim)
-                        .map(SimpleGrantedAuthority::new)
-                        .toList();
-
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userId, null, authorities);
-                SecurityContext context = SecurityContextHolder.getContext();
-                context.setAuthentication(authentication);
-
-                log.info("게이트웨이 인증 처리 완료. userId: {}, roles: {}", userId, userRoles);
-
-            } catch (Exception e) {
-                log.error("게이트웨이 인증 처리 실패. userId: {}", userId, e);
-                SecurityContextHolder.clearContext();
-                sendUnauthorizedResponse(response, "인증 처리 중 오류가 발생했습니다.");
-                return;
-            }
-
-            if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                log.error("인증 컨텍스트 생성 실패. userId: {}", userId);
+            // Step 6: 최종 인증 확인
+            if (context.getAuthentication() == null) {
+                log.error("[인증 실패] Security Context 생성 실패 - userId: {}", userId);
                 sendUnauthorizedResponse(response, "인증에 실패했습니다.");
                 return;
             }
-        }
 
-        filterChain.doFilter(request, response);
+            log.debug("[인증 성공] 새로운 인증 정보 생성 - userId: {}, roles: {}", userId, userRoles);
+            filterChain.doFilter(request, response);
+
+        } catch (Exception e) {
+            // Step 7: 예외 처리
+            log.error("[인증 오류] 인증 처리 중 예외 발생 - userId: {}", userId, e);
+            SecurityContextHolder.clearContext();
+            sendUnauthorizedResponse(response, "인증 처리 중 오류가 발생했습니다.");
+        }
+    }
+
+    private boolean isValidAuthHeaders(String userId, String userRoles) {
+        return StringUtils.hasText(userId) && StringUtils.hasText(userRoles);
+    }
+
+    private boolean isValidAuthentication(Authentication auth) {
+        return auth != null && auth.isAuthenticated();
+    }
+
+    private List<SimpleGrantedAuthority> convertToAuthorities(String userRoles) {
+        return Arrays.stream(userRoles.split(","))
+                .map(String::trim)
+                .filter(StringUtils::hasText)
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 
     private void sendUnauthorizedResponse(HttpServletResponse response, String message) throws IOException {

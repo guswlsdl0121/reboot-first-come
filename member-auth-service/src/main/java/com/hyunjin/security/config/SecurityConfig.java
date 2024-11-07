@@ -37,7 +37,6 @@ public class SecurityConfig {
 
                 // 세션 관리 설정
                 .sessionManagement(session -> session
-                        // 세션을 직접 생성하지 않고 Gateway에서 전달된 세션만 사용
                         .sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 )
 

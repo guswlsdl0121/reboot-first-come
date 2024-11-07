@@ -18,8 +18,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 @Slf4j
@@ -40,11 +40,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
         }
 
         // Step 3: 세션 ID 추출
-        List<String> authHeaders = request.getHeaders().get(AuthConstants.X_AUTH_TOKEN);
-        String sessionId = authHeaders != null && !authHeaders.isEmpty() ? authHeaders.getFirst() : null;
-        if (sessionId == null) {
-            return Mono.error(new SessionException("세션 정보가 없습니다"));
-        }
+        String sessionId = Objects.requireNonNull(request.getHeaders().get(AuthConstants.X_AUTH_TOKEN)).getFirst();
 
         try {
             // Step 4: 세션 데이터 검증
@@ -67,7 +63,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
         Map<Object, Object> sessionData = redisTemplate.opsForHash().entries(sessionKey);
 
         // Step 2: 세션 데이터 유효성 검증
-        if (sessionData.isEmpty() || !sessionData.containsKey(RedisFields.PRINCIPAL_NAME)) {
+        if (sessionData.isEmpty() || !sessionData.containsKey(RedisFields.SECURITY_CONTEXT)) {
             throw new SessionException("유효하지 않은 세션");
         }
 
