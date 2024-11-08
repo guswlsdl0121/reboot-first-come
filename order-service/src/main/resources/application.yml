@@ -1,9 +1,10 @@
+
 server:
-  port: 8200
+  port: 8300
 
 spring:
   application:
-    name: product-service
+    name: order-service
 
   datasource:
     url: jdbc:mysql://db:3306/firstcome_system
@@ -13,14 +14,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
-    defer-datasource-initialization: true
-
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:sql/schema-prod.sql
-      data-locations: classpath:sql/data.sql
+      ddl-auto: update
 
 eureka:
   instance:

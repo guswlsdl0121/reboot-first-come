@@ -1,5 +1,6 @@
 package com.hyunjin.gateway.config;
 
+import com.hyunjin.gateway.constants.AuthConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -15,7 +16,7 @@ public class SecurityConfig {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/**").permitAll()
+                        .pathMatchers(AuthConstants.PUBLIC_PATHS.toArray(String[]::new)).permitAll()
                         .anyExchange().authenticated()
                 )
                 .build();
