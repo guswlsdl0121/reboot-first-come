@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/product")
@@ -34,5 +37,22 @@ public class ProductController {
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Integer productId) {
         Product product = productService.fetchById(productId);
         return ResponseEntity.ok(ProductResponse.from(product));
+    }
+
+    @PostMapping("/internal/{productId}/stock")
+    public ResponseEntity<Void> updateStock(
+            @PathVariable Integer productId,
+            @RequestParam Integer quantity) {
+        productService.updateStock(productId, quantity);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/internal/bulk")
+    public ResponseEntity<List<ProductResponse>> getProducts(@RequestParam List<Integer> productIds) {
+        List<Product> products = productService.fetchByIds(productIds);
+        List<ProductResponse> responses = products.stream()
+                .map(ProductResponse::from)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
 }
