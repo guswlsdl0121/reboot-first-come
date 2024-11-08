@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.4'
+    id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
@@ -25,9 +25,14 @@ repositories {
 
 ext {
     set('springCloudVersion', "2023.0.3")
+    set('springCloudVersion', "2023.0.0")
 }
 
 dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
@@ -63,6 +68,9 @@ dependencies {
 
     // 유레카 서버 설정
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // Spring cloud 설정
+    implementation 'org.springframework.cloud:spring-cloud-starter'
 
     // 테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

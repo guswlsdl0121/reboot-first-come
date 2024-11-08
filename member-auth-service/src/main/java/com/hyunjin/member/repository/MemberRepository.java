@@ -1,6 +1,6 @@
 package com.hyunjin.member.repository;
 
-import com.hyunjin.entity.Member;
+import com.hyunjin.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
