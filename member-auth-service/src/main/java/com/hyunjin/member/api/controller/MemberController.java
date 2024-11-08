@@ -4,6 +4,8 @@ package com.hyunjin.member.api.controller;
 import com.hyunjin.common.dto.CommonResponse;
 import com.hyunjin.member.api.dto.request.ChangePasswordRequest;
 import com.hyunjin.member.api.dto.request.SignupRequest;
+import com.hyunjin.member.api.dto.response.MemberResponse;
+import com.hyunjin.member.entity.Member;
 import com.hyunjin.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +46,11 @@ public class MemberController {
         Integer userId = Integer.parseInt(userDetails.getUsername());
         memberService.changePassword(userId, request);
         return ResponseEntity.ok("비밀번호가 성공적으로 변경됐습니다.");
+    }
+
+    @GetMapping("/internal/{memberId}")
+    public ResponseEntity<MemberResponse> getMember(@PathVariable Integer memberId) {
+        Member member = memberService.fetchById(memberId);
+        return ResponseEntity.ok(MemberResponse.from(member));
     }
 }

@@ -18,8 +18,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 @Slf4j
@@ -40,14 +40,19 @@ public class SessionFilter implements GlobalFilter, Ordered {
         }
 
         // Step 3: 세션 ID 추출
-        String sessionId = Objects.requireNonNull(request.getHeaders().get(AuthConstants.X_AUTH_TOKEN)).getFirst();
+        List<String> authTokens = request.getHeaders().get(AuthConstants.X_AUTH_TOKEN);
+        if (authTokens == null || authTokens.isEmpty()) {
+            log.error("인증 토큰이 없습니다. path: {}", path);
+            return Mono.error(new SessionException("인증 토큰이 필요합니다."));
+        }
 
+        String sessionId = authTokens.get(0);
         try {
             // Step 4: 세션 데이터 검증
             Map<Object, Object> sessionData = validateSession(sessionId);
 
-            // Step 5: Security Context 생성
-            SecurityContext securityContext = createSecurityContext(sessionData);
+            // Step 5: 세션에서 Security Context 조회
+            SecurityContext securityContext = getSecurityContext(sessionData);
 
             // Step 6: 세션 처리
             return processSession(sessionId, securityContext, exchange, chain);
@@ -70,7 +75,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
         return sessionData;
     }
 
-    private SecurityContext createSecurityContext(Map<Object, Object> sessionData) {
+    private SecurityContext getSecurityContext(Map<Object, Object> sessionData) {
         SecurityContext securityContext = (SecurityContext) sessionData.get(RedisFields.SECURITY_CONTEXT);
         if (securityContext == null || securityContext.getAuthentication() == null) {
             throw new SessionException("유효하지 않은 인증 정보");

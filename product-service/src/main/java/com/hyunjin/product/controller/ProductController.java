@@ -2,6 +2,8 @@ package com.hyunjin.product.controller;
 
 import com.hyunjin.product.dto.response.ProductDetailResponse;
 import com.hyunjin.product.dto.response.ProductMainResponse;
+import com.hyunjin.product.dto.response.ProductResponse;
+import com.hyunjin.product.entity.Product;
 import com.hyunjin.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +28,11 @@ public class ProductController {
     public ResponseEntity<ProductDetailResponse> getProductDetail(@PathVariable int productId) {
         ProductDetailResponse response = productService.getProductDetail(productId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/internal/{productId}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Integer productId) {
+        Product product = productService.fetchById(productId);
+        return ResponseEntity.ok(ProductResponse.from(product));
     }
 }

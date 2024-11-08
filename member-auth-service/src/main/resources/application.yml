@@ -60,7 +60,8 @@ security:
   public-urls:
     - "/api/v1/member/signup"
     - "/api/v1/auth/login"
+    - "/api/v1/member/internal/**"
 
 encryption:
-  key: "12345678901234567890123456789012"  # 32바이트
-  salt: "1234567890123456"                  # 16바이트
+  key: "12345678901234567890123456789012" # 32바이트
+  salt: "1234567890123456"                # 16바이트

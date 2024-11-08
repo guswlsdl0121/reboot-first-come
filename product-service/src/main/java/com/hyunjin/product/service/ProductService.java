@@ -30,4 +30,8 @@ public class ProductService {
                 .quantity(product.getStock())
                 .build();
     }
+
+    public Product fetchById(Integer productId) {
+        return productFinder.fetchById(productId);
+    }
 }

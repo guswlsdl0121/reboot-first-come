@@ -44,4 +44,8 @@ public class MemberService {
         memberUpdater.updatePassword(member, request.newPassword());
         authService.logoutAllSessions(memberId);
     }
+
+    public Member fetchById(Integer memberId) {
+        return memberFinder.fetchById(memberId);
+    }
 }
