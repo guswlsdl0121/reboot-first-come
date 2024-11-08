@@ -22,25 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             """)
     List<ProductItemDTO> getProducts(@Param("size") Integer size, @Param("cursor") Integer cursor);
 
-    List<Product> findAllByIdIn(List<Integer> productIds);
-
-    @Modifying
-    @Query("""
-            UPDATE Product p
-            SET p.stock = p.stock - :quantity
-            WHERE p.id = :productId
-            AND p.stock >= :quantity
-            """)
-    int decreaseStock(@Param("productId") Integer productId, @Param("quantity") int quantity);
-
-    @Modifying
-    @Query("""
-            UPDATE Product p
-            SET p.stock = p.stock + :quantity
-            WHERE p.id = :productId
-            """)
-    void increaseStock(@Param("productId") Integer productId, @Param("quantity") int quantity);
-
     @Modifying
     @Query("""
             UPDATE Product p
@@ -48,4 +29,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             WHERE p.id = :productId
             """)
     void updateStock(@Param("productId") Integer productId, @Param("quantity") int quantity);
+
+    List<Product> findAllByIdIn(List<Integer> productIds);
 }

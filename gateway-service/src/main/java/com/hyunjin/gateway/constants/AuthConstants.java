@@ -11,7 +11,8 @@ public class AuthConstants {
     // Public API Paths
     public static final List<String> PUBLIC_PATHS = List.of(
             "/api/v1/auth/login",
-            "/api/v1/member/signup"
+            "/api/v1/member/signup",
+            "/api/v1/product"
     );
 
     private AuthConstants() {

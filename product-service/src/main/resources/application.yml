@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8200
 
 spring:
   application:
@@ -11,28 +11,24 @@ spring:
     password: docker1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  data:
-    redis:
-      host: cache
-      port: 6379
-
   jpa:
     hibernate:
       ddl-auto: validate
+    defer-datasource-initialization: true
 
-    open-in-view: false
-
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
-    table: flyway_schema_history
-    locations: classpath:migration
-    default-schema: firstcome_system
-
-  jackson:
-    property-naming-strategy: SNAKE_CASE
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema-prod.sql
+      data-locations: classpath:sql/data.sql
 
 eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka

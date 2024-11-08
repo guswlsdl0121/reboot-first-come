@@ -40,8 +40,6 @@ dependencies {
 
     // 데이터베이스 관련
     runtimeOnly 'com.mysql:mysql-connector-j'
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-mysql'
 
     // 캐시 관련
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -49,10 +47,6 @@ dependencies {
     // 롬복
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    // 스키마 버전 관리를 위한 flyway
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-mysql'
 
     // 유레카 서버 및 내부 통신 설정
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'

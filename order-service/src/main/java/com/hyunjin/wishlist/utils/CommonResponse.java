@@ -1,4 +1,4 @@
-package com.hyunjin.product.utils;
+package com.hyunjin.wishlist.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -8,13 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
     private static final String X_USER_ID = "X-User-Id";
     private static final String X_USER_ROLES = "X-User-Roles";
     private final SecurityProperties securityProperties;
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -111,7 +113,9 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
         return Arrays.stream(securityProperties.getPublicUrls())
-                .anyMatch(path -> request.getServletPath().startsWith(path));
+                .anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
     }
+
 }

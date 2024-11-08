@@ -48,10 +48,6 @@ dependencies {
     // 데이터베이스 관련
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    // 스키마 버전 관리를 위한 flyway
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-mysql'
-
     // 롬복
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
