@@ -1,19 +1,3 @@
--- Product 테이블 생성 및 초기 데이터 설정
-CREATE TABLE IF NOT EXISTS `product`
-(
-    `product_id`  INT            NOT NULL AUTO_INCREMENT,
-    `name`        VARCHAR(255)   NOT NULL COMMENT '상품명',
-    `description` VARCHAR(255) COMMENT '상품 설명',
-    `price`       DECIMAL(10, 2) NOT NULL COMMENT '상품 가격',
-    `stock`       INT            NOT NULL COMMENT '재고 수량',
-    `created_at`  DATETIME(6)    NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `updated_at`  DATETIME(6)    NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6),
-    PRIMARY KEY (`product_id`)
-    );
-
--- 커서 기반 페이지네이션을 위한 내림차순 인덱스 추가
-CREATE INDEX idx_product_id_desc ON product (product_id DESC);
-
 -- 초기 상품 데이터 추가
 INSERT INTO product (name, description, price, stock, created_at)
 VALUES ('MacBook Pro 16"', 'Apple M2 Max 프로세서, 32GB RAM, 1TB SSD', 3690000.00, 50, NOW()),

@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8100
 
 spring:
   application:
@@ -14,25 +14,22 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    open-in-view: false
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/prod/schema.sql
+      data-locations: classpath:sql/prod/data.sql
 
   jackson:
     property-naming-strategy: SNAKE_CASE
 
-  session:
-    redis:
-      namespace: "spring:session" # 세션 키의 prefix
-      flush-mode: on_save         # 세션 저장 모드
-      cleanup-cron: "0 * * * * *"
-
   flyway:
     enabled: true
-    clean-disabled: false           # clean 명령 활성화
-    clean-on-validation-error: true # 검증 오류시 clean 실행
     baseline-on-migrate: true
-    table: flyway_schema_history
-    locations: classpath:migration
-    default-schema: firstcome_system
+    baseline-version: 2000
+    sql-migration-prefix: M
 
   mail:
     host: smtp.gmail.com
@@ -50,8 +47,9 @@ spring:
 
 eureka:
   instance:
-    prefer-ip-address: true  # 추가
+    prefer-ip-address: true
     hostname: localhost
+
   client:
     register-with-eureka: true
     fetch-registry: true
