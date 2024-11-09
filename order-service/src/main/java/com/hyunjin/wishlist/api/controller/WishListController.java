@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class WishListController {
     private final WishListService wishListService;
 
-    @PostMapping
-    public CommonResponse<Integer> addProductToWishlist(@RequestParam Integer productId) {
+    @PostMapping("/{productId}")
+    public CommonResponse<Integer> addProductToWishlist(@PathVariable Integer productId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Integer memberId = Integer.parseInt(auth.getName());
         Integer wishlistId = wishListService.createWishList(memberId, productId);
