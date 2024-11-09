@@ -41,10 +41,11 @@ public class MemberController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@AuthenticationPrincipal UserDetails userDetails,
-                                                 @RequestBody @Valid ChangePasswordRequest request) {
-        Integer userId = Integer.parseInt(userDetails.getUsername());
-        memberService.changePassword(userId, request);
+    public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer memberId = Integer.parseInt(auth.getName());
+        memberService.changePassword(memberId, request);
+
         return ResponseEntity.ok("비밀번호가 성공적으로 변경됐습니다.");
     }
 

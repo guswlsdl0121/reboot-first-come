@@ -1,6 +1,6 @@
 ### 1. 로그인 (해당 body의 계정이 있어야 함)
 # @name login
-POST {{host}}/api/auth/login
+POST {{host}}/api/v1/auth/login
 Content-Type: {{contentType}}
 
 {
@@ -22,7 +22,7 @@ Content-Type: {{contentType}}
 %}
 
 ### 2. 내 정보 조회
-GET {{host}}/api/member/me
+GET {{host}}/api/v1/member/me
 X-Auth-Token: {{authToken}}
 
 > {%
