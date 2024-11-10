@@ -3,7 +3,8 @@ package com.hyunjin.gateway.filter;
 import com.hyunjin.gateway.constants.AuthConstants;
 import com.hyunjin.gateway.constants.RedisFields;
 import com.hyunjin.gateway.constants.RedisKeys;
-import com.hyunjin.gateway.exception.exception.SessionException;
+
+import com.hyunjin.gateway.exception.SessionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -46,7 +47,7 @@ public class SessionFilter implements GlobalFilter, Ordered {
             return Mono.error(new SessionException("인증 토큰이 필요합니다."));
         }
 
-        String sessionId = authTokens.get(0);
+        String sessionId = authTokens.getFirst();
         try {
             // Step 4: 세션 데이터 검증
             Map<Object, Object> sessionData = validateSession(sessionId);

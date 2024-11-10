@@ -1,4 +1,4 @@
-package com.hyunjin.gateway.exception.exception;
+package com.hyunjin.gateway.exception;
 
 public class GatewayException extends RuntimeException {
     public GatewayException(String message) {

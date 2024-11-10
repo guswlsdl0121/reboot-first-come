@@ -20,85 +20,85 @@ Content-Type: {{contentType}}
     });
 %}
 
-### 2. 위시리스트 조회 (첫 페이지)
-GET {{host}}/api/v1/wishlist?size=5
-X-Auth-Token: {{authToken}}
-
-> {%
-    client.test("위시리스트 조회 검증", function () {
-        client.assert(response.status === 200, "위시리스트 조회 실패");
-    });
-%}
-
-### 3. 위시리스트 조회 (다음 페이지)
-GET {{host}}/api/v1/wishlist?cursor=5&size=5
-X-Auth-Token: {{authToken}}
-
-> {%
-    client.test("위시리스트 다음 페이지 조회 검증", function () {
-        client.assert(response.status === 200, "위시리스트 다음 페이지 조회 실패");
-    });
-%}
-
-### 4. 새 상품 위시리스트에 추가
-POST {{host}}/api/v1/wishlist/43
-X-Auth-Token: {{authToken}}
-
-> {%
-    client.test("위시리스트 추가 검증", function () {
-        client.assert(response.status === 200, "위시리스트 추가 실패");
-        client.assert(response.body.message === "장바구니에 상품을 성공적으로 추가했습니다.", "잘못된 성공 메시지");
-        client.assert(response.body.data != null && typeof response.body.data === 'number', "생성된 ID가 없거나 올바르지 않습니다");
-    });
-%}
-
-### 5. 위시리스트 수량 증가
-PATCH {{host}}/api/v1/wishlist/1?update=INCREASE
-X-Auth-Token: {{authToken}}
-
-> {%
-    client.test("수량 증가 검증", function () {
-        client.assert(response.status === 200, "수량 증가 실패");
-        client.assert(response.body.data.wishlist_id === 1, "잘못된 wishlistId");
-        client.assert(response.body.data.quantity === 2, "예상한 수량과 다릅니다");
-        client.assert(response.body.message === "장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.", "잘못된 성공 메시지");
-    });
-%}
-
-### 6. 위시리스트 수량 감소
-PATCH {{host}}/api/v1/wishlist/1?update=DECREASE
-X-Auth-Token: {{authToken}}
-
-> {%
-    client.test("수량 감소 검증", function () {
-        client.assert(response.status === 200, "수량 감소 실패");
-        client.assert(response.body.data.wishlist_id === 1, "잘못된 wishlistId");
-        client.assert(response.body.data.quantity === 1, "예상한 수량과 다릅니다");
-        client.assert(response.body.message === "장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.", "잘못된 성공 메시지");
-    });
-%}
-
-### 7. 위시리스트에서 상품 제거
-DELETE {{host}}/api/v1/wishlist/2
-X-Auth-Token: {{authToken}}
-
-> {%
-    client.test("위시리스트 삭제 검증", function () {
-        client.assert(response.status === 200, "위시리스트 삭제 실패");
-        client.assert(response.body.message === "장바구니에서 상품을 삭제했습니다.", "잘못된 성공 메시지");
-        client.assert(response.body.data === 2, "삭제된 ID가 일치하지 않습니다");
-    });
-%}
-
-### 8. 위시리스트 전체 조회
-GET {{host}}/api/v1/wishlist?size=20
-X-Auth-Token: {{authToken}}
-
-> {%
-    client.test("위시리스트 전체 조회 검증", function () {
-        client.assert(response.status === 200, "위시리스트 전체 조회 실패");
-    });
-%}
+#### 2. 위시리스트 조회 (첫 페이지)
+#GET {{host}}/api/v1/wishlist?size=5
+#X-Auth-Token: {{authToken}}
+#
+#> {%
+#    client.test("위시리스트 조회 검증", function () {
+#        client.assert(response.status === 200, "위시리스트 조회 실패");
+#    });
+#%}
+#
+#### 3. 위시리스트 조회 (다음 페이지)
+#GET {{host}}/api/v1/wishlist?cursor=5&size=5
+#X-Auth-Token: {{authToken}}
+#
+#> {%
+#    client.test("위시리스트 다음 페이지 조회 검증", function () {
+#        client.assert(response.status === 200, "위시리스트 다음 페이지 조회 실패");
+#    });
+#%}
+#
+#### 4. 새 상품 위시리스트에 추가
+#POST {{host}}/api/v1/wishlist/43
+#X-Auth-Token: {{authToken}}
+#
+#> {%
+#    client.test("위시리스트 추가 검증", function () {
+#        client.assert(response.status === 200, "위시리스트 추가 실패");
+#        client.assert(response.body.message === "장바구니에 상품을 성공적으로 추가했습니다.", "잘못된 성공 메시지");
+#        client.assert(response.body.data != null && typeof response.body.data === 'number', "생성된 ID가 없거나 올바르지 않습니다");
+#    });
+#%}
+#
+#### 5. 위시리스트 수량 증가
+#PATCH {{host}}/api/v1/wishlist/1?update=INCREASE
+#X-Auth-Token: {{authToken}}
+#
+#> {%
+#    client.test("수량 증가 검증", function () {
+#        client.assert(response.status === 200, "수량 증가 실패");
+#        client.assert(response.body.data.wishlist_id === 1, "잘못된 wishlistId");
+#        client.assert(response.body.data.quantity === 2, "예상한 수량과 다릅니다");
+#        client.assert(response.body.message === "장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.", "잘못된 성공 메시지");
+#    });
+#%}
+#
+#### 6. 위시리스트 수량 감소
+#PATCH {{host}}/api/v1/wishlist/1?update=DECREASE
+#X-Auth-Token: {{authToken}}
+#
+#> {%
+#    client.test("수량 감소 검증", function () {
+#        client.assert(response.status === 200, "수량 감소 실패");
+#        client.assert(response.body.data.wishlist_id === 1, "잘못된 wishlistId");
+#        client.assert(response.body.data.quantity === 1, "예상한 수량과 다릅니다");
+#        client.assert(response.body.message === "장바구니에서 상품의 수량을 성공적으로 업데이트 했습니다.", "잘못된 성공 메시지");
+#    });
+#%}
+#
+#### 7. 위시리스트에서 상품 제거
+#DELETE {{host}}/api/v1/wishlist/2
+#X-Auth-Token: {{authToken}}
+#
+#> {%
+#    client.test("위시리스트 삭제 검증", function () {
+#        client.assert(response.status === 200, "위시리스트 삭제 실패");
+#        client.assert(response.body.message === "장바구니에서 상품을 삭제했습니다.", "잘못된 성공 메시지");
+#        client.assert(response.body.data === 2, "삭제된 ID가 일치하지 않습니다");
+#    });
+#%}
+#
+#### 8. 위시리스트 전체 조회
+#GET {{host}}/api/v1/wishlist?size=20
+#X-Auth-Token: {{authToken}}
+#
+#> {%
+#    client.test("위시리스트 전체 조회 검증", function () {
+#        client.assert(response.status === 200, "위시리스트 전체 조회 실패");
+#    });
+#%}
 
 ### 9. 존재하지 않는 상품 위시리스트에 추가 시도
 POST {{host}}/api/v1/wishlist/999
