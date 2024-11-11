@@ -1,4 +1,4 @@
-package com.hyunjin.gateway.config;
+package com.hyunjin.gateway.config.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

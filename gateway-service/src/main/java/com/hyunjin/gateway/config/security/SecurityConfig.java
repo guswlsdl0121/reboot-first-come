@@ -1,4 +1,4 @@
-package com.hyunjin.gateway.config;
+package com.hyunjin.gateway.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

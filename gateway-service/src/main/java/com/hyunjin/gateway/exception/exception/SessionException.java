@@ -1,4 +1,4 @@
-package com.hyunjin.gateway.exception;
+package com.hyunjin.gateway.exception.exception;
 
 public class SessionException extends GatewayException {
     public SessionException(String message) {

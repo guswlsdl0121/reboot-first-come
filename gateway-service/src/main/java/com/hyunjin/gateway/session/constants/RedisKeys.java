@@ -1,4 +1,4 @@
-package com.hyunjin.gateway.constants;
+package com.hyunjin.gateway.session.constants;
 
 public class RedisKeys {
     private static final String PREFIX = "spring:session:";
