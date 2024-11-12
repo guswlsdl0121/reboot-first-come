@@ -41,6 +41,7 @@ public class AuthenticationproviderImpl implements AuthenticationProvider {
                 new SimpleGrantedAuthority(member.getRole().name())
         );
 
+        // Step 4: UserDetails 생성 및 UsernamePasswordAuthenticationToken 생성
         UserDetails userDetails = User.builder()
                 .username(member.getId().toString())
                 .password(password)

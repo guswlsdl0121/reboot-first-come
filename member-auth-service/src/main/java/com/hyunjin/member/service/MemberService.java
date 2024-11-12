@@ -45,6 +45,7 @@ public class MemberService {
         authService.logoutAllSessions(memberId);
     }
 
+    // 내부 API용 id기반 사용자 조회
     public Member fetchById(Integer memberId) {
         return memberFinder.fetchById(memberId);
     }

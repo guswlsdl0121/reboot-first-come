@@ -28,6 +28,7 @@ public class AuthService {
             String sessionId = sessionManager.createSession(securityContext);
             log.info("로그인 성공. email: {}", loginRequest.getEmail());
 
+            // Step 3: 반환
             return sessionId;
 
         } catch (SessionException e) {

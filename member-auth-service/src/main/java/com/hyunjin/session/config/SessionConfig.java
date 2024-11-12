@@ -16,30 +16,34 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @Configuration
 @EnableRedisHttpSession
 public class SessionConfig {
-    // Redis 세션 저장소 설정
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        // Redis 템플릿 생성 및 연결 설정
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
+        // Spring Security 모듈이 포함된 ObjectMapper 설정
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new CoreJackson2Module());
 
+        // JSON 직렬화/역직렬화 설정
         GenericJackson2JsonRedisSerializer jsonSerializer =
                 new GenericJackson2JsonRedisSerializer(objectMapper);
         StringRedisSerializer stringSerializer = new StringRedisSerializer();
 
-        template.setDefaultSerializer(jsonSerializer);
-        template.setKeySerializer(stringSerializer);
-        template.setHashKeySerializer(stringSerializer);
-        template.setHashValueSerializer(jsonSerializer);
-        template.setValueSerializer(jsonSerializer);
+        // Redis 직렬화 설정
+        template.setDefaultSerializer(jsonSerializer);      // 기본 직렬화
+        template.setKeySerializer(stringSerializer);        // 키 직렬화
+        template.setHashKeySerializer(stringSerializer);    // Hash 키 직렬화
+        template.setHashValueSerializer(jsonSerializer);    // Hash 값 직렬화
+        template.setValueSerializer(jsonSerializer);        // 값 직렬화
 
         return template;
     }
 
     @Bean
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
+        // 세션 직렬화를 위한 ObjectMapper 설정
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new CoreJackson2Module());
         return new GenericJackson2JsonRedisSerializer(objectMapper);

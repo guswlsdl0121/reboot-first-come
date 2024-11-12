@@ -4,8 +4,6 @@ import static com.hyunjin.session.constants.RedisFields.PRINCIPAL_NAME;
 
 public class RedisKeys {
     private static final String PREFIX = "spring:session:";
-
-    // Session related keys
     public static final String SESSIONS = PREFIX + "data:";      // spring:session:data:{sessionId}
     public static final String INDICES = PREFIX + "index:";      // spring:session:index:{indexName}
 

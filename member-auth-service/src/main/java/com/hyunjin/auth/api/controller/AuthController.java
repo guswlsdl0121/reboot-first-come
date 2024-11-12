@@ -4,7 +4,6 @@ package com.hyunjin.auth.api.controller;
 import com.hyunjin.auth.api.dto.request.LoginRequest;
 import com.hyunjin.auth.service.AuthService;
 import com.hyunjin.common.dto.CommonResponse;
-import com.hyunjin.session.constants.SessionHeaders;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +27,11 @@ public class AuthController {
 
         // 쿠키 생성 및 설정
         ResponseCookie cookie = ResponseCookie.from("SESSION", sessionId)
-                .httpOnly(true)          // JS에서 접근 불가
-                .secure(true)            // HTTPS에서만 전송
-                .sameSite("Strict")      // CSRF 방지
-                .path("/")               // 모든 경로에서 사용 가능
-                .maxAge(Duration.ofHours(1))  // 1시간 유효
+                .httpOnly(true)                 // JS에서 접근 불가
+                .secure(true)                   // HTTPS에서만 전송
+                .sameSite("Strict")             // CSRF 방지
+                .path("/")                      // 모든 경로에서 사용 가능
+                .maxAge(Duration.ofHours(1))    // 1시간 유효
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());

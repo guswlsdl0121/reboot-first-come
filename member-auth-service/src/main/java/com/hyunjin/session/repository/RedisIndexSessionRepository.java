@@ -127,21 +127,21 @@ public class RedisIndexSessionRepository implements CustomSessionRepository {
     @Override
     public void deleteById(String id) {
         try {
-            // Step 1: 세션 데이터 조회
+            // Step 1: 세션키로 데이터 조회
             String sessionKey = RedisKeys.getSessionKey(id);
             Map<Object, Object> sessionData = redisTemplate.opsForHash().entries(sessionKey);
 
+            // Step 2: 인덱스에서 세션 ID 제거
             if (!sessionData.isEmpty()) {
-                // Step 2: 사용자 ID 인덱스에서 세션 ID 제거
                 Object memberId = sessionData.get(RedisFields.PRINCIPAL_NAME);
                 if (Objects.nonNull(memberId)) {
                     String principalKey = RedisKeys.getIndexKey(memberId.toString());
                     redisTemplate.opsForSet().remove(principalKey, id);
                 }
-
-                // Step 3: 세션 데이터 삭제
-                redisTemplate.delete(sessionKey);
             }
+
+            // Step 3: 세션 데이터 삭제
+            redisTemplate.delete(sessionKey);
         } catch (Exception e) {
             throw new SessionException("세션 삭제에 실패했습니다", e);
         }
