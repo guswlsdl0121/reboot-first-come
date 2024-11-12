@@ -1,4 +1,4 @@
-package com.hyunjin.gateway.session.property;
+package com.hyunjin.gateway.session;
 
 import lombok.Getter;
 import lombok.Setter;

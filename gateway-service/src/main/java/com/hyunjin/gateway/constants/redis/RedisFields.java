@@ -1,4 +1,4 @@
-package com.hyunjin.gateway.session.constants;
+package com.hyunjin.gateway.constants.redis;
 
 public class RedisFields {
     public static final String SECURITY_CONTEXT = "security_context";

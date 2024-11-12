@@ -13,22 +13,27 @@ Content-Type: {{contentType}}
         client.assert(response.status === 200, "요청이 성공적이지 않습니다.");
         let cookies = response.headers.valueOf("Set-Cookie");
         client.assert(cookies && cookies.includes("SESSION="), "세션 쿠키가 설정되지 않았습니다.");
+
+        // 세션 ID 추출 및 저장
+        let sessionCookie = cookies.match(/SESSION=([^;]+)/);
+        if (sessionCookie) {
+            client.global.set("sessionId", sessionCookie[1]);
+        }
+
         client.log("로그인 완료 - 세션 쿠키 설정됨");
     });
 %}
 
 ### 2. 로그아웃
 POST {{host}}/api/v1/auth/logout
+Cookie: SESSION={{sessionId}} // 로그인 시 받은 세션 ID를 전달
 
 > {%
     client.test("로그아웃 검증", function () {
         client.assert(response.status === 200, "로그아웃 요청이 실패했습니다.");
-
-        // 세션 쿠키가 무효화되었는지 확인
         let cookies = response.headers.valueOf("Set-Cookie");
         client.assert(cookies && cookies.includes("SESSION=;") || cookies.includes("Max-Age=0"),
             "세션 쿠키가 제대로 무효화되지 않았습니다.");
-
         client.log("로그아웃 완료 - 세션 쿠키 무효화됨");
     });
 %}

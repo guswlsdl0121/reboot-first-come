@@ -1,9 +1,8 @@
 package com.hyunjin.gateway.session;
 
 import com.hyunjin.gateway.exception.exception.SessionException;
-import com.hyunjin.gateway.session.constants.RedisFields;
-import com.hyunjin.gateway.session.constants.RedisKeys;
-import com.hyunjin.gateway.session.property.SessionProperties;
+import com.hyunjin.gateway.constants.redis.RedisFields;
+import com.hyunjin.gateway.constants.redis.RedisKeys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

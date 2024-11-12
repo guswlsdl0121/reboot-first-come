@@ -1,10 +1,11 @@
 package com.hyunjin.gateway.filter;
 
 import com.hyunjin.gateway.config.security.SecurityProperties;
+import com.hyunjin.gateway.constants.http.HttpHeader;
 import com.hyunjin.gateway.exception.exception.AuthenticationException;
 import com.hyunjin.gateway.exception.exception.SessionException;
 import com.hyunjin.gateway.session.SessionManager;
-import com.hyunjin.gateway.session.property.SessionProperties;
+import com.hyunjin.gateway.session.SessionProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -33,16 +34,19 @@ public class AuthenticationFilter {
 
     public Consumer<GatewayFilterSpec> apply() {
         return f -> f.filter((exchange, chain) -> {
+            // step 1: 현재 요청의 경로 추출
             String path = exchange.getRequest().getPath().value();
 
-            // step 1: 요청 경로가 공개 API인지 확인
+            // step 2: 요청 경로가 공개 API인지 확인
             boolean isPublicPath = securityProperties.getPublicPaths().stream()
                     .anyMatch(pattern -> new AntPathMatcher().match(pattern, path));
 
+            // step 3: 공개 API인 경우 인증 없이 처리
             if (isPublicPath) {
                 return chain.filter(exchange);
             }
 
+            // step 3-1: 비공개 API는 인증 처리 후 진행
             return authenticate(exchange, chain);
         });
     }
@@ -69,10 +73,10 @@ public class AuthenticationFilter {
             // step 3: 세션ID와 사용자 정보를 요청 헤더에 추가
             ServerHttpRequest mutatedRequest = request.mutate()
                     .headers(headers -> {
-                        headers.remove("Cookie");
-                        headers.add("X-Auth-Token", sessionId);
-                        headers.add("X-User-Id", auth.getName());
-                        headers.add("X-User-Roles",
+                        headers.remove(HttpHeader.COOKIE);
+                        headers.add(HttpHeader.AUTH_TOKEN, sessionId);
+                        headers.add(HttpHeader.USER_ID, auth.getName());
+                        headers.add(HttpHeader.USER_ROLES,
                                 auth.getAuthorities().stream()
                                         .map(Object::toString)
                                         .collect(Collectors.joining(",")));
