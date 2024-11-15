@@ -20,28 +20,28 @@ public class EmailService {
     private final MailSender mailSender;
     private final MailCodeRepository mailCodeRepository;
 
-    // 인증 코드 생성 및 이메일 발송
     public void sendCode(Integer memberId) {
+        // Step 1: 사용자 이메일 조회 및 인증 코드 생성
         String email = memberFinder.fetchEmailById(memberId);
         String authCode = mailSender.generateAuthCode();
 
         try {
-            // 인증 코드 저장 및 메일 발송
+            // Step 2: 인증 코드 저장 및 이메일 발송
             mailCodeRepository.saveCode(email, authCode, mailSender.getExpirationMillis());
             mailSender.sendCode(email, authCode);
         } catch (AuthCodeException e) {
-            // 실패 시 저장된 코드 제거
+            // Step 3: 실패 시 저장된 코드 정리
             mailCodeRepository.removeCode(email);
             throw new AuthCodeException("인증메일 전송을 실패했습니다.");
         }
     }
 
-    // 이메일 인증 코드 검증
     public void verifyCode(Integer memberId, String code) {
+        // Step 1: 사용자 정보 조회
         Member member = memberFinder.fetchById(memberId);
         String email = member.getEmail();
 
-        // 인증 코드 검증 및 이메일 인증 처리
+        // Step 2: 인증 코드 검증 및 사용자 상태 업데이트
         mailCodeRepository.verifyCode(email, code);
         memberUpdater.verifyEmail(member);
     }

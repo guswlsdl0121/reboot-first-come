@@ -41,8 +41,7 @@ public class SecurityConfig {
                 )
 
                 // SecurityContext 설정
-                .securityContext((securityContext) -> securityContext
-                        .requireExplicitSave(false))
+                .securityContext((securityContext) -> securityContext.requireExplicitSave(false))
 
                 // URL별 접근 권한 설정
                 .authorizeHttpRequests(

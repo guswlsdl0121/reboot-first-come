@@ -1,5 +1,6 @@
 package com.hyunjin.security.filter;
 
+import feign.FeignException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,10 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,6 +29,14 @@ import java.util.List;
 public class GatewayAuthenticationFilter extends OncePerRequestFilter {
     private static final String X_USER_ID = "X-User-Id";
     private static final String X_USER_ROLES = "X-User-Roles";
+
+    private static final List<String> INTERNAL_API_PATTERNS = List.of(
+            "/api/v1/product/internal/**",
+            "/api/v1/orders/internal/**",
+            "/api/v1/member/internal/**"
+    );
+
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -70,11 +81,22 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
             log.debug("[인증 성공] 새로운 인증 정보 생성 - userId: {}, roles: {}", userId, userRoles);
             filterChain.doFilter(request, response);
 
-        } catch (Exception e) {
-            //예외 처리
+        }
+        catch (FeignException e) {
+            response.setStatus(e.status());
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("내부 통신 중 오류");
+        }
+        catch (AuthenticationException e) {
+            // 인증 관련 예외만 401로 처리
             log.error("[인증 오류] 인증 처리 중 예외 발생 - userId: {}", userId, e);
             SecurityContextHolder.clearContext();
             sendUnauthorizedResponse(response, "인증 처리 중 오류가 발생했습니다.");
+        } catch (ServletException | IOException e) {
+            throw e;  // 서블릿 예외는 그대로 전파
+        } catch (Exception e) {
+            // 비즈니스 예외 등은 그대로 전파
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -98,5 +120,14 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(String.format("{\"message\":\"%s\"}", message));
+    }
+
+
+    @Override
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+        String path = request.getRequestURI();
+        // 내부 API 경로인 경우 필터링 제외
+        return INTERNAL_API_PATTERNS.stream()
+                .anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 }

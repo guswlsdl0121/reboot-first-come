@@ -1,29 +1,30 @@
+### 로그인 및 회원 조회 테스트
+
 ### 1. 로그인 (해당 body의 계정이 있어야 함)
-# @name login
-POST {{host}}/api/auth/login
+POST {{host}}/api/v1/auth/login
 Content-Type: {{contentType}}
 
 {
-    "email": "hong@gmail.com",
-    "password": "password123!"
+   "email": "hong@gmail.com",
+   "password": "password123!"
 }
 
 > {%
-    client.test("토큰 추출", function () {
+    client.test("로그인 쿠키 검증", function () {
         // 상태 코드 검증
         client.assert(response.status === 200, "요청이 성공적이지 않습니다.");
 
-        // X-Auth-Token 헤더 직접 추출
-        let authToken = response.headers.valueOf("X-Auth-Token");
+        // Set-Cookie 헤더 검증
+        let cookies = response.headers.valueOf("Set-Cookie");
+        client.assert(cookies && cookies.includes("SESSION="), "세션 쿠키가 설정되지 않았습니다.");
 
-        // 토큰을 전역 변수로 설정
-        client.global.set("authToken", authToken);
+        // 쿠키 값 추출 및 저장 (다음 요청에서 자동으로 사용됨)
+        client.log("Set-Cookie 헤더:", cookies);
     });
 %}
 
 ### 2. 내 정보 조회
-GET {{host}}/api/member/me
-X-Auth-Token: {{authToken}}
+GET {{host}}/api/v1/member/me
 
 > {%
     client.test("내 정보 조회 응답 검증", function () {

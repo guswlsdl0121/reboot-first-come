@@ -1,0 +1,44 @@
+### 로그아웃 테스트
+### 1. 로그인
+POST {{host}}/api/v1/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "hong@gmail.com",
+    "password": "password123!"
+}
+
+> {%
+    client.test("로그인 쿠키 검증", function () {
+        client.assert(response.status === 200, "요청이 성공적이지 않습니다.");
+        let cookies = response.headers.valueOf("Set-Cookie");
+        client.assert(cookies && cookies.includes("SESSION="), "세션 쿠키가 설정되지 않았습니다.");
+        client.log("로그인 완료 - 세션 쿠키 설정됨");
+    });
+%}
+
+### 2. 로그아웃
+POST {{host}}/api/v1/auth/logout
+
+> {%
+    client.test("로그아웃 검증", function () {
+        client.assert(response.status === 200, "로그아웃 요청이 실패했습니다.");
+
+        // 세션 쿠키가 무효화되었는지 확인
+        let cookies = response.headers.valueOf("Set-Cookie");
+        client.assert(cookies && cookies.includes("SESSION=;") || cookies.includes("Max-Age=0"),
+            "세션 쿠키가 제대로 무효화되지 않았습니다.");
+
+        client.log("로그아웃 완료 - 세션 쿠키 무효화됨");
+    });
+%}
+
+### 3. 로그아웃된 상태에서 내 정보 조회 시도 (실패해야 함)
+GET {{host}}/api/v1/member/me
+
+> {%
+    client.test("세션 무효화 검증", function () {
+        client.assert(response.status === 401, "세션이 아직 유효합니다. 상태 코드: " + response.status);
+        client.log("세션 무효화 확인 완료 - 정상적으로 접근이 거부되었습니다.");
+    });
+%}

@@ -4,7 +4,7 @@ package com.hyunjin.product.service;
 import com.hyunjin.product.dto.response.ProductDetailResponse;
 import com.hyunjin.product.dto.response.ProductMainResponse;
 import com.hyunjin.product.entity.Product;
-import com.hyunjin.product.exception.OutOfStockException;
+import com.hyunjin.product.exception.exception.OutOfStockException;
 import com.hyunjin.product.repository.ProductRepository;
 import com.hyunjin.product.usecase.ProductFinder;
 import com.hyunjin.product.usecase.ProductReader;

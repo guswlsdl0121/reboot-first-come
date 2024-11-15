@@ -19,20 +19,22 @@ public class MailConfig {
 
     @Bean
     public JavaMailSender javaMailSender() {
+        // SMTP 서버 설정
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(mailProperties.getHost());
         mailSender.setPort(mailProperties.getPort());
         mailSender.setUsername(mailProperties.getUsername());
         mailSender.setPassword(mailProperties.getPassword());
 
+        // SMTP 연결 속성 설정
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.starttls.required", "true");
-        props.put("mail.smtp.connectiontimeout", "5000");
-        props.put("mail.smtp.timeout", "5000");
-        props.put("mail.smtp.writetimeout", "5000");
+        props.put("mail.smtp.connectiontimeout", "5000");   // 5초
+        props.put("mail.smtp.timeout", "5000");             // 5초
+        props.put("mail.smtp.writetimeout", "5000");        // 5초
 
         return mailSender;
     }

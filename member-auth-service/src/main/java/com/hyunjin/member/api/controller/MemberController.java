@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -41,10 +39,11 @@ public class MemberController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@AuthenticationPrincipal UserDetails userDetails,
-                                                 @RequestBody @Valid ChangePasswordRequest request) {
-        Integer userId = Integer.parseInt(userDetails.getUsername());
-        memberService.changePassword(userId, request);
+    public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Integer memberId = Integer.parseInt(auth.getName());
+        memberService.changePassword(memberId, request);
+
         return ResponseEntity.ok("비밀번호가 성공적으로 변경됐습니다.");
     }
 
